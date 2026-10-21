@@ -1,4 +1,5 @@
 import {TYPES} from './reconcile.mjs';
+import {CSCOM_GROUP,ASC_GROUP} from './scope.mjs';
 export async function remoteJSON(url,user,password,fetcher=fetch){
   const response=await fetcher(url,{headers:{Authorization:'Basic '+btoa(user+':'+password),Accept:'application/json'},redirect:'manual',signal:AbortSignal.timeout(90000)});
   if(!response.ok)throw Error(`Lecture ${new URL(url).hostname} : HTTP ${response.status}. Vérifier les accès et le service.`);
@@ -8,8 +9,14 @@ export async function fetchDHIS(env,fetcher=fetch){
   if(!env.DHIS_USER||!env.DHIS_PASSWORD)throw Error('Accès DHIS2 non configuré sur le serveur.');
   const base=sourceURL(env,'dhis')+'/api/';
   const levels=await remoteJSON(base+'organisationUnitLevels.json?fields=id,name,level&paging=false',env.DHIS_USER,env.DHIS_PASSWORD,fetcher);
+  const membership=new Map();
+  for(const group of [CSCOM_GROUP,ASC_GROUP]){
+    const data=await remoteJSON(base+'29/organisationUnitGroups/'+group+'.json?fields=id,name,organisationUnits[id]&paging=false',env.DHIS_USER,env.DHIS_PASSWORD,fetcher);
+    if(data.id!==group||!Array.isArray(data.organisationUnits))throw Error('Groupe DHIS2 incomplet : '+group+'. Relevé conservé.');
+    for(const unit of data.organisationUnits){if(!unit.id)throw Error('Membre de groupe DHIS2 invalide.');if(!membership.has(unit.id))membership.set(unit.id,[]);membership.get(unit.id).push(group);}
+  }
   let page=1,count=1;const nodes=new Map();
-  do{const q=new URLSearchParams({fields:'id,name,code,level,path,parent[id]',page:String(page),pageSize:'1000',paging:'true',order:'id:asc'});const data=await remoteJSON(base+'organisationUnits.json?'+q,env.DHIS_USER,env.DHIS_PASSWORD,fetcher);if(!Array.isArray(data.organisationUnits)||!data.pager)throw Error('Réponse DHIS2 incomplète, relevé non remplacé.');for(const n of data.organisationUnits)nodes.set(n.id,{id:n.id,name:n.name,code:n.code||'',level:n.level,parent:n.parent?.id||null,path:n.path||''});count=data.pager.pageCount||Math.ceil(data.pager.total/1000)||1;if(page>1000)throw Error('Pagination DHIS2 excessive.');page++;}while(page<=count);
+  do{const q=new URLSearchParams({fields:'id,name,code,level,path,parent[id],openingDate,closedDate,lastUpdated',page:String(page),pageSize:'1000',paging:'true',order:'id:asc'});const data=await remoteJSON(base+'organisationUnits.json?'+q,env.DHIS_USER,env.DHIS_PASSWORD,fetcher);if(!Array.isArray(data.organisationUnits)||!data.pager)throw Error('Réponse DHIS2 incomplète, relevé non remplacé.');for(const n of data.organisationUnits)nodes.set(n.id,{id:n.id,name:n.name,code:n.code||'',level:n.level,parent:n.parent?.id||null,path:n.path||'',groups:membership.get(n.id)||[],openingDate:n.openingDate||null,closedDate:n.closedDate||null,lastUpdated:n.lastUpdated||null});count=data.pager.pageCount||Math.ceil(data.pager.total/1000)||1;if(page>1000)throw Error('Pagination DHIS2 excessive.');page++;}while(page<=count);
   return{nodes:[...nodes.values()],levels:levels.organisationUnitLevels||[]};
 }
 export async function fetchDISC(env,fetcher=fetch){

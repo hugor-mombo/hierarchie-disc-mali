@@ -2,6 +2,7 @@ import {fetchDISC,fetchDHIS} from '../../../lib/sources.mjs';import {transaction
 export const dynamic='force-dynamic';export const runtime='nodejs';
 export async function POST(r:Request){try{assertOrigin(r);const u=await requireUser(r,'edit'),b=await r.json();
  if(b.action==='refresh'){const lock=await pool().connect();let locked=false;try{locked=(await lock.query("SELECT pg_try_advisory_lock(hashtext('hierarchie:remote-operations')) AS locked")).rows[0].locked;if(!locked)throw Error('Une opération distante est en cours.');const [disc,dhis]=await Promise.all([fetchDISC(process.env),fetchDHIS(process.env)]);await saveSnapshot(disc,dhis.nodes,dhis.levels,u.id);}finally{if(locked)await lock.query("SELECT pg_advisory_unlock(hashtext('hierarchie:remote-operations'))");lock.release();}}
+ else if(b.action==='truth-source'){if(!['disc','dhis'].includes(b.source))throw Error('Référence invalide.');await transaction(async(c:any)=>{await putRecord('truth-source',b.source,c);await audit(c,u.id,'truth-source',{source:b.source});});}
  else if(b.action==='approve')await importMappings([{discId:b.discId,dhisId:b.dhisId}],u.id);
  else if(b.action==='import')await importMappings(b.mappings,u.id);
  else if(b.action==='remove'){if(typeof b.discId!=='string')throw Error('Identifiant requis.');await removeMapping(b.discId,u.id);}

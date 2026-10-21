@@ -14,11 +14,11 @@ export function indexNodes(nodes){return new Map(nodes.map(n=>[n.id,n]));}
 export function ancestors(node,index){const a=[];const seen=new Set([node.id]);let p=node.parent;while(p&&index.has(p)&&!seen.has(p)){seen.add(p);const n=index.get(p);a.push(n);p=n.parent;}return a;}
 export function pathOf(node,index){return [...ancestors(node,index)].reverse().concat(node).map(n=>n.name).join(' / ');}
 function dice(a,b){a=normalize(a).replaceAll(' ','');b=normalize(b).replaceAll(' ','');if(a===b)return a?1:0;if(a.length<2||b.length<2)return 0;const p=new Map();for(let i=0;i<a.length-1;i++){const k=a.slice(i,i+2);p.set(k,(p.get(k)||0)+1);}let overlap=0;for(let i=0;i<b.length-1;i++){const k=b.slice(i,i+2);if(p.get(k)>0){overlap++;p.set(k,p.get(k)-1);}}return 2*overlap/(a.length+b.length-2);}
-export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS){
+export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()=>true){
   const disc=snapshot.disc||[],dhis=snapshot.dhis||[],di=indexNodes(disc),hi=indexNodes(dhis);
   const confirmed=new Map(mappings.map(m=>[m.discId,m.dhisId]));const used=new Set(mappings.map(m=>m.dhisId));
   const byLevel=new Map(),byName=new Map(),byDistrict=new Map();
-  for(const h of dhis){if(!byLevel.has(h.level))byLevel.set(h.level,[]);byLevel.get(h.level).push(h);const key=h.level+'|'+normalize(h.name);if(!byName.has(key))byName.set(key,[]);byName.get(key).push(h);const district=ancestors(h,hi).find(p=>p.level===3);const dk=h.level+'|'+normalize(district?.name||'');if(!byDistrict.has(dk))byDistrict.set(dk,[]);byDistrict.get(dk).push(h);}
+  for(const h of dhis.filter(dhisFilter)){if(!byLevel.has(h.level))byLevel.set(h.level,[]);byLevel.get(h.level).push(h);const key=h.level+'|'+normalize(h.name);if(!byName.has(key))byName.set(key,[]);byName.get(key).push(h);const district=ancestors(h,hi).find(p=>p.level===3);const dk=h.level+'|'+normalize(district?.name||'');if(!byDistrict.has(dk))byDistrict.set(dk,[]);byDistrict.get(dk).push(h);}
   const rows=[];
   for(const d of disc){
     const da=ancestors(d,di),region=da.find(p=>p.type==='c20_region')|| (d.type==='c20_region'?d:null),district=da.find(p=>p.type==='c30_district')||(d.type==='c30_district'?d:null);
@@ -47,7 +47,7 @@ export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS){
     const ambiguous=candidates.length>1&&(candidates[0].score-candidates[1].score<8);
     rows.push({...base,candidates,status:!candidates.length?'missing':ambiguous?'ambiguous':'proposal',reason:!candidates.length?'Aucune proposition fiable dans le périmètre chargé.':ambiguous?'Plusieurs unités proches : vérifier les parents avant de valider.':'Proposition indicative, à valider par une personne.'});
   }
-  for(const h of dhis){const hr=[h,...ancestors(h,hi)].find(n=>n.level===2);const dr=hr?disc.find(n=>n.type==='c20_region'&&(confirmed.get(n.id)===hr.id||normalize(n.name)===normalize(hr.name))):null;if(!used.has(h.id))rows.push({id:'dhis:'+h.id,disc:null,dhis:h,status:'dhis',region:dr?.name||'',regionId:dr?.id||'',district:'',districtId:'',discPath:'',dhisPath:pathOf(h,hi),candidates:[],reason:'Aucun mapping validé ne référence cette unité DHIS2. Cela ne prouve pas son absence de DISC.'});}
+  for(const h of dhis.filter(dhisFilter)){const hr=[h,...ancestors(h,hi)].find(n=>n.level===2);const dr=hr?disc.find(n=>n.type==='c20_region'&&(confirmed.get(n.id)===hr.id||normalize(n.name)===normalize(hr.name))):null;if(!used.has(h.id))rows.push({id:'dhis:'+h.id,disc:null,dhis:h,status:'dhis',region:dr?.name||'',regionId:dr?.id||'',district:'',districtId:'',discPath:'',dhisPath:pathOf(h,hi),candidates:[],reason:'Aucun mapping validé ne référence cette unité DHIS2. Cela ne prouve pas son absence de DISC.'});}
   for(const m of mappings){if(!di.has(m.discId))rows.push({id:'broken:'+m.discId,disc:null,dhis:hi.get(m.dhisId)||null,status:'broken',region:'',regionId:'',district:'',districtId:'',discPath:m.discId,dhisPath:m.dhisId,candidates:[],reason:'L’unité DISC validée est absente du dernier relevé.'});}
   return rows;
 }

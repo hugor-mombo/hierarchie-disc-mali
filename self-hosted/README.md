@@ -41,7 +41,7 @@ Le domaine personnalisé n’est pas configuré par le code seul : DNS, pare-feu
 | `viewer` | Consulter les relevés, demandes, historique et exports |
 | `editor` | Actualiser les relevés, gérer les mappings, proposer des déplacements et corrections de noms |
 | `reviewer` | Édition et approbation/rejet des demandes et des plans d’une autre personne |
-| `admin` | Administration des comptes, préparation et exécution après les approbations requises |
+| `admin` | Administration des comptes, confirmation et exécution de la liste de synchronisation, déplacements avec approbation indépendante |
 
 Les droits sont contrôlés dans les API, indépendamment de l’interface. Les mots de passe utilisent scrypt avec sel ; les sessions opaques sont stockées hachées dans PostgreSQL et expirent après huit heures. Les cookies sont HttpOnly, SameSite et Secure en HTTPS. Modifier un rôle, désactiver un utilisateur ou réinitialiser son mot de passe révoque ses sessions. Le dernier administrateur actif ne peut pas être désactivé ou rétrogradé. Les tentatives de connexion sont limitées à dix par identifiant sur quinze minutes.
 
@@ -51,9 +51,33 @@ Cliquer sur **Actualiser les relevés**, puis vérifier **Niveaux de corresponda
 
 L’écran **Exports** fournit les mappings CSV avec les branches, les écarts/non-rapprochés CSV, les arborescences JSON et un graphe GraphML avec les relations parents/enfants et les liens entre plateformes. GraphML peut être ouvert dans Gephi ou yEd. C’est une cartographie organisationnelle, sans coordonnées géographiques. Le CSV neutralise les formules provenant de libellés externes. Les exports du comparateur permettent aussi de télécharger le périmètre filtré.
 
-Les corrections de noms restent des plans exportables. La fonction d’écriture intégrée concerne les **déplacements**, pas les renommages ni les créations d’UO.
+Les corrections de noms peuvent rester des plans exportables ou être appliquées par la liste de synchronisation. Cette liste permet aussi les créations de structures et les déplacements, avec une cible explicite et une confirmation.
 
-## Déplacements avec application directe
+## Référence et synchronisation bidirectionnelle
+
+**DHIS2 est le référentiel par défaut.** Le choix dans le comparateur est enregistré pour le registre. Chaque action conserve sa propre référence : DHIS2 → DISC-Mali, ou DISC-Mali → DHIS2 lorsque DISC dispose de données plus récentes. Changer la référence ne lance aucune écriture.
+
+La vue DISC n'affiche par défaut que les niveaux DHIS2 1 à 3, les CSCOM de niveau 5 du groupe `a8PnG1kmKY9` et les Sites ASC de niveau 6 du groupe `JBThfLOBPmn`. Les maternités rurales et les autres formations sanitaires restent dans le relevé complet. **Afficher toute l’arborescence DHIS2** permet de les explorer ; les listes de parents utilisent le relevé complet. Les membres des deux groupes sont lus via `/api/29/organisationUnitGroups/{id}`. Un groupe inaccessible ou une réponse incomplète fait échouer l'actualisation sans remplacer le relevé précédent.
+
+Le statut DHIS2 d'un site est calculé depuis `closedDate` : ouvert si aucune date n'est définie, fermé à partir de cette date, ou fermeture prévue. Un ancien relevé sans ce champ affiche « Statut non relevé » et doit être actualisé. Le statut est informatif ; aucune fermeture ou réouverture DISC n'est déduite automatiquement.
+
+Depuis le détail d'une unité ou **Synchronisation → Ajouter une opération** :
+
+1. Choisir la référence et l'opération : création, mise à jour du nom ou déplacement.
+2. Pour modifier une unité existante, valider préalablement son mapping. Pour créer une unité, vérifier qu'aucune correspondance ou structure similaire n'existe déjà.
+3. Choisir un parent compatible dans la branche d'un ancêtre rapproché. Les niveaux intermédiaires restent pris en compte : un Site ASC DISC doit être placé sous une **zone de supervision de l'aire correspondante**, pas directement sous le CSCOM DHIS2. S'il manque un parent ou un mapping, préparer d'abord celui-ci, attendre sa réalisation, puis actualiser les relevés.
+4. Ajouter l'action à la liste avec une justification. Les éditeurs et validateurs peuvent préparer des actions ; seul un administrateur peut confirmer leur exécution avec le droit `execute`.
+5. Vérifier la cible, les chemins avant/après et confirmer l'opération, la sauvegarde et la disponibilité de la plateforme. **Appliquer maintenant** confirme et met directement l'action en file. On peut aussi sélectionner jusqu'à 100 actions préparées et confirmer leur exécution ensemble.
+
+Le worker traite chaque action en arrière-plan, sous le même verrou que les déplacements et actualisations existants. Il revérifie les droits de l'exécutant, les URL, la référence, les mappings et les parents avant écriture. Un changement de relevé exige une nouvelle préparation. Le succès d'une création ajoute le mapping uniquement après relecture de l'unité créée. Le résultat apparaît dans la liste et l'historique ; les relevés sont ensuite actualisés.
+
+Les créations DISC utilisent l'API CHT `/api/v1/places` avec `type=contact`, le `contact_type` structurel et le parent choisi ; CHT construit le lignage. Aucune personne ASC ni aucun compte utilisateur n'est inventé : compléter le contact primaire selon le processus DISC. Les créations DHIS2 ajoutent le CSCOM ou Site ASC au groupe correspondant. Les renommages DHIS2 mettent à jour le nom et le nom court. Les déplacements DISC réutilisent la préparation officielle `cht-conf` et les sauvegardes des descendants et rapports.
+
+Cette voie de confirmation directe par un administrateur complète le circuit à approbation indépendante présenté ci-dessous. Elle ne nécessite pas un second compte. `ENABLE_REMOTE_WRITES=true` reste requis dans le web **et** le worker pour toute écriture réelle. Les comptes techniques doivent disposer des droits de création, modification et gestion des groupes nécessaires ; tester la compatibilité des API CHT et DHIS2 sur les versions cibles avant leur utilisation réelle.
+
+Une réponse ambiguë après le début des écritures ou un redémarrage du worker pendant une action donne le statut **Contrôle manuel requis**. Aucun nouvel essai n'est automatique et une autre action sur la même unité est bloquée. Examiner la plateforme, l'historique et les fichiers privés du volume `move_work` avant de résoudre cet état en maintenance. Les données métier et preuves restent soumises aux mêmes règles de sauvegarde que les déplacements.
+
+## Déplacements avec approbation indépendante
 
 Les écritures sont désactivées par défaut. Faire d’abord une recette sur des instances de test et vérifier les droits des comptes techniques. Pour autoriser les opérations réelles, configurer `ENABLE_REMOTE_WRITES=true`, puis recréer `web` et `worker` :
 
@@ -129,5 +153,16 @@ node test/cht-integration.mjs
 npm run db:migrate
 npm run dev -- --port 5300
 ```
+
+La recette de synchronisation utilise une base PostgreSQL distincte et des connecteurs simulés. Depuis la racine du dépôt, après construction des images :
+
+```sh
+docker compose -f self-hosted/compose.qa.yaml up -d --wait
+docker compose -f self-hosted/compose.qa.yaml run --rm runner
+# Supprimer uniquement cette stack de recette et ses volumes fictifs :
+docker compose -f self-hosted/compose.qa.yaml down -v
+```
+
+Aucun worker autonome n'est lancé dans cette stack : le script de recette appelle le traitement des actions avec des plateformes fictives. Elle n'utilise pas `self-hosted/.env` et ne doit recevoir aucun identifiant de production.
 
 Pour tester les images Docker localement sans certificat : configurer `.env`, puis lancer `docker compose -f compose.yaml -f compose.local.yaml up -d --build db migrate web worker`. Ouvrir `http://localhost:5300`. Cette variante n’expose le port web que sur la boucle locale et désactive le proxy TLS. Les accès en HTTP aux sources factices ne sont permis qu’avec `ALLOW_HTTP_SOURCES=true` ; garder `false` pour les plateformes réelles.

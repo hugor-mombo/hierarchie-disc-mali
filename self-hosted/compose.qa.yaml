@@ -1,0 +1,50 @@
+# Recette isolée. Les identifiants ci-dessous sont exclusivement fictifs.
+# Construire d'abord les images avec `docker compose build` depuis la racine.
+name: hierarchie-sync-qa
+services:
+  db:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_USER: qa
+      POSTGRES_PASSWORD: qa-fixture-only
+      POSTGRES_DB: hierarchie_sync_qa
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U qa -d hierarchie_sync_qa']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  migrate:
+    image: hierarchie-disc-mali-migrate:local
+    environment: &qa-env
+      DATABASE_URL: postgresql://qa:qa-fixture-only@db:5432/hierarchie_sync_qa
+      APP_URL: http://localhost:5311
+      DISC_URL: https://disc.example
+      DHIS_URL: https://dhis.example/dhis
+      DISC_USER: qa
+      DISC_PASSWORD: qa
+      DHIS_USER: qa
+      DHIS_PASSWORD: qa
+      ENABLE_REMOTE_WRITES: 'true'
+    command: [node, scripts/migrate.mjs]
+    healthcheck:
+      disable: true
+    depends_on:
+      db:
+        condition: service_healthy
+  web:
+    image: hierarchie-disc-mali-web:local
+    environment: *qa-env
+    ports: ['127.0.0.1:5311:3000']
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  runner:
+    image: hierarchie-disc-mali-worker:local
+    environment: *qa-env
+    command: [node, test/sync-integration.mjs]
+    volumes:
+      - ./test:/app/test:ro
+    depends_on:
+      web:
+        condition: service_healthy
+    profiles: [test]

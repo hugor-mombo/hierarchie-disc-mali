@@ -1,5 +1,16 @@
 # Vérifications effectuées — 21 octobre 2026
 
+## Synchronisation bidirectionnelle et périmètre DISC
+
+- Tests unitaires et connecteurs : groupes CSCOM/Sites ASC, conservation des autres UO, fermeture passée/future, référence DHIS2 par défaut, parents sous l'ancêtre rapproché, deux sens de synchronisation, doublons et relevés obsolètes.
+- Création et renommage DISC/DHIS2 simulés avec relecture du résultat ; type CHT `contact` et `contact_type`, parent, appartenance au groupe DHIS2 et préconditions vérifiés.
+- Recette PostgreSQL/API/worker isolée : authentification, droits, confirmation et plan présenté exigés ; création DISC, mapping après succès ; révocation des droits ; réponse perdue après création et interruption du worker classées `uncertain`, sans relance.
+- Préparation et déplacement CHT officiels avec contact descendant et rapport fictifs revérifiés.
+- Construction Docker, migration `002_sync_requests.sql` et démarrage local réussis.
+- Recette navigateur sur données fictives : DHIS2 sélectionné par défaut, site fermé affiché, maternité et niveau 4 masqués puis accessibles dans la vue complète ; parent DISC de supervision proposé ; action ajoutée à la liste ; confirmation requise pour exécuter.
+
+Les nouvelles créations et mises à jour sont testées contre des connecteurs simulés. Aucune écriture de recette n'est envoyée aux plateformes DISC-Mali et DHIS2 réelles. Les permissions et la compatibilité des versions cibles restent à vérifier avant utilisation réelle.
+
 ## Déploiement local depuis la racine du dépôt
 
 - `npm test` et `npm run typecheck` réussis.
