@@ -64,3 +64,12 @@ Aucune écriture de recette n’a été effectuée sur DISC-Mali ou DHIS2 en pro
 - Suite de tests et vérification TypeScript réussies.
 - Filtre de présence commun à la comparaison et aux arborescences ; candidats DISC accessibles depuis le détail DHIS2. Les créations restent soumises aux contrôles existants.
 - Mise à jour distante par récupération Git de `main`, archive du sous-dossier autonome et conservation de la configuration privée et des volumes.
+
+## Suppression récursive DISC-Mali
+
+- Migration `004_disc_deletions.sql`, file de préparation/exécution et historique distincts ; une seule suppression ouverte, opérations concurrentes et modifications de mappings bloquées.
+- Tests unitaires : périmètre récursif, racine, parent incomplet, mapping descendant, identifiant DHIS2 embarqué, nom/hash/confirmations/expiration du plan, catégories et documents étrangers.
+- Recette avec le véritable `cht-conf@6.6.1` et un serveur CHT fictif : préparation sans écriture, 2 structures, 1 personne, 2 rapports (sujet et émetteur), pièce jointe sauvegardée, compte rattaché bloquant, révision modifiée bloquante, suppression récursive vérifiée et conflit partiel signalé.
+- Recette PostgreSQL/API isolée : authentification et rôles, plan préparé exigé, confirmations et nom exact exigés, annulation, exclusion des autres opérations, révocation du droit avant écriture, récupération d'une interruption sans relance.
+- Recette navigateur sur données fictives : accès depuis une unité DISC, liste des documents et personnes anonymisées, bouton désactivé sans confirmation des données puis activé après nom exact et double confirmation. Aucune suppression déclenchée dans le navigateur.
+- Lecture de l'API CHT `/api/v2/users?facility_id=...` vérifiée depuis le serveur avec le compte technique existant. Les tests de suppression utilisent uniquement des plateformes fictives ; aucune suppression réelle n'est effectuée pendant ce développement.

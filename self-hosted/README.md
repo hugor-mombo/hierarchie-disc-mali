@@ -213,3 +213,13 @@ sh /opt/maintenance-disc-mali/deploy/update-from-git.sh /opt/maintenance-disc-ma
 ```
 
 Il est possible de remplacer `main` par le SHA attendu : le script refuse alors de déployer si la tête distante ne correspond pas. Les images sont construites avant le remplacement des services. La version est enregistrée dans `DEPLOYED_REVISION` uniquement après réussite des contrôles.
+
+## Suppression récursive sur DISC-Mali
+
+Depuis **Suppressions DISC** ou le détail d'une unité DISC, sélectionner une branche sans mapping DHIS2 et renseigner une justification. **Préparer le plan sans supprimer** lance une lecture CHT en arrière-plan : structures, personnes et rapports dont ces contacts sont le sujet ou l'émetteur. Les noms des personnes et le contenu des rapports ne sont pas exposés dans le plan ; les identifiants sont consultables.
+
+Un administrateur doit ensuite examiner la liste des documents, retaper le nom exact et confirmer séparément le périmètre et les données. Le plan expire après une heure. Les racines, les branches comprenant un mapping DHIS2, les comptes DISC rattachés et les contacts principaux d'ancêtres bloquent la préparation. Les comptes ne sont ni supprimés ni désactivés ; les réaffecter préalablement si nécessaire.
+
+Les originaux, avec les pièces jointes, sont conservés dans le volume du worker sous `deletions/<demande>/before` avec permissions privées. Il n'y a pas de restauration automatique dans l'interface. La suppression utilise des tombstones CouchDB, sans purge, puis vérifie les documents et l'absence de contacts/rapports restants. Une révision ou un périmètre modifié bloque l'exécution ; après toute écriture partielle, réponse perdue ou interruption, le statut **Contrôle manuel requis** interdit les relances automatiques.
+
+Une seule suppression peut rester ouverte ; les nouvelles synchronisations, déplacements et modifications de mappings sont suspendus jusqu'à son annulation ou son achèvement. Une demande incertaine exige un contrôle technique avant déblocage. Le compte technique doit pouvoir lire les contacts, rapports, pièces jointes et l’API de contrôle des comptes `/api/v2/users`, et disposer des droits d'écriture requis lors de l'exécution. Le traitement est limité à 50 000 documents par demande. Le relevé est actualisé après réussite ; les appareils hors ligne peuvent nécessiter une resynchronisation.

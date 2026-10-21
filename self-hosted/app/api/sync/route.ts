@@ -11,7 +11,7 @@ export async function POST(r:Request){try{
   await transaction(async(c:any)=>{
     // Serialise registry changes with the worker and legacy move queue.
     await c.query("SELECT pg_advisory_xact_lock(hashtext('hierarchie:sync-queue'))");
-    if(['add','execute-now'].includes(b.action)){
+    if(['add','execute-now'].includes(b.action)){if((await c.query("SELECT 1 FROM deletion_requests WHERE status NOT IN ('succeeded','failed','cancelled') LIMIT 1")).rowCount)throw Error('Une suppression DISC est ouverte. La terminer ou annuler son plan avant de préparer une autre opération.');
       if(typeof b.reason!=='string'||b.reason.trim().length<10||b.reason.length>2000)throw Error('Justification de 10 à 2 000 caractères requise.');
       const snapshot=(await c.query("SELECT value FROM app_records WHERE key='snapshot'")).rows[0]?.value;
       const levels=(await c.query("SELECT value FROM app_records WHERE key='levels'")).rows[0]?.value;
