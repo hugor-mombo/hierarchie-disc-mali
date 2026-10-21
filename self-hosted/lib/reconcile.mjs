@@ -74,6 +74,7 @@ export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()
     }
     if(row.dhis){
       const h=row.dhis;
+      if(!Object.values(levels).some(l=>l!=null&&Number(l)===h.level)){row.presence='unverified';row.presenceReason='Aucun type de structure DISC n’est configuré pour ce niveau DHIS2. Cette unité reste visible dans l’arborescence complète, sans conclusion d’absence.';row.discCandidates=[];continue;}
       row.discCandidates=[...(discOptions.get(h.id)?.values()||[])].map(r=>({id:r.disc.id,name:r.disc.name,path:r.discPath,linked:dm.has(r.disc.id)}));
       const parent=ancestors(h,hi).find(n=>Object.values(levels).some(l=>l!=null&&Number(l)===n.level));
       row.presence=row.discCandidates.length?'review':(!h.parent||parent&&di.has(hm.get(parent.id)))?'probable':'unverified';

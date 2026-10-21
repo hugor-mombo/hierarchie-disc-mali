@@ -23,3 +23,8 @@ test('un mapping parent vers une fiche absente ne permet pas de conclure à une 
  const rows=compare(s,[{discId:'d',dhisId:'h'},{discId:'deleted',dhisId:'b'}],levels);
  assert.equal(rows.find(r=>r.id==='dhis:t').presence,'unverified');
 });
+test('les niveaux DHIS2 sans équivalent DISC restent sans conclusion dans la vue complète',()=>{
+ const s=fixture();s.dhis.push({id:'extra',name:'Niveau intermédiaire',level:4,parent:'h'});
+ const row=compare(s,[{discId:'d',dhisId:'h'}],levels).find(r=>r.id==='dhis:extra');
+ assert.equal(row.presence,'unverified');assert.match(row.presenceReason,/Aucun type/);
+});
