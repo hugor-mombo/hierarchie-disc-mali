@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {automaticMappings} from '../lib/auto-match.mjs';
 import {demoState} from '../lib/demo.mjs';
 import {compare,matchingName} from '../lib/reconcile.mjs';
-import {ASC_GROUP} from '../lib/scope.mjs';
+import {DISTRICT_GROUP,ASC_GROUP} from '../lib/scope.mjs';
 
 test('reconnaissance de haut en bas sans validation manuelle, niveaux intermédiaires traversés',()=>{
   const s=demoState(),auto=automaticMappings(s.snapshot,[],s.levels),ids=new Map(auto.map(m=>[m.discId,m.dhisId]));
@@ -14,7 +14,7 @@ test('reconnaissance de haut en bas sans validation manuelle, niveaux intermédi
 });
 test('même nom dans deux districts : la branche distingue les homonymes',()=>{
   const s=demoState();s.snapshot.disc.push({id:'other-d',name:'District voisin',type:'c30_district',parent:'d1'},{id:'other-a',name:'Autre aire',type:'c40_health_area',parent:'other-d'},{id:'other-z',name:'Autre zone',type:'c50_supervision_area',parent:'other-a'},{id:'other-site',name:'Sébénikoro',type:'c60_chw_site',parent:'other-z'});
-  s.snapshot.dhis.push({id:'other-hd',name:'District voisin',level:3,parent:'h1',groups:[]},{id:'other-ha',name:'Autre aire',level:5,parent:'other-hd',groups:['a8PnG1kmKY9']},{id:'other-hs',name:'Sébénikoro',level:6,parent:'other-ha',groups:[ASC_GROUP]});
+  s.snapshot.dhis.push({id:'other-hd',name:'District voisin',level:3,parent:'h1',groups:[DISTRICT_GROUP]},{id:'other-ha',name:'Autre aire',level:5,parent:'other-hd',groups:['a8PnG1kmKY9']},{id:'other-hs',name:'Sébénikoro',level:6,parent:'other-ha',groups:[ASC_GROUP]});
   const ids=new Map(automaticMappings(s.snapshot,[],s.levels).map(m=>[m.discId,m.dhisId]));assert.equal(ids.get('d6'),'h6');assert.equal(ids.get('other-site'),'other-hs');
 });
 test('doublons dans une branche et incertitude réciproque restent à examiner',()=>{

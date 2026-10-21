@@ -4,7 +4,7 @@ import {randomInt} from 'node:crypto';
 import {planSync,assertSamePlan} from './sync-plan.mjs';
 import {sourceURL,fetchDISC,fetchDHIS} from './sources.mjs';
 import {assertWritesEnabled,remote,prepareMove,executeMove} from './move-executor.mjs';
-import {CSCOM_GROUP,ASC_GROUP} from './scope.mjs';
+import {DISTRICT_GROUP,CSCOM_GROUP,ASC_GROUP} from './scope.mjs';
 
 export async function checkedResponse(response){
   if(response.status===204)return {};
@@ -60,7 +60,7 @@ export async function executeSync(row,env,mappings,currentLevels,onWrite=()=>{},
       // A generated UID is kept in the result; ambiguous writes are never retried.
       const letters='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',chars=letters+'0123456789';
       targetId=letters[randomInt(letters.length)]+Array.from({length:10},()=>chars[randomInt(chars.length)]).join('');
-      const group=p.type==='c60_chw_site'?ASC_GROUP:p.type==='c40_health_area'?CSCOM_GROUP:null;
+      const group=p.type==='c30_district'?DISTRICT_GROUP:p.type==='c60_chw_site'?ASC_GROUP:p.type==='c40_health_area'?CSCOM_GROUP:null;
       const body={id:targetId,name:p.origin.name,shortName:p.origin.name.slice(0,50),openingDate:new Date().toISOString().slice(0,10),parent:{id:p.parent.id}};
       await preserve(row,env,'create-payload',{...body,group});
       await authorize();onWrite();await checkedResponse(await remote('dhis','/api/organisationUnits',env,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}));

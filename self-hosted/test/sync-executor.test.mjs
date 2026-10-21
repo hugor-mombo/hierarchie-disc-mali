@@ -7,7 +7,7 @@ import {randomUUID} from 'node:crypto';
 import {demoState} from '../lib/demo.mjs';
 import {planSync} from '../lib/sync-plan.mjs';
 import {executeSync} from '../lib/sync-executor.mjs';
-import {CSCOM_GROUP,ASC_GROUP} from '../lib/scope.mjs';
+import {DISTRICT_GROUP,CSCOM_GROUP,ASC_GROUP} from '../lib/scope.mjs';
 
 import {fixture} from './fixtures/sync-platforms.mjs';
 
@@ -33,4 +33,12 @@ test('connecteurs : création et renommage dans les deux sens, préconditions et
     await assert.rejects(executeSync(f.row({originSource:'disc',originId:'d10',operation:'create',parentId:'h4'}),f.env,f.s.mappings,f.s.levels,()=>{wrote=true;}),/HTTP 503/);
     assert.equal(wrote,true);assert.deepEqual(f.writes,['dhis-create']);
   }finally{globalThis.fetch=original;await rm(dir,{recursive:true,force:true});}
+});
+
+test('création DHIS2 d’un district : affectation au groupe District sanitaire et vérification',async()=>{
+ const dir=await mkdtemp(path.join(tmpdir(),'district-sync-')),original=globalThis.fetch;
+ try{const f=await fixture(dir);f.s.snapshot.disc.push({id:'new-district',name:'District nouveau',type:'c30_district',parent:'d1'});f.docs.set('new-district',{_id:'new-district',_rev:'1-qa',name:'District nouveau',type:'contact',contact_type:'c30_district',parent:{_id:'d1'}});globalThis.fetch=f.fetcher;
+ const result=await executeSync(f.row({originSource:'disc',originId:'new-district',operation:'create',parentId:'h1'}),f.env,f.s.mappings,f.s.levels);
+ const unit=f.s.snapshot.dhis.find(n=>n.id===result.targetId);assert.equal(unit.level,3);assert.deepEqual(unit.groups,[DISTRICT_GROUP]);assert.deepEqual(f.writes,['dhis-create','dhis-group']);
+ }finally{globalThis.fetch=original;await rm(dir,{recursive:true,force:true});}
 });

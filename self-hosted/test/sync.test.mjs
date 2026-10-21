@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {demoState} from '../lib/demo.mjs';
-import {CSCOM_GROUP,ASC_GROUP,relevantDhis,siteStatus} from '../lib/scope.mjs';
+import {DISTRICT_GROUP,CSCOM_GROUP,ASC_GROUP,relevantDhis,siteStatus} from '../lib/scope.mjs';
 import {compare} from '../lib/reconcile.mjs';
 import {fetchDHIS} from '../lib/sources.mjs';
 import {planSync,parentCandidates,targetType,assertSamePlan,creationConflicts} from '../lib/sync-plan.mjs';
@@ -27,12 +27,12 @@ test('DHIS collecte les groupes API29 et conserve toutes les UO avec les dates',
   const result=await fetchDHIS({DHIS_USER:'u',DHIS_PASSWORD:'p'},async url=>{
     urls.push(url);let data;
     if(url.includes('organisationUnitLevels'))data={organisationUnitLevels:[]};
-    else if(url.includes('organisationUnitGroups')){const group=url.includes(CSCOM_GROUP)?CSCOM_GROUP:ASC_GROUP;data={id:group,organisationUnits:[{id:group===CSCOM_GROUP?'cscom':'asc'}]};}
-    else data={pager:{pageCount:1},organisationUnits:[{id:'cscom',name:'CSCOM',level:5},{id:'asc',name:'ASC fermé',level:6,closedDate:'2025-01-01'},{id:'m',name:'Maternité',level:6}]};
+    else if(url.includes('organisationUnitGroups')){const group=url.includes(DISTRICT_GROUP)?DISTRICT_GROUP:url.includes(CSCOM_GROUP)?CSCOM_GROUP:ASC_GROUP;data={id:group,organisationUnits:[{id:group===DISTRICT_GROUP?'district':group===CSCOM_GROUP?'cscom':'asc'}]};}
+    else data={pager:{pageCount:1},organisationUnits:[{id:'cscom',name:'CSCOM',level:5},{id:'asc',name:'ASC fermé',level:6,closedDate:'2025-01-01'},{id:'m',name:'Maternité',level:6},{id:'district',name:'District',level:3},{id:'other-district',name:'Autre UO',level:3}]};
     return {ok:true,json:async()=>data};
   });
-  assert.equal(result.nodes.length,3);assert.deepEqual(result.nodes[0].groups,[CSCOM_GROUP]);assert.deepEqual(result.nodes[1].groups,[ASC_GROUP]);assert.equal(result.nodes[1].closedDate,'2025-01-01');
-  assert.ok(urls.some(u=>u.includes('/api/29/organisationUnitGroups/')));
+  assert.equal(result.nodes.length,5);assert.deepEqual(result.nodes[0].groups,[CSCOM_GROUP]);assert.deepEqual(result.nodes[1].groups,[ASC_GROUP]);assert.equal(result.nodes[1].closedDate,'2025-01-01');
+  assert.deepEqual(result.nodes[3].groups,[DISTRICT_GROUP]);assert.deepEqual(result.nodes[4].groups,[]);assert.equal(relevantDhis(result.nodes[3]),true);assert.equal(relevantDhis(result.nodes[4]),false);assert.deepEqual(result.groupsRead,[DISTRICT_GROUP,CSCOM_GROUP,ASC_GROUP]);assert.ok(urls.some(u=>u.includes('/api/29/organisationUnitGroups/'+DISTRICT_GROUP)));
   await assert.rejects(fetchDHIS({DHIS_USER:'u',DHIS_PASSWORD:'p'},async()=>({ok:true,json:async()=>({})})),/Groupe DHIS2 incomplet/);
 });
 test('DHIS est la référence par défaut, création DISC sous la supervision correspondante',()=>{

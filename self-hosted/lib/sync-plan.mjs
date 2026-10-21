@@ -1,6 +1,6 @@
 import {DEFAULT_LEVELS,indexNodes,ancestors,pathOf,normalize} from './reconcile.mjs';
 import {DISC_PARENTS,validateMove} from './move-validation.mjs';
-import {CSCOM_GROUP,ASC_GROUP} from './scope.mjs';
+import {DISTRICT_GROUP,CSCOM_GROUP,ASC_GROUP} from './scope.mjs';
 
 export const OPERATIONS={create:'Créer l’unité',rename:'Mettre à jour le nom',move:'Déplacer l’unité'};
 export function otherSource(source){if(!['dhis','disc'].includes(source))throw Error('Référence invalide.');return source==='dhis'?'disc':'dhis';}
@@ -34,7 +34,7 @@ export function planSync(snapshot,mappings,levels=DEFAULT_LEVELS,input){
   const targetId=mappedId(mappings,source,origin.id),unit=snapshot[target].find(n=>n.id===targetId);
   const type=targetType(origin,source,levels);
   if(!type||type==='c50_supervision_area')throw Error('Configurer un niveau comparable pour cette structure.');
-  if(source==='dhis'&&((origin.level===5&&!origin.groups?.includes(CSCOM_GROUP))||(origin.level===6&&!origin.groups?.includes(ASC_GROUP))))throw Error('Cette UO n’appartient pas au groupe CSCOM ou Sites ASC attendu.');
+  if(source==='dhis'&&((origin.level===3&&!origin.groups?.includes(DISTRICT_GROUP))||(origin.level===5&&!origin.groups?.includes(CSCOM_GROUP))||(origin.level===6&&!origin.groups?.includes(ASC_GROUP))))throw Error('Cette UO n’appartient pas au groupe District sanitaire, CSCOM ou Sites ASC attendu.');
   if(input.operation==='create'&&targetId)throw Error('Une correspondance existe déjà.');
   if(input.operation!=='create'&&!unit)throw Error('Valider la correspondance avant de modifier une unité existante.');
   if(unit&&(target==='disc'?unit.type!==type:unit.level!==levels[origin.type]))throw Error('Les niveaux de la correspondance sont incompatibles.');

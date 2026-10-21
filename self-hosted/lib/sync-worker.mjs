@@ -32,7 +32,7 @@ export async function processSyncJob(){
       await c.query("UPDATE sync_requests SET status='succeeded',target_id=$2,result=$3,error=NULL,updated_at=now() WHERE id=$1",[row.id,result.targetId,JSON.stringify(result)]);
       await audit(c,'worker','sync-succeeded',{id:row.id,...result});
     });
-    try{const [disc,dhis]=await Promise.all([fetchDISC(process.env),fetchDHIS(process.env)]);await saveSnapshot(disc,dhis.nodes,dhis.levels,'worker');}
+    try{const [disc,dhis]=await Promise.all([fetchDISC(process.env),fetchDHIS(process.env)]);await saveSnapshot(disc,dhis.nodes,dhis.levels,'worker',dhis.groupsRead);}
     catch{await audit({query},'worker','refresh-required',{id:row.id});}
   }catch(e){
     const status=wrote?'uncertain':'failed';

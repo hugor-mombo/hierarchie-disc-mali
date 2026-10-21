@@ -73,3 +73,11 @@ Aucune écriture de recette n’a été effectuée sur DISC-Mali ou DHIS2 en pro
 - Recette PostgreSQL/API isolée : authentification et rôles, plan préparé exigé, confirmations et nom exact exigés, annulation, exclusion des autres opérations, révocation du droit avant écriture, récupération d'une interruption sans relance.
 - Recette navigateur sur données fictives : accès depuis une unité DISC, liste des documents et personnes anonymisées, bouton désactivé sans confirmation des données puis activé après nom exact et double confirmation. Aucune suppression déclenchée dans le navigateur.
 - Lecture de l'API CHT `/api/v2/users?facility_id=...` vérifiée depuis le serveur avec le compte technique existant. Les tests de suppression utilisent uniquement des plateformes fictives ; aucune suppression réelle n'est effectuée pendant ce développement.
+
+## Districts sanitaires et fichier ASC d’interopérabilité
+
+- Groupe DHIS2 `EQgJEq5Ga2K` vérifié en lecture avec le compte technique : nom « District sanitaire », 166 membres.
+- Niveau 3 limité à ce groupe dans la vue DISC ; arborescence complète conservée. Le relevé enregistre les trois groupes chargés et signale les anciens relevés à actualiser.
+- Tests : membres/hors groupe au niveau 3, collecte complète des groupes API 29, création simulée d'un district avec affectation au groupe, CSV ASC à trois colonnes, absence de propositions dans l'export, exclusion des liens cassés/types incompatibles/hors groupe et actualisation du fichier après rapprochement.
+- Export ASC dédié : `chw_site_id,dhis2_org_unit,active`, aperçu des correspondances et des liens exclus dans Exports, téléchargement disponible aussi dans Mappings validés. Aucun envoi automatique à un service externe.
+- Recette PostgreSQL/API isolée réussie : export authentifié et sans cache, en-tête CSV exact à trois colonnes, mise à jour après rapprochement, exclusion d'un lien cassé et refus d'un relevé sans groupes.

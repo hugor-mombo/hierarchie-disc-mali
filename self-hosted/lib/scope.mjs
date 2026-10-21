@@ -1,7 +1,9 @@
+export const DISTRICT_GROUP='EQgJEq5Ga2K';
 export const CSCOM_GROUP='a8PnG1kmKY9';
 export const ASC_GROUP='JBThfLOBPmn';
 export function relevantDhis(node){
-  if([1,2,3].includes(node.level))return true;
+  if([1,2].includes(node.level))return true;
+  if(node.level===3)return node.groups?.includes(DISTRICT_GROUP)===true;
   return node.level===5?node.groups?.includes(CSCOM_GROUP)===true:node.level===6&&node.groups?.includes(ASC_GROUP)===true;
 }
 export function siteStatus(node,today=new Date().toISOString().slice(0,10)){

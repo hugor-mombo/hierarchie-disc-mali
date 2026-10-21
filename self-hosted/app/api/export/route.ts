@@ -1,6 +1,8 @@
+import {siteMappingCSV} from '../../../lib/site-mappings.mjs';
 import {readState} from '../../../lib/state.mjs';import {requireUser,apiError} from '../../../lib/auth.mjs';import {compare,STATUS,pathOf,indexNodes} from '../../../lib/reconcile.mjs';import {csv,graphML} from '../../../lib/exports.mjs';
 export async function GET(r:Request){try{await requireUser(r);const s=await readState();if(!s.snapshot)throw Error('Charger les relevés avant l’export.');const type=new URL(r.url).searchParams.get('type');let data,name,mime;
-if(type==='mappings'){const di=indexNodes(s.snapshot.disc),hi=indexNodes(s.snapshot.dhis);data=csv([['discId','dhisId','type','nom_disc','chemin_disc','nom_dhis','chemin_dhis','active'],...s.mappings.map((m:any)=>{const d:any=di.get(m.discId),h:any=hi.get(m.dhisId);return [m.discId,m.dhisId,d?.type,d?.name,d?pathOf(d,di):'',h?.name,h?pathOf(h,hi):'',true];})]);name='cartographie-mappings.csv';mime='text/csv;charset=utf-8';}
+if(type==='asc-mappings'){data=siteMappingCSV(s.snapshot,s.mappings);name='OrgUnits Mapping - Sites ASC.csv';mime='text/csv;charset=utf-8';}
+else if(type==='mappings'){const di=indexNodes(s.snapshot.disc),hi=indexNodes(s.snapshot.dhis);data=csv([['discId','dhisId','type','nom_disc','chemin_disc','nom_dhis','chemin_dhis','active'],...s.mappings.map((m:any)=>{const d:any=di.get(m.discId),h:any=hi.get(m.dhisId);return [m.discId,m.dhisId,d?.type,d?.name,d?pathOf(d,di):'',h?.name,h?pathOf(h,hi):'',true];})]);name='cartographie-mappings.csv';mime='text/csv;charset=utf-8';}
 else if(type==='graph'){data=graphML(s.snapshot,s.mappings);name='cartographie-hierarchies.graphml';mime='application/graphml+xml';}
 else if(type==='hierarchies'){data=JSON.stringify({exportedAt:new Date().toISOString(),snapshot:s.snapshot,mappings:s.mappings,levels:s.levels},null,2);name='hierarchies.json';mime='application/json';}
 else if(type==='moves'){data=JSON.stringify(s.moves,null,2);name='deplacements.json';mime='application/json';}

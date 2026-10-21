@@ -14,7 +14,7 @@ export async function processDeletionJob(){
   }else{
    const result=await executeDeletion(row,process.env,maps,()=>{wrote=true;},authorize);
    await transaction(async c=>{await c.query("UPDATE deletion_requests SET status='succeeded',result=$2,error=NULL,updated_at=now() WHERE id=$1",[row.id,JSON.stringify(result)]);await audit(c,'worker','deletion-succeeded',{id:row.id,...result});});
-   try{const [disc,dhis]=await Promise.all([fetchDISC(process.env),fetchDHIS(process.env)]);await saveSnapshot(disc,dhis.nodes,dhis.levels,'worker');}catch{await audit({query},'worker','refresh-required',{id:row.id});}
+   try{const [disc,dhis]=await Promise.all([fetchDISC(process.env),fetchDHIS(process.env)]);await saveSnapshot(disc,dhis.nodes,dhis.levels,'worker',dhis.groupsRead);}catch{await audit({query},'worker','refresh-required',{id:row.id});}
   }
  }catch(e){const status=wrote?'uncertain':'failed';await transaction(async c=>{await c.query('UPDATE deletion_requests SET status=$2,error=$3,updated_at=now() WHERE id=$1',[row.id,status,String(e.message).slice(0,300)]);await audit(c,'worker','deletion-'+status,{id:row.id,error:String(e.message).slice(0,300)});});console.error('Suppression '+row.id+' arrêtée ; consulter son statut.');}
  return true;

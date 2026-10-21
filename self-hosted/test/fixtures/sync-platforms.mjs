@@ -33,8 +33,8 @@ export async function fixture(work){
     const dhisNode=n=>({...n,parent:n.parent?{id:n.parent}:undefined});
     if(u.pathname.endsWith('organisationUnits.json'))return json({pager:{pageCount:1},organisationUnits:s.snapshot.dhis.map(dhisNode)});
     if(u.pathname.endsWith('/organisationUnits')&&method==='POST'){
-      const b=JSON.parse(options.body);assert.match(b.id,/^[a-zA-Z][a-zA-Z0-9]{10}$/);assert.equal(b.parent.id,'h4');
-      s.snapshot.dhis.push({...b,level:6,parent:b.parent.id,groups:[],closedDate:null});writes.push('dhis-create');if(failAfterWrite)return json({error:'disconnected'},503);return json({status:'OK'});
+      const b=JSON.parse(options.body);assert.match(b.id,/^[a-zA-Z][a-zA-Z0-9]{10}$/);assert.ok(['h4','h1'].includes(b.parent.id));
+      s.snapshot.dhis.push({...b,level:b.parent.id==='h1'?3:6,parent:b.parent.id,groups:[],closedDate:null});writes.push('dhis-create');if(failAfterWrite)return json({error:'disconnected'},503);return json({status:'OK'});
     }
     const id=u.pathname.split('/').at(-1).replace(/\.json$/,''),n=s.snapshot.dhis.find(n=>n.id===id);
     if(!n)return json({},404);
