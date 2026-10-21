@@ -81,3 +81,11 @@ Aucune écriture de recette n’a été effectuée sur DISC-Mali ou DHIS2 en pro
 - Tests : membres/hors groupe au niveau 3, collecte complète des groupes API 29, création simulée d'un district avec affectation au groupe, CSV ASC à trois colonnes, absence de propositions dans l'export, exclusion des liens cassés/types incompatibles/hors groupe et actualisation du fichier après rapprochement.
 - Export ASC dédié : `chw_site_id,dhis2_org_unit,active`, aperçu des correspondances et des liens exclus dans Exports, téléchargement disponible aussi dans Mappings validés. Aucun envoi automatique à un service externe.
 - Recette PostgreSQL/API isolée réussie : export authentifié et sans cache, en-tête CSV exact à trois colonnes, mise à jour après rapprochement, exclusion d'un lien cassé et refus d'un relevé sans groupes.
+
+## Arborescences CSV et sites ASC ouverts
+
+- CSV ASC enrichi : noms et identifiants des régions, districts, CSCOM, zone de supervision DISC et aire de santé DHIS2 ; chemins complets séparés ; statut et fermeture future. Les trois colonnes d’identification restent en tête et l’import du CSV enrichi conserve les mappings.
+- Les sites fermés à la date du jour et les statuts inconnus/invalides sont exclus du mappage d’interopérabilité, sans retirer leurs liens du registre.
+- Compteurs affichés en haut du comparateur et de l’export sur toute la population des ASC DHIS2 : ouverts, fermés, inconnus et fermetures futures, avec date de lecture du relevé.
+- Tests de régression : fermeture passée, le jour même et future, date impossible, données absentes, population hors groupe/niveau exclue des compteurs, colonnes d’arborescence par niveau réel et CSV enrichi compatible avec l’import de correspondances.
+- Recette API isolée réussie : CSV enrichi authentifié, colonnes d’arborescence présentes et site fermé retiré du téléchargement tout en conservant son mapping dans le registre.

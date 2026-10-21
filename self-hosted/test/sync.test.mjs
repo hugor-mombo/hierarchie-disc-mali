@@ -20,7 +20,7 @@ test('périmètre CSCOM et Sites ASC sans maternités ni niveau 4, relevé compl
 test('fermeture passée, future et statut absent ne sont pas confondus',()=>{
   assert.match(siteStatus({level:6,closedDate:'2026-10-20T00:00:00'},'2026-10-21'),/^Fermé/);
   assert.match(siteStatus({level:6,closedDate:'2026-10-22'},'2026-10-21'),/^Fermeture prévue/);
-  assert.equal(siteStatus({level:6,closedDate:null}),'Ouvert');assert.equal(siteStatus({level:6}),'Statut non relevé');
+  assert.equal(siteStatus({level:6,closedDate:null}),'Ouvert');assert.match(siteStatus({level:6}),/Statut non relevé/);
 });
 test('DHIS collecte les groupes API29 et conserve toutes les UO avec les dates',async()=>{
   const urls=[];
