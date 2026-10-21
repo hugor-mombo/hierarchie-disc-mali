@@ -17,3 +17,5 @@ test('erreur distante conservée et aucun endpoint écriture sollicité',async()
 test('export puis import conserve tous les niveaux et les identifiants',()=>{const s=demoState();assert.deepEqual(parseMappings(mappingCSV(s.mappings,s.snapshot)),s.mappings.map(({discId,dhisId})=>({discId,dhisId})));});
 test('import ignore les inactifs et refuse les doublons',()=>{assert.deepEqual(parseMappings('chw_site_id,dhis2_org_unit,active\na,h,true\nb,j,false'),[{discId:'a',dhisId:'h'}]);assert.throws(()=>parseMappings('[{"discId":"a","dhisId":"h"},{"discId":"b","dhisId":"h"}]'),/dupliquées/);});
 test('arbre ordonne les enfants sous leur parent et tolère les cycles',()=>{assert.deepEqual(treeOrder([{id:'b',name:'B',parent:'a'},{id:'a',name:'A',parent:null},{id:'c',name:'C',parent:'c'}]).map(n=>n.id),['a','b','c']);});
+
+test('redirections ne suivent jamais les identifiants vers une autre origine',async()=>{await assert.rejects(()=>fetchDISC({DISC_USER:'test',DISC_PASSWORD:'test'},async(_url,options)=>{assert.equal(options.redirect,'manual');return{ok:false,status:302};}),/HTTP 302/);});
