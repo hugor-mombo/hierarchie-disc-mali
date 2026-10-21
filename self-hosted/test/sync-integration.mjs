@@ -11,9 +11,9 @@ const {fixture}=await import('./fixtures/sync-platforms.mjs');
 const base=process.env.QA_APP_URL||'http://web:3000',origin=process.env.APP_URL||base,password='QA-'+randomUUID(),hash=await hashPassword(password),users={};
 const work=await mkdtemp(path.join(tmpdir(),'sync-worker-qa-'));process.env.WORK_DIRECTORY=work;
 const realFetch=globalThis.fetch;
-async function api(body,cookie){const r=await realFetch(base+'/api/sync',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin,...(cookie?{cookie}:{})},body:JSON.stringify(body)});return{status:r.status,data:await r.json()};}
+async function api(body,cookie,endpoint='/api/sync'){const r=await realFetch(base+endpoint,{method:'POST',headers:{'Content-Type':'application/json',Origin:origin,...(cookie?{cookie}:{})},body:JSON.stringify(body)});return{status:r.status,data:await r.json()};}
 async function seed(){
-  await query('DELETE FROM sync_requests');await query('DELETE FROM unit_mappings');
+  await query('DELETE FROM mapping_auto_exclusions');await query('DELETE FROM sync_requests');await query('DELETE FROM unit_mappings');
   const f=await fixture(work);
   await query("INSERT INTO app_records(key,value) VALUES('snapshot',$1),('levels',$2) ON CONFLICT(key) DO UPDATE SET value=excluded.value",[JSON.stringify(f.s.snapshot),JSON.stringify(f.s.levels)]);
   for(const m of f.s.mappings)await query('INSERT INTO unit_mappings(disc_id,dhis_id,actor) VALUES($1,$2,$3)',[m.discId,m.dhisId,'qa']);
@@ -31,6 +31,11 @@ try{
   assert.equal((await api({...input,action:'add'},users.viewer.cookie)).status,403);
   let r=await api({...input,action:'add'},users.editor.cookie);assert.equal(r.status,200,JSON.stringify(r.data));
   let row=r.data.syncRequests[0];assert.equal(row.status,'draft');assert.equal(r.data.truthSource,'dhis');
+  assert.ok(r.data.mappings.some(m=>m.discId==='d8'&&m.dhisId==='h8'&&m.method==='automatic'));
+  let manual=await api({action:'remove',discId:'d8'},users.editor.cookie,'/api/actions');assert.equal(manual.status,200);assert.ok(!manual.data.mappings.some(m=>m.discId==='d8'));
+  manual=await api({action:'approve',discId:'d8',dhisId:'h8'},users.editor.cookie,'/api/actions');assert.equal(manual.status,200);assert.equal(manual.data.mappings.find(m=>m.discId==='d8').method,'manual');
+  console.log('OK : rapprochement automatique persistant, refus respecté et validation manuelle prioritaire.');
+
   assert.equal((await api({...input,action:'add'},users.editor.cookie)).status,400);
   assert.equal((await api({action:'execute',ids:[row.id],confirmed:true,backupConfirmed:true,maintenanceConfirmed:true},users.editor.cookie)).status,403);
   assert.equal((await api({action:'execute',ids:[row.id]},users.admin.cookie)).status,400);

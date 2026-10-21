@@ -47,11 +47,21 @@ Les droits sont contrôlés dans les API, indépendamment de l’interface. Les 
 
 ## Relevés et cartographies
 
-Cliquer sur **Actualiser les relevés**, puis vérifier **Niveaux de correspondance**. Les noms sont normalisés pour rechercher des candidats ; les identifiants validés restent la référence. Les niveaux DISC et DHIS2 ne sont pas supposés identiques. Les types de structure DISC sont `c10_central` à `c60_chw_site` ; les personnes et rapports ne sont pas collectés dans les relevés de comparaison.
+Cliquer sur **Actualiser les relevés**, puis vérifier **Niveaux de correspondance**. Les noms sont normalisés pour reconnaître automatiquement les correspondances certaines et rechercher des candidats pour les autres ; les identifiants enregistrés restent la référence. Les niveaux DISC et DHIS2 ne sont pas supposés identiques. Les types de structure DISC sont `c10_central` à `c60_chw_site` ; les personnes et rapports ne sont pas collectés dans les relevés de comparaison.
 
 L’écran **Exports** fournit les mappings CSV avec les branches, les écarts/non-rapprochés CSV, les arborescences JSON et un graphe GraphML avec les relations parents/enfants et les liens entre plateformes. GraphML peut être ouvert dans Gephi ou yEd. C’est une cartographie organisationnelle, sans coordonnées géographiques. Le CSV neutralise les formules provenant de libellés externes. Les exports du comparateur permettent aussi de télécharger le périmètre filtré.
 
 Les corrections de noms peuvent rester des plans exportables ou être appliquées par la liste de synchronisation. Cette liste permet aussi les créations de structures et les déplacements, avec une cible explicite et une confirmation.
+
+## Rapprochement automatique
+
+Les correspondances certaines sont enregistrées automatiquement dans le registre, dès la lecture des relevés existants et après chaque actualisation. Le moteur avance de haut en bas : nom équivalent après normalisation, niveau configuré, parent comparable déjà rapproché et correspondance **unique dans les deux sens**. Les niveaux intermédiaires DHIS2 et les zones de supervision DISC non comparés sont traversés. Un identifiant DHIS2 déjà présent sur un document DISC peut aussi établir une correspondance si le niveau et la branche concordent.
+
+Les variantes de casse, accents, apostrophes et préfixes usuels n'imposent pas de validation manuelle. Les homonymes dans une même branche, parents non reconnus, différences de niveau, similitudes approximatives et unités absentes restent à examiner. La vue par défaut conserve les filtres des groupes CSCOM et Sites ASC.
+
+Les correspondances automatiques sont utilisées par les exports et la synchronisation comme les correspondances manuelles. Leur origine est affichée dans le détail et le nombre de correspondances automatiques est visible dans le comparateur. Les identifiants enregistrés restent stables : une évolution ultérieure du nom ou du parent apparaît comme un écart, sans réaffectation silencieuse.
+
+Une correspondance peut être refusée dans son détail. Ce refus empêche son rétablissement automatique ; une validation manuelle explicite peut ensuite lever l'exclusion. Les décisions manuelles sont prioritaires. Le rapprochement automatique n'écrit aucune donnée dans DISC ou DHIS2 : les modifications des plateformes restent soumises à la file et à la confirmation d'exécution.
 
 ## Référence et synchronisation bidirectionnelle
 

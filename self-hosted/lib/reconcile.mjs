@@ -10,27 +10,29 @@ export function normalize(value){
     .replace(/\b(district\s+sanitaire|aire\s+de\s+sante|zone\s+de\s+supervision|site\s+asc|districts?|region|cscom|csref)\b/g,' ')
     .replace(/\b(de|du|des|la|le)\b/g,' ').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
 }
+export function matchingName(value){return normalize(String(value||'').replace(/[’'`]/g,''));}
 export function indexNodes(nodes){return new Map(nodes.map(n=>[n.id,n]));}
 export function ancestors(node,index){const a=[];const seen=new Set([node.id]);let p=node.parent;while(p&&index.has(p)&&!seen.has(p)){seen.add(p);const n=index.get(p);a.push(n);p=n.parent;}return a;}
 export function pathOf(node,index){return [...ancestors(node,index)].reverse().concat(node).map(n=>n.name).join(' / ');}
 function dice(a,b){a=normalize(a).replaceAll(' ','');b=normalize(b).replaceAll(' ','');if(a===b)return a?1:0;if(a.length<2||b.length<2)return 0;const p=new Map();for(let i=0;i<a.length-1;i++){const k=a.slice(i,i+2);p.set(k,(p.get(k)||0)+1);}let overlap=0;for(let i=0;i<b.length-1;i++){const k=b.slice(i,i+2);if(p.get(k)>0){overlap++;p.set(k,p.get(k)-1);}}return 2*overlap/(a.length+b.length-2);}
 export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()=>true){
   const disc=snapshot.disc||[],dhis=snapshot.dhis||[],di=indexNodes(disc),hi=indexNodes(dhis);
-  const confirmed=new Map(mappings.map(m=>[m.discId,m.dhisId]));const used=new Set(mappings.map(m=>m.dhisId));
+  const provenance=new Map(mappings.map(m=>[m.discId,m]));const confirmed=new Map(mappings.map(m=>[m.discId,m.dhisId]));const used=new Set(mappings.map(m=>m.dhisId));
   const byLevel=new Map(),byName=new Map(),byDistrict=new Map();
   for(const h of dhis.filter(dhisFilter)){if(!byLevel.has(h.level))byLevel.set(h.level,[]);byLevel.get(h.level).push(h);const key=h.level+'|'+normalize(h.name);if(!byName.has(key))byName.set(key,[]);byName.get(key).push(h);const district=ancestors(h,hi).find(p=>p.level===3);const dk=h.level+'|'+normalize(district?.name||'');if(!byDistrict.has(dk))byDistrict.set(dk,[]);byDistrict.get(dk).push(h);}
   const rows=[];
   for(const d of disc){
     const da=ancestors(d,di),region=da.find(p=>p.type==='c20_region')|| (d.type==='c20_region'?d:null),district=da.find(p=>p.type==='c30_district')||(d.type==='c30_district'?d:null);
     const level=levels[d.type]; const target=confirmed.get(d.id),h=target?hi.get(target):null;
-    const base={id:d.id,disc:d,dhis:h||null,region:region?.name||'',regionId:region?.id||'',district:district?.name||'',districtId:district?.id||'',discPath:pathOf(d,di),dhisPath:h?pathOf(h,hi):'',candidates:[],reason:''};
+    const base={id:d.id,mappingMethod:provenance.get(d.id)?.method||'manual',matchBasis:provenance.get(d.id)?.matchBasis||null,disc:d,dhis:h||null,region:region?.name||'',regionId:region?.id||'',district:district?.name||'',districtId:district?.id||'',discPath:pathOf(d,di),dhisPath:h?pathOf(h,hi):'',candidates:[],reason:''};
     if(target&&!h){rows.push({...base,status:'broken',reason:'L’identifiant DHIS2 validé est absent du dernier relevé.'});continue;}
     if(h){
-      let status='aligned',reason='Mapping validé et noms identiques.';
+      let status='aligned',reason=provenance.get(d.id)?.method==='automatic'?'Correspondance automatique unique : niveau et branche vérifiés.':'Correspondance validée.';
       const nearest=da.find(p=>confirmed.has(p.id));
       if(level!=null&&h.level!==Number(level)){status='level';reason='Le niveau DHIS2 ne correspond pas au niveau configuré.';}
       else if(nearest&&!ancestors(h,hi).some(p=>p.id===confirmed.get(nearest.id))){status='parent';reason='L’ancêtre DISC rapproché ne figure pas dans la branche DHIS2.';}
-      else if(d.name.trim()!==h.name.trim()){status='name';reason=normalize(d.name)===normalize(h.name)?'Les noms concordent après normalisation.':'Les libellés des deux unités sont différents.';}
+      else if(matchingName(d.name)!==matchingName(h.name)){status='name';reason='Les libellés des deux unités sont différents.';}
+      else if(d.name.trim()!==h.name.trim())reason+=' Libellés équivalents après normalisation de la casse, des accents et des préfixes.';
       if(!nearest&&da.length)reason+=' Parents non encore validés : contrôle de branche incomplet.';
       rows.push({...base,status,reason});continue;
     }

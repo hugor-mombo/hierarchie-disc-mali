@@ -1,5 +1,12 @@
 # Vérifications effectuées — 21 octobre 2026
 
+## Rapprochement automatique des correspondances certaines
+
+- Tests : progression de haut en bas, noms équivalents, niveaux intermédiaires, homonymes dans des branches différentes, doublons dans une même branche, parents absents ou cycliques, identifiant embarqué, priorités manuelles et exclusions.
+- Recette PostgreSQL/API/worker : correspondance automatique persistante, refus non recréé, validation manuelle explicite prioritaire ; file de synchronisation et détection des écritures ambiguës toujours vérifiées.
+- Construction Docker, TypeScript, migration `003_automatic_mappings.sql` et démarrage local réussis.
+- Application aux relevés existants du registre : 5 297 correspondances automatiques enregistrées ; seconde lecture sans ajout ni doublon. Aucune écriture sur les plateformes sources.
+
 ## Parcours des unités déjà présentes et boutons de création
 
 - Détection de doublon limitée au même type structurel et même parent, ou à un identifiant DHIS2 embarqué ; message avec nom et identifiant.

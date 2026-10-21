@@ -1,7 +1,7 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
 import {compare,normalize,changesSince,mappingCSV,ancestors,indexNodes,parseMappings,treeOrder} from '../lib/reconcile.mjs';import {demoState} from '../lib/demo.mjs';import {fetchDISC,fetchDHIS} from '../lib/sources.mjs';
 test('normalisation des accents et préfixes sans altérer les nombres',()=>{assert.equal(normalize('Site ASC de N’Golobougou'),'n golobougou');assert.equal(normalize('CSCOM de Sébénikoro'),'sebenikoro');assert.notEqual(normalize('Site 1'),normalize('Site 2'));});
-test('mapping conservé après renommage',()=>{const s=demoState();const row=compare(s.snapshot,s.mappings,s.levels).find(r=>r.disc?.id==='d5');assert.equal(row.status,'name');assert.equal(row.dhis.id,'h5');});
+test('mapping conservé après renommage',()=>{const s=demoState();s.snapshot.dhis.find(n=>n.id==='h5').name='Autre nom réel';const row=compare(s.snapshot,s.mappings,s.levels).find(r=>r.disc?.id==='d5');assert.equal(row.status,'name');assert.equal(row.dhis.id,'h5');});
 test('détecter le mauvais ancêtre malgré le même nom',()=>{const s=demoState();const row=compare(s.snapshot,s.mappings,s.levels).find(r=>r.disc?.id==='d7');assert.equal(row.status,'parent');});
 test('traverser une zone DISC et un niveau DHIS supplémentaires',()=>{const s=demoState();const row=compare(s.snapshot,s.mappings,s.levels).find(r=>r.disc?.id==='d6');assert.equal(row.status,'aligned');});
 test('homonymes jamais validés automatiquement',()=>{const s=demoState();const row=compare(s.snapshot,s.mappings,s.levels).find(r=>r.disc?.id==='d9');assert.equal(row.status,'ambiguous');assert.equal(row.dhis,null);assert.equal(row.candidates.length,2);});
