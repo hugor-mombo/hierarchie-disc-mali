@@ -15,7 +15,7 @@ export function indexNodes(nodes){return new Map(nodes.map(n=>[n.id,n]));}
 export function ancestors(node,index){const a=[];const seen=new Set([node.id]);let p=node.parent;while(p&&index.has(p)&&!seen.has(p)){seen.add(p);const n=index.get(p);a.push(n);p=n.parent;}return a;}
 export function pathOf(node,index){return [...ancestors(node,index)].reverse().concat(node).map(n=>n.name).join(' / ');}
 function dice(a,b){a=normalize(a).replaceAll(' ','');b=normalize(b).replaceAll(' ','');if(a===b)return a?1:0;if(a.length<2||b.length<2)return 0;const p=new Map();for(let i=0;i<a.length-1;i++){const k=a.slice(i,i+2);p.set(k,(p.get(k)||0)+1);}let overlap=0;for(let i=0;i<b.length-1;i++){const k=b.slice(i,i+2);if(p.get(k)>0){overlap++;p.set(k,p.get(k)-1);}}return 2*overlap/(a.length+b.length-2);}
-export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()=>true){
+function compareRows(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()=>true){
   const disc=snapshot.disc||[],dhis=snapshot.dhis||[],di=indexNodes(disc),hi=indexNodes(dhis);
   const provenance=new Map(mappings.map(m=>[m.discId,m]));const confirmed=new Map(mappings.map(m=>[m.discId,m.dhisId]));const used=new Set(mappings.map(m=>m.dhisId));
   const byLevel=new Map(),byName=new Map(),byDistrict=new Map();
@@ -53,6 +53,36 @@ export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()
   for(const m of mappings){if(!di.has(m.discId))rows.push({id:'broken:'+m.discId,disc:null,dhis:hi.get(m.dhisId)||null,status:'broken',region:'',regionId:'',district:'',districtId:'',discPath:m.discId,dhisPath:m.dhisId,candidates:[],reason:'L’unité DISC validée est absente du dernier relevé.'});}
   return rows;
 }
+// Presence is an assessment of the loaded snapshot, never proof of absence.
+export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()=>true){
+  const rows=compareRows(snapshot,mappings,levels,dhisFilter),di=indexNodes(snapshot.disc||[]),hi=indexNodes(snapshot.dhis||[]);
+  const dm=new Map(mappings.map(m=>[m.discId,m.dhisId])),hm=new Map(mappings.map(m=>[m.dhisId,m.discId]));
+  const discOptions=new Map(),dhisNames=new Set((snapshot.dhis||[]).map(h=>h.level+'|'+matchingName(h.name)));
+  const addOption=(id,r)=>{if(!discOptions.has(id))discOptions.set(id,new Map());discOptions.get(id).set(r.disc.id,r);};
+  const dhisByName=new Map();for(const h of snapshot.dhis||[]){const key=h.level+'|'+matchingName(h.name);if(!dhisByName.has(key))dhisByName.set(key,[]);dhisByName.get(key).push(h);}
+  for(const r of rows.filter(r=>r.disc)){for(const c of r.candidates)addOption(c.id,r);for(const h of dhisByName.get(Number(levels[r.disc.type])+'|'+matchingName(r.disc.name))||[])addOption(h.id,r);}
+
+  for(const row of rows){
+    if(row.disc&&row.dhis){row.presence='linked';continue;}
+    if(row.status==='broken'||row.status==='skipped'){row.presence='unverified';continue;}
+    if(row.disc){
+      const parent=ancestors(row.disc,di).find(n=>levels[n.type]!=null);
+      const hasCandidate=row.candidates.length||dhisNames.has(Number(levels[row.disc.type])+'|'+matchingName(row.disc.name));
+      row.presence=hasCandidate?'review':(!row.disc.parent||parent&&dm.has(parent.id))?'probable':'unverified';
+      row.presenceReason=hasCandidate?'Des unités DHIS2 candidates existent : vérifier la correspondance avant de créer.':row.presence==='probable'?'Aucun candidat trouvé dans le relevé DHIS2 au niveau configuré. Vérifier avant toute création.':'Le parent DISC doit être rapproché avant de conclure sur cette unité.';
+      continue;
+    }
+    if(row.dhis){
+      const h=row.dhis;
+      row.discCandidates=[...(discOptions.get(h.id)?.values()||[])].map(r=>({id:r.disc.id,name:r.disc.name,path:r.discPath,linked:dm.has(r.disc.id)}));
+      const parent=ancestors(h,hi).find(n=>Object.values(levels).some(l=>l!=null&&Number(l)===n.level));
+      row.presence=row.discCandidates.length?'review':(!h.parent||parent&&hm.has(parent.id))?'probable':'unverified';
+      row.presenceReason=row.discCandidates.length?'Un ou plusieurs contacts DISC peuvent correspondre. Vérifier leurs noms et leurs parents ; ne pas créer de doublon.':row.presence==='probable'?'Aucun candidat DISC trouvé au niveau correspondant dans le relevé chargé. Absence probable, à vérifier avant création.':'Le parent DHIS2 n’est pas encore rapproché : vérifier sa correspondance avant de conclure sur cette unité.';
+    }
+  }
+  return rows;
+}
+export function presenceLabel(row){return row.presence==='linked'?'Présente dans les deux plateformes':row.presence==='review'?'Correspondance à vérifier':row.presence==='probable'?(row.disc?'Absence probable dans DHIS2':'Absence probable dans DISC'):'Parent ou périmètre à vérifier';}
 export function changesSince(previous,current){
   if(!previous)return [];
   const changes=[];for(const source of ['disc','dhis']){const before=indexNodes(previous[source]||[]),after=indexNodes(current[source]||[]);for(const [id,n]of after){const old=before.get(id);if(!old)changes.push({source,id,name:n.name,kind:'Ajout'});else if(old.name!==n.name||old.parent!==n.parent)changes.push({source,id,name:n.name,kind:old.parent!==n.parent?'Déplacement':'Renommage',before:{name:old.name,parent:old.parent},after:{name:n.name,parent:n.parent}});}for(const [id,n]of before)if(!after.has(id))changes.push({source,id,name:n.name,kind:'Absent du relevé'});}return changes;

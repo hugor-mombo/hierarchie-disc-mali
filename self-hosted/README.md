@@ -193,3 +193,23 @@ docker compose -f self-hosted/compose.qa.yaml down -v
 Aucun worker autonome n'est lancé dans cette stack : le script de recette appelle le traitement des actions avec des plateformes fictives. Elle n'utilise pas `self-hosted/.env` et ne doit recevoir aucun identifiant de production.
 
 Pour tester les images Docker localement sans certificat : configurer `.env`, puis lancer `docker compose -f compose.yaml -f compose.local.yaml up -d --build db migrate web worker`. Ouvrir `http://localhost:5300`. Cette variante n’expose le port web que sur la boucle locale et désactive le proxy TLS. Les accès en HTTP aux sources factices ne sont permis qu’avec `ALLOW_HTTP_SOURCES=true` ; garder `false` pour les plateformes réelles.
+
+## Lecture de la présence et mise à jour depuis Git
+
+Le filtre **Présence par rapport à la référence** est commun à la comparaison et aux arborescences. Choisir la référence, puis le niveau et la région :
+
+- **Présentes dans les deux plateformes** : fiches liées ; consulter ensuite les écarts de nom, niveau ou branche.
+- **Référence sans lien dans la cible** : liste de travail complète des unités non rapprochées de la référence.
+- **Correspondance à vérifier** : candidats existants ; examiner leurs parents avant de créer.
+- **Absence probable** : aucun candidat au niveau configuré, parent rapproché. Le relevé peut être ancien ou incomplet : vérifier avant création.
+- **Parent ou périmètre à vérifier** : les informations ne permettent pas de conclure.
+
+Aucune absence n'est certifiée automatiquement. Le détail d'une unité DHIS2 propose d'examiner les contacts DISC candidats, y compris ceux déjà liés à une autre unité. Rapprocher ne modifie aucune plateforme ; synchroniser demande une confirmation.
+
+Sur le serveur, les mises à jour utilisent le dépôt Git public, sans clé GitHub privée. Le dépôt de déploiement est conservé dans `.deploy-repository.git` ; une archive du sous-dossier `self-hosted` est extraite dans l'installation existante. `.env`, PostgreSQL et les sauvegardes sont conservés. Après commit et push sur `main` :
+
+```sh
+sh /opt/maintenance-disc-mali/deploy/update-from-git.sh /opt/maintenance-disc-mali main
+```
+
+Il est possible de remplacer `main` par le SHA attendu : le script refuse alors de déployer si la tête distante ne correspond pas. Les images sont construites avant le remplacement des services. La version est enregistrée dans `DEPLOYED_REVISION` uniquement après réussite des contrôles.

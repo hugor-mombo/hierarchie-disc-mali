@@ -57,3 +57,10 @@ Les nouvelles créations et mises à jour sont testées contre des connecteurs s
 - Interface navigateur : connexion, navigation des déplacements et gestion des comptes vérifiées dans l’image Docker avec des données fictives.
 
 Aucune écriture de recette n’a été effectuée sur DISC-Mali ou DHIS2 en production. Le mécanisme complet d'écriture a été testé avec des sources factices ; les lectures des plateformes réelles sont vérifiées sur le serveur, mais les écritures réelles n'ont pas été exécutées pendant le déploiement.
+
+## Filtres de présence et compréhension des résultats
+
+- Tests de régression : site identique bloqué par un parent non rapproché, absence probable dans les deux sens, parent non rapproché sans conclusion d'absence, candidat déjà lié, différence de nom entre deux fiches rapprochées.
+- Suite de tests et vérification TypeScript réussies.
+- Filtre de présence commun à la comparaison et aux arborescences ; candidats DISC accessibles depuis le détail DHIS2. Les créations restent soumises aux contrôles existants.
+- Mise à jour distante par récupération Git de `main`, archive du sous-dossier autonome et conservation de la configuration privée et des volumes.
