@@ -18,7 +18,13 @@ fi
 archive=$(mktemp)
 trap 'rm -f "$archive"' EXIT HUP INT TERM
 git --git-dir="$repo" archive "$commit:self-hosted" > "$archive"
-tar -xf "$archive" -C "$app"
+# Remplacer le script par renommage conserve le descripteur du script en cours.
+# Une extraction directe pourrait tronquer le fichier que le shell lit encore.
+tar --exclude=deploy/update-from-git.sh -xf "$archive" -C "$app"
+next_script=$(mktemp "$app/deploy/.update-from-git.XXXXXX")
+git --git-dir="$repo" show "$commit:self-hosted/deploy/update-from-git.sh" > "$next_script"
+chmod 644 "$next_script"
+mv "$next_script" "$app/deploy/update-from-git.sh"
 cd "$app"
 docker compose config --quiet
 docker compose build

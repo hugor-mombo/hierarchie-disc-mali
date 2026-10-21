@@ -8,3 +8,6 @@ backups
 *.tsbuildinfo
 test
 README.md
+
+.deploy-repository.git
+DEPLOYED_REVISION

@@ -5,3 +5,6 @@ node_modules/
 *.tsbuildinfo
 work/
 backups/
+
+.deploy-repository.git/
+DEPLOYED_REVISION

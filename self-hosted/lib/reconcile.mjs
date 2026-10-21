@@ -68,7 +68,7 @@ export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()
     if(row.disc){
       const parent=ancestors(row.disc,di).find(n=>levels[n.type]!=null);
       const hasCandidate=row.candidates.length||dhisNames.has(Number(levels[row.disc.type])+'|'+matchingName(row.disc.name));
-      row.presence=hasCandidate?'review':(!row.disc.parent||parent&&dm.has(parent.id))?'probable':'unverified';
+      row.presence=hasCandidate?'review':(!row.disc.parent||parent&&hi.has(dm.get(parent.id)))?'probable':'unverified';
       row.presenceReason=hasCandidate?'Des unités DHIS2 candidates existent : vérifier la correspondance avant de créer.':row.presence==='probable'?'Aucun candidat trouvé dans le relevé DHIS2 au niveau configuré. Vérifier avant toute création.':'Le parent DISC doit être rapproché avant de conclure sur cette unité.';
       continue;
     }
@@ -76,7 +76,7 @@ export function compare(snapshot,mappings=[],levels=DEFAULT_LEVELS,dhisFilter=()
       const h=row.dhis;
       row.discCandidates=[...(discOptions.get(h.id)?.values()||[])].map(r=>({id:r.disc.id,name:r.disc.name,path:r.discPath,linked:dm.has(r.disc.id)}));
       const parent=ancestors(h,hi).find(n=>Object.values(levels).some(l=>l!=null&&Number(l)===n.level));
-      row.presence=row.discCandidates.length?'review':(!h.parent||parent&&hm.has(parent.id))?'probable':'unverified';
+      row.presence=row.discCandidates.length?'review':(!h.parent||parent&&di.has(hm.get(parent.id)))?'probable':'unverified';
       row.presenceReason=row.discCandidates.length?'Un ou plusieurs contacts DISC peuvent correspondre. Vérifier leurs noms et leurs parents ; ne pas créer de doublon.':row.presence==='probable'?'Aucun candidat DISC trouvé au niveau correspondant dans le relevé chargé. Absence probable, à vérifier avant création.':'Le parent DHIS2 n’est pas encore rapproché : vérifier sa correspondance avant de conclure sur cette unité.';
     }
   }

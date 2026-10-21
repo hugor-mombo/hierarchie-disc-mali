@@ -18,3 +18,8 @@ test('un candidat déjà lié reste signalé, et rapproché ne signifie pas conc
  const rows=compare(s,[{discId:'d',dhisId:'h'},{discId:'a',dhisId:'b'},{discId:'s',dhisId:'t'}],levels);
  assert.equal(rows.find(r=>r.id==='a').presence,'linked');assert.equal(rows.find(r=>r.id==='a').status,'name');assert.equal(rows.find(r=>r.id==='dhis:duplicate').presence,'review');assert.equal(rows.find(r=>r.id==='dhis:duplicate').discCandidates[0].linked,true);
 });
+test('un mapping parent vers une fiche absente ne permet pas de conclure à une absence probable',()=>{
+ const s=fixture();s.disc=s.disc.filter(n=>n.id!=='s');
+ const rows=compare(s,[{discId:'d',dhisId:'h'},{discId:'deleted',dhisId:'b'}],levels);
+ assert.equal(rows.find(r=>r.id==='dhis:t').presence,'unverified');
+});
