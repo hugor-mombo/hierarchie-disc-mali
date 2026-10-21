@@ -1,9 +1,10 @@
 'use client';
 import {useState} from 'react';
-import {OPERATIONS,mappedId,targetType,parentCandidates,planSync} from '../lib/sync-plan.mjs';
+import {OPERATIONS,mappedId,targetType,parentCandidates,planSync,creationConflicts} from '../lib/sync-plan.mjs';
 import {relevantDhis,siteStatus} from '../lib/scope.mjs';
 import {pathOf,indexNodes} from '../lib/reconcile.mjs';
 import {can} from '../lib/permissions.mjs';
+import {discContactURL} from '../lib/platform-links.mjs';
 export default function SyncAction({state,user,row,onState}:any){
   const [source,setSource]=useState(state.truthSource||'dhis'),[originId,setOrigin]=useState(row?.[state.truthSource||'dhis']?.id||''),[operation,setOperation]=useState(row?.disc&&row?.dhis?(row.status==='parent'?'move':'rename'):'create');
   const [parentId,setParent]=useState(''),[search,setSearch]=useState(''),[parentSearch,setParentSearch]=useState(''),[full,setFull]=useState(false),[reason,setReason]=useState(''),[confirmed,setConfirmed]=useState(false),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false);
@@ -13,6 +14,10 @@ export default function SyncAction({state,user,row,onState}:any){
   const candidates=origin?parentCandidates(state.snapshot,state.mappings,source,origin,type,state.levels):[];
   const effectiveParent=parentId||(candidates.length===1?candidates[0].id:'');
   const input={originSource:source,originId,operation,parentId:effectiveParent};
+  const conflicts=operation==='create'&&!targetId?creationConflicts(state.snapshot,source,origin,type,effectiveParent,state.levels):[];
+  const linked=state.snapshot?.[target]?.find((n:any)=>n.id===targetId);
+  const link=target==='disc'?discContactURL(state.platformURLs?.disc,targetId):null;
+  const reasonMissing=reason.trim().length<10;
   let plan:any=null,error='';try{plan=planSync(state.snapshot,state.mappings,state.levels,input);}catch(e){error=e instanceof Error?e.message:'Sélection incomplète.';}
   const options=nodes.filter((n:any)=>full||source==='disc'||relevantDhis(n)).filter((n:any)=>(n.name+' '+n.id).toLowerCase().includes(search.toLowerCase()));
   const selectedOutside=origin&&!options.slice(0,150).some((n:any)=>n.id===origin.id);
@@ -20,7 +25,12 @@ export default function SyncAction({state,user,row,onState}:any){
     const r=await fetch('/api/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...input,action,reason,reviewPlan:plan,confirmed,backupConfirmed:confirmed,maintenanceConfirmed:confirmed})}),s=await r.json();
     if(!r.ok)throw Error(s.error);onState(s);setConfirmed(false);setNotice(action==='add'?'Action ajoutée à la liste de synchronisation.':'Action confirmée : exécution en arrière-plan.');
   }catch(e){setNotice(e instanceof Error?e.message:'Opération impossible.');}finally{setBusy(false);}}
-  return <section className="sync-action"><h3>Synchroniser une structure</h3><p>La référence fournit le nom et la branche. La modification s’applique à la plateforme cible.</p>
+  async function linkExisting(node:any){setBusy(true);setNotice('');try{
+    const discId=source==='dhis'?node.id:origin.id,dhisId=source==='dhis'?origin.id:node.id;
+    const r=await fetch('/api/actions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'approve',discId,dhisId})}),s=await r.json();
+    if(!r.ok)throw Error(s.error);onState(s);setOperation('rename');setConfirmed(false);setNotice('Correspondance validée. L’unité existe déjà : aucune nouvelle création sur la plateforme.');
+  }catch(e){setNotice(e instanceof Error?e.message:'Rapprochement impossible.');}finally{setBusy(false);}}
+  return <section className="sync-action"><h3>Synchroniser une structure</h3><p>1. Vérifier l’unité et le parent. 2. Renseigner une justification. 3. Ajouter à la liste. 4. Faire confirmer l’exécution par un administrateur, puis ouvrir le résultat.</p><p>La référence fournit le nom et la branche. La modification s’applique à la plateforme cible.</p>
     <label className="field">Référence pour cette action<select value={source} onChange={e=>{const s=e.target.value;setSource(s);setOrigin(row?.[s]?.id||'');setParent('');setConfirmed(false);}}><option value="dhis">DHIS2 → DISC-Mali</option><option value="disc">DISC-Mali → DHIS2</option></select></label>
     <label className="field">Rechercher l’unité de référence<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Nom ou identifiant"/></label>
     <label className="check-label"><input type="checkbox" checked={full} onChange={e=>setFull(e.target.checked)}/>Explorer toute l’arborescence</label>
@@ -28,10 +38,14 @@ export default function SyncAction({state,user,row,onState}:any){
     {origin&&source==='dhis'&&origin.level===6&&<p>{siteStatus(origin)}</p>}
     <label className="field">Opération<select value={operation} onChange={e=>{setOperation(e.target.value);setConfirmed(false);}}>{Object.entries(OPERATIONS).map(([id,label])=><option key={id} value={id} disabled={id==='create'?!!targetId:!targetId}>{label}</option>)}</select></label>
     {operation!=='rename'&&<><label className="field">Rechercher le parent cible<input value={parentSearch} onChange={e=>setParentSearch(e.target.value)}/></label><label className="field">Parent sur {target==='disc'?'DISC-Mali':'DHIS2'}<select value={effectiveParent} onChange={e=>{setParent(e.target.value);setConfirmed(false);}}><option value="">Choisir un parent compatible</option>{candidates.filter((n:any)=>n.id===effectiveParent||(n.name+' '+n.id).toLowerCase().includes(parentSearch.toLowerCase())).slice(0,150).map((n:any)=><option key={n.id} value={n.id}>{pathOf(n,indexNodes(state.snapshot[target]))} · {n.id}</option>)}</select></label><p>Les parents proposés appartiennent à la branche d’un ancêtre rapproché. Un site ASC DISC se rattache à une zone de supervision.</p></>}
+    {linked&&<div className="plan-summary"><p><b>Unité déjà rapprochée sur {target==='disc'?'DISC-Mali':'DHIS2'} : {linked.name}</b></p><code>{linked.id}</code>{link&&<a className="button" href={link} target="_blank" rel="noopener noreferrer">Ouvrir dans DISC-Mali ↗</a>}<p>Choisissez une mise à jour uniquement si un écart doit être corrigé.</p></div>}
+    {conflicts.length>0&&<div className="existing-units"><h4>Cette unité semble déjà présente sur {target==='disc'?'DISC-Mali':'DHIS2'}</h4><p>« Non rapproché » signifie qu’aucun mapping n’est validé. Cela ne signifie pas que le contact est absent.</p>{conflicts.map((n:any)=>{const assigned=state.mappings.find((m:any)=>target==='disc'?m.discId===n.id:m.dhisId===n.id),compatible=target==='disc'?n.type===type:n.level===state.levels[origin.type],url=target==='disc'?discContactURL(state.platformURLs?.disc,n.id):null;return <article className="plan-summary" key={n.id}><b>{n.name}</b><p>{pathOf(n,indexNodes(state.snapshot[target]))}</p><code>{n.id}</code>{url&&<a className="button" href={url} target="_blank" rel="noopener noreferrer">Ouvrir dans DISC-Mali ↗</a>}{!assigned&&compatible?<button className="button primary" disabled={busy} onClick={()=>linkExisting(n)}>Rapprocher cette unité existante</button>:<p>{assigned?'Cette unité a déjà un autre mapping : vérifiez les correspondances.':'Le type ne correspond pas : vérifiez les niveaux et les identifiants.'}</p>}</article>;})}</div>}
     {plan?<div className="plan-summary"><p><b>{OPERATIONS[operation as keyof typeof OPERATIONS]} sur {target==='disc'?'DISC-Mali':'DHIS2'}</b></p><p>Référence : {plan.originPath}</p><p>Avant : {plan.beforePath}</p><p>Après : {plan.afterPath}</p><p>{plan.impactCount} structures dans la branche{operation==='move'&&target==='disc'?' ; les contacts et rapports seront préparés par CHT':''}.</p></div>:origin&&<p className="notice">{error}</p>}
-    <label className="field">Justification<textarea minLength={10} maxLength={2000} value={reason} onChange={e=>setReason(e.target.value)}/></label>
+    <label className="field">Justification (10 caractères minimum)<textarea minLength={10} maxLength={2000} value={reason} onChange={e=>setReason(e.target.value)}/></label>
+    {plan&&reasonMissing&&<p className="notice">Pour activer « Ajouter à la liste », saisissez une justification d’au moins 10 caractères.</p>}
     <button className="button" disabled={busy||!plan||reason.trim().length<10} onClick={()=>send('add')}>Ajouter à la liste</button>
     {can(user.role,'execute')&&<><label className="check-label"><input type="checkbox" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/>Je confirme cette opération sur {target==='disc'?'DISC-Mali':'DHIS2'}, la sauvegarde vérifiée et la disponibilité de la plateforme pour l’appliquer.</label><button className="button primary" disabled={busy||!plan||!confirmed||!state.writesEnabled||reason.trim().length<10} onClick={()=>send('execute-now')}>Appliquer maintenant en arrière-plan</button></>}
+    {!can(user.role,'execute')&&<p className="notice">Votre rôle « {user.role} » permet de préparer l’action. Après l’ajout à la liste, un administrateur doit la sélectionner et confirmer son exécution dans Synchronisation.</p>}
     {!state.writesEnabled&&<p>Les écritures distantes sont désactivées sur le serveur. L’ajout à la liste reste disponible.</p>}
     {notice&&<p role="status" className="notice">{notice}</p>}
   </section>;

@@ -1,5 +1,12 @@
 # Vérifications effectuées — 21 octobre 2026
 
+## Parcours des unités déjà présentes et boutons de création
+
+- Détection de doublon limitée au même type structurel et même parent, ou à un identifiant DHIS2 embarqué ; message avec nom et identifiant.
+- Recette navigateur isolée avec un compte éditeur : district existant affiché, mapping validé sans création, résultat concordant et lien DISC disponible.
+- Unité absente : justification minimale explicitée, bouton activé après saisie, besoin de confirmation par un administrateur affiché.
+- Liens vers le contact DISC pour les unités rapprochées et les opérations réussies ; URLs sans identifiants et protocoles sûrs vérifiés.
+
 ## Synchronisation bidirectionnelle et périmètre DISC
 
 - Tests unitaires et connecteurs : groupes CSCOM/Sites ASC, conservation des autres UO, fermeture passée/future, référence DHIS2 par défaut, parents sous l'ancêtre rapproché, deux sens de synchronisation, doublons et relevés obsolètes.

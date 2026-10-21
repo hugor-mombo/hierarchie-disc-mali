@@ -4,7 +4,8 @@ import {demoState} from '../lib/demo.mjs';
 import {CSCOM_GROUP,ASC_GROUP,relevantDhis,siteStatus} from '../lib/scope.mjs';
 import {compare} from '../lib/reconcile.mjs';
 import {fetchDHIS} from '../lib/sources.mjs';
-import {planSync,parentCandidates,targetType,assertSamePlan} from '../lib/sync-plan.mjs';
+import {planSync,parentCandidates,targetType,assertSamePlan,creationConflicts} from '../lib/sync-plan.mjs';
+import {discContactURL} from '../lib/platform-links.mjs';
 
 test('périmètre CSCOM et Sites ASC sans maternités ni niveau 4, relevé complet conservé',()=>{
   const s=demoState();s.snapshot.dhis.push({id:'m',name:'Maternité rurale',level:6,parent:'h4',groups:[]},{id:'f',name:'Autre formation',level:5,parent:'h3',groups:[]});
@@ -63,4 +64,21 @@ test('un plan reste comparable après réordonnancement JSONB mais refuse un cha
   const s=demoState(),p=planSync(s.snapshot,s.mappings,s.levels,{originId:'h5',operation:'rename'});
   const reordered=Object.fromEntries(Object.entries(p).reverse());assert.doesNotThrow(()=>assertSamePlan(p,reordered));
   assert.throws(()=>assertSamePlan(p,{...p,parent:{id:'changed'}}),/changé/);
+});
+test('un district déjà présent est identifié pour rapprochement et non pour une seconde création',()=>{
+  const s=demoState();s.mappings=s.mappings.filter(m=>m.discId!=='d2');
+  const origin=s.snapshot.dhis.find(n=>n.id==='h2');
+  const found=creationConflicts(s.snapshot,'dhis',origin,'c30_district','d1',s.levels);
+  assert.deepEqual(found.map(n=>n.id),['d2']);
+  assert.throws(()=>planSync(s.snapshot,s.mappings,s.levels,{originId:'h2',operation:'create',parentId:'d1'}),/Kati \(d2\).*Rapprocher/);
+  s.snapshot.disc.find(n=>n.id==='d2').type='c40_health_area';
+  assert.equal(creationConflicts(s.snapshot,'dhis',origin,'c30_district','d1',s.levels).length,0);
+  s.snapshot.disc.find(n=>n.id==='d2').dhisId='h2';
+  assert.equal(creationConflicts(s.snapshot,'dhis',origin,'c30_district','d1',s.levels).length,1);
+});
+test('lien DISC vers le contact vérifié, sans URL dangereuse ni identifiants intégrés',()=>{
+  assert.equal(discContactURL('https://disc.example','a/b'),'https://disc.example/#/contacts/a%2Fb');
+  assert.equal(discContactURL('javascript:alert(1)','id'),null);
+  assert.equal(discContactURL('https://user:secret@disc.example','id'),null);
+  assert.equal(discContactURL(null,'id'),null);
 });

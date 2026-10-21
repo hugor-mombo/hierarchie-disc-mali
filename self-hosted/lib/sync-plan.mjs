@@ -19,6 +19,14 @@ export function parentCandidates(snapshot,mappings,source,origin,type,levels=DEF
     .filter(n=>[n,...ancestors(n,ti)].some(a=>a.id===anchor));
 }
 export function structural(node){return node?{id:node.id,name:node.name,parent:node.parent||null,type:node.type||null,level:node.level||null,groups:[...(node.groups||[])].sort(),closedDate:node.closedDate||null}:null;}
+export function creationConflicts(snapshot,source,origin,type,parentId,levels=DEFAULT_LEVELS){
+  if(!origin||!parentId)return [];
+  const target=otherSource(source);
+  return (snapshot?.[target]||[]).filter(n=>
+    (target==='disc'&&n.dhisId===origin.id)||
+    (n.parent===parentId&&normalize(n.name)===normalize(origin.name)&&(target==='disc'?n.type===type:n.level===levels[origin.type]))
+  );
+}
 export function planSync(snapshot,mappings,levels=DEFAULT_LEVELS,input){
   const source=input.originSource||'dhis',target=otherSource(source),origin=snapshot?.[source]?.find(n=>n.id===input.originId);
   if(!origin)throw Error('Unité de référence absente du relevé.');
@@ -36,7 +44,8 @@ export function planSync(snapshot,mappings,levels=DEFAULT_LEVELS,input){
     parent=candidates.find(n=>n.id===input.parentId);
     if(!parent)throw Error('Choisir un parent compatible dans la branche d’un ancêtre rapproché de la référence.');
     if(input.operation==='create'){
-      if(snapshot[target].some(n=>(n.parent===parent.id&&normalize(n.name)===normalize(origin.name))||(target==='disc'&&n.dhisId===origin.id)))throw Error('Une unité similaire ou déjà liée existe : vérifier et rapprocher avant de créer.');
+      const conflicts=creationConflicts(snapshot,source,origin,type,parent.id,levels);
+      if(conflicts.length)throw Error(`Une unité similaire ou déjà liée existe : ${conflicts.map(n=>n.name+' ('+n.id+')').join(', ')}. Rapprocher l’unité existante avant de créer.`);
     }else move=validateMove(snapshot,target,unit.id,parent.id);
   }
   if(input.operation==='rename'&&origin.name===unit.name)throw Error('Les noms sont déjà identiques.');
