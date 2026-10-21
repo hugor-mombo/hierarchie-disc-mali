@@ -1,12 +1,12 @@
 # Hiérarchies DISC-Mali / DHIS2 — version Docker et PostgreSQL
 
-Application autonome Next.js/Node.js 22, PostgreSQL 17, worker de déplacements et proxy HTTPS Caddy. Le domaine prévu est **hierarchie.disc-mali.ml**. Aucun service ChatGPT/Sites n’est nécessaire pour cette version. La version Sites précédente est conservée dans le dossier parent.
+Application autonome Next.js/Node.js 22, PostgreSQL 17, worker de déplacements et proxy HTTPS Caddy. Le domaine prévu est **maintenance.disc-mali.ml**. Aucun service ChatGPT/Sites n’est nécessaire pour cette version. La version Sites précédente est conservée dans le dossier parent.
 
 ## Déploiement distant
 
 Prévoir Docker Engine et le plugin Compose v2, un serveur Linux avec 4 Go de RAM au minimum (8 Go recommandés pour de grosses branches CHT), du disque pour les sauvegardes et les documents préparés, ainsi que les ports 80/443 disponibles. PostgreSQL n’expose pas de port sur l’hôte.
 
-1. Faire pointer les enregistrements DNS A de `hierarchie.disc-mali.ml` vers le serveur. Ne publier un AAAA que si IPv6 fonctionne aussi. Autoriser TCP 80/443 et éventuellement UDP 443. Si un proxy existe déjà, adapter le routage vers `web:3000` et ne pas lancer le proxy Caddy fourni.
+1. Faire pointer les enregistrements DNS A de `maintenance.disc-mali.ml` vers le serveur. Ne publier un AAAA que si IPv6 fonctionne aussi. Autoriser TCP 80/443 et éventuellement UDP 443. Si un proxy existe déjà, adapter le routage vers `web:3000` et ne pas lancer le proxy Caddy fourni.
 2. Copier **le contenu de ce dossier `self-hosted`** sur le serveur, par exemple dans `/opt/hierarchie-disc-mali`, en excluant `node_modules`, `.next`, `.env`, `work`, `backups` et `.git`.
 3. Sur le serveur :
 
@@ -28,11 +28,26 @@ docker compose logs --tail=100 migrate web worker proxy
 docker compose exec web node scripts/create-admin.mjs administrateur
 ```
 
-La migration est un service ponctuel ; `web` et `worker` attendent sa réussite. Caddy obtient le certificat lorsque le DNS et les ports sont prêts. Ouvrir ensuite `https://hierarchie.disc-mali.ml`. Le mot de passe temporaire doit être changé à la première connexion.
+La migration est un service ponctuel ; `web` et `worker` attendent sa réussite. Caddy obtient le certificat lorsque le DNS et les ports sont prêts. Ouvrir ensuite `https://maintenance.disc-mali.ml`. Le mot de passe temporaire doit être changé à la première connexion.
 
 Créer un second compte de validation depuis **Comptes et rôles** : une personne ne peut pas approuver sa propre demande, même administratrice. Aucun compte utilisateur n’est créé automatiquement dans DISC ou DHIS2 ; ce sont les comptes du registre.
 
 Le domaine personnalisé n’est pas configuré par le code seul : DNS, pare-feu et lancement sur le serveur doivent être effectués sur l’infrastructure de destination.
+
+## Serveur avec Nginx existant
+
+Pour `maintenance.disc-mali.ml`, l'application est installée dans `/opt/maintenance-disc-mali`. Le web n'écoute que sur `127.0.0.1:5300` ; Nginx termine HTTPS. PostgreSQL reste interne à Docker.
+
+Dans `.env`, définir `SITE_DOMAIN=maintenance.disc-mali.ml`, `APP_URL=https://maintenance.disc-mali.ml` et `COMPOSE_FILE=compose.yaml:compose.nginx.yaml`. Conserver ce fichier privé avec les permissions 600. Puis :
+
+```sh
+docker compose up -d --build --wait
+sudo sh deploy/install-nginx.sh maintenance.disc-mali.ml
+```
+
+Le script ajoute uniquement le vhost de ce domaine, valide Nginx puis utilise le plugin Nginx de Certbot pour obtenir et installer le certificat Let's Encrypt. Il conserve les vhosts existants et refuse d'écraser une configuration de ce domaine qu'il ne gère pas. Le renouvellement est assuré par le service Certbot du serveur. Le proxy Caddy du Compose reste désactivé dans cette variante.
+
+Les comptes, relevés et mappings peuvent être repris par restauration d'un dump PostgreSQL sur une base vide. Exclure `app_sessions` et `login_attempts` lors de ce transfert. Le registre du serveur devient une base indépendante : ses mises à jour ne sont pas répliquées dans le registre local de développement.
 
 ## Rôles
 

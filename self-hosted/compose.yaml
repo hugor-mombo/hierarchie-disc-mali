@@ -60,7 +60,7 @@ services:
   proxy:
     image: caddy:2-alpine
     environment:
-      SITE_DOMAIN: ${SITE_DOMAIN:-hierarchie.disc-mali.ml}
+      SITE_DOMAIN: ${SITE_DOMAIN:-maintenance.disc-mali.ml}
       ACME_EMAIL: ${ACME_EMAIL:?Renseigner ACME_EMAIL dans .env}
     ports:
       - '80:80'

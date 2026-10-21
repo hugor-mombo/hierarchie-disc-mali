@@ -1,5 +1,14 @@
 # Vérifications effectuées — 21 octobre 2026
 
+## Déploiement sur maintenance.disc-mali.ml
+
+- Application installée dans `/opt/maintenance-disc-mali` ; images construites sur le serveur, compilation Next.js et TypeScript réussie.
+- PostgreSQL et web sains, migration terminée avec le code 0, worker démarré ; seul le web est publié sur `127.0.0.1:5300`.
+- Nginx existant conservé ; certificat Let's Encrypt installé pour `maintenance.disc-mali.ml`, valable jusqu'au 19 janvier 2027 ; timer de renouvellement Certbot actif.
+- Vérification depuis l'extérieur avec validation TLS : `/api/health` et `/login` répondent 200, `/api/state` sans session répond 401, HTTP redirige vers HTTPS.
+- Reprise autorisée de la configuration technique et du registre : 2 comptes, 5 298 mappings et 3 enregistrements ; aucune session ni opération en attente transférée. Sauvegarde initiale conservée avec permissions 600 sur le serveur.
+- Lectures authentifiées DISC et DHIS2 réussies depuis le serveur pour District Massigui. Configuration d'écriture existante reprise après vérification de l'absence d'opérations en attente ; aucune écriture de recette envoyée aux plateformes.
+
 ## Rapprochement automatique des correspondances certaines
 
 - Tests : progression de haut en bas, noms équivalents, niveaux intermédiaires, homonymes dans des branches différentes, doublons dans une même branche, parents absents ou cycliques, identifiant embarqué, priorités manuelles et exclusions.
@@ -47,4 +56,4 @@ Les nouvelles créations et mises à jour sont testées contre des connecteurs s
 - Recette CHT avec le véritable préparateur `cht-conf@6.6.1` contre un CouchDB fictif : aucune écriture pendant la préparation ; déplacement du site, d’un contact descendant et d’un rapport ; vérification du nouveau lignage.
 - Interface navigateur : connexion, navigation des déplacements et gestion des comptes vérifiées dans l’image Docker avec des données fictives.
 
-Aucune écriture n’a été effectuée sur DISC-Mali ou DHIS2 en production. Le serveur distant et le DNS de `hierarchie.disc-mali.ml` n’ont pas été configurés. Les connecteurs d’écriture doivent encore faire l’objet d’une recette sur les versions exactes et les comptes techniques des plateformes cibles avant activation ; le mécanisme complet a été testé ici avec des sources factices.
+Aucune écriture de recette n’a été effectuée sur DISC-Mali ou DHIS2 en production. Le mécanisme complet d'écriture a été testé avec des sources factices ; les lectures des plateformes réelles sont vérifiées sur le serveur, mais les écritures réelles n'ont pas été exécutées pendant le déploiement.

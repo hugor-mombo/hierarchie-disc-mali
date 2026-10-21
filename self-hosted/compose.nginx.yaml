@@ -1,0 +1,6 @@
+# Serveur avec Nginx déjà installé : le TLS est terminé par le proxy de l'hôte.
+services:
+  web:
+    ports: ['127.0.0.1:5300:3000']
+  proxy:
+    profiles: ['standalone-tls']

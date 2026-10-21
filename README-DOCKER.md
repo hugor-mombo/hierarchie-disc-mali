@@ -32,4 +32,4 @@ Les données PostgreSQL et les plans de déplacement persistent dans les volumes
 - **`self-hosted/`** : version autonome pour Docker, PostgreSQL, authentification locale, rôles, exports et déplacements approuvés. Voir [le guide de déploiement](self-hosted/README.md).
 - Les fichiers à la racine conservent la version historique Sites, son Git et ses migrations D1. Ils ne sont pas nécessaires au déploiement autonome et n’ont pas été remplacés.
 
-Le fichier `compose.yaml` racine inclut la configuration autonome et sa variante locale. Le contexte de construction Docker est uniquement `self-hosted/`. Pour le déploiement HTTPS sur `hierarchie.disc-mali.ml`, suivre le guide distant de ce dossier.
+Le fichier `compose.yaml` racine inclut la configuration autonome et sa variante locale. Le contexte de construction Docker est uniquement `self-hosted/`. Pour le déploiement HTTPS sur `maintenance.disc-mali.ml`, suivre le guide distant de ce dossier.
