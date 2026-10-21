@@ -1,0 +1,6 @@
+# Docker Compose >= 2.20 : lancement local depuis la racine du dépôt.
+include:
+  - path:
+      - ./self-hosted/compose.yaml
+      - ./self-hosted/compose.local.yaml
+    project_directory: ./self-hosted

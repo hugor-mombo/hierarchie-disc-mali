@@ -1,3 +1,5 @@
+> **Déploiement Docker local** : suivre [`README-DOCKER.md`](README-DOCKER.md). Pour un serveur HTTPS, voir [`self-hosted/README.md`](self-hosted/README.md). Le texte ci-dessous décrit la version Sites historique, conservée.
+
 # Comparateur d’unités d’organisation DISC-Mali / DHIS2
 
 Application privée de rapprochement. Elle lit les structures dans les deux plateformes, conserve un relevé et les correspondances validées dans D1, et signale les différences de nom, niveau ou branche. Les patients, ménages, contacts personnels et rapports ne sont pas collectés.

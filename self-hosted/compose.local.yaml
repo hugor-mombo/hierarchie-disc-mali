@@ -1,0 +1,7 @@
+services:
+  web:
+    ports: ['127.0.0.1:5300:3000']
+    environment:
+      APP_URL: http://localhost:5300
+  proxy:
+    profiles: ['tls']

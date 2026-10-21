@@ -1,0 +1,2 @@
+import {query,audit} from '../../../../lib/database.mjs';import {assertOrigin} from '../../../../lib/security.mjs';import {requireUser,sessionCookie,apiError} from '../../../../lib/auth.mjs';
+export async function POST(r:Request){try{assertOrigin(r);const u=await requireUser(r,'read',true);await query('DELETE FROM app_sessions WHERE user_id=$1',[u.id]);await audit({query},u.id,'logout',{});return Response.json({ok:true},{headers:{'Set-Cookie':sessionCookie('',0)}});}catch(e){return apiError(e);}}

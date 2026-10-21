@@ -1,0 +1,81 @@
+name: hierarchie-disc-mali
+x-runtime: &runtime
+  env_file: .env
+  environment:
+    DATABASE_URL: postgresql://${POSTGRES_USER:-hierarchie}:${POSTGRES_PASSWORD:?Renseigner POSTGRES_PASSWORD dans .env}@db:5432/${POSTGRES_DB:-hierarchie}
+    WORK_DIRECTORY: /var/lib/hierarchie
+  restart: unless-stopped
+  security_opt:
+    - no-new-privileges:true
+services:
+  db:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-hierarchie}
+      POSTGRES_USER: ${POSTGRES_USER:-hierarchie}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Renseigner POSTGRES_PASSWORD dans .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+  migrate:
+    <<: *runtime
+    build:
+      context: .
+      target: web
+    image: hierarchie-disc-mali-migrate:local
+    command: [node, scripts/migrate.mjs]
+    healthcheck:
+      disable: true
+    restart: 'no'
+    depends_on:
+      db:
+        condition: service_healthy
+  web:
+    <<: *runtime
+    build:
+      context: .
+      target: web
+    image: hierarchie-disc-mali-web:local
+    expose: ['3000']
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  worker:
+    <<: *runtime
+    build:
+      context: .
+      target: worker
+    image: hierarchie-disc-mali-worker:local
+    volumes:
+      - move_work:/var/lib/hierarchie
+    stop_grace_period: 2m
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  proxy:
+    image: caddy:2-alpine
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-hierarchie.disc-mali.ml}
+      ACME_EMAIL: ${ACME_EMAIL:?Renseigner ACME_EMAIL dans .env}
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  move_work:
+  caddy_data:
+  caddy_config:
