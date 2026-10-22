@@ -100,3 +100,14 @@ Aucune écriture de recette n’a été effectuée sur DISC-Mali ou DHIS2 en pro
   authentifiée et filtrée, refus des erreurs de mapping et des faux succès de test.
 - Compilation et vérification TypeScript réussies. Aucun traitement d'indicateurs
   ni écriture DHIS2/DISC déclenché par ces vérifications.
+
+## Navigation et filtres (22 octobre 2026)
+
+- Sidebar défilante indépendamment de la page, y compris les derniers liens
+  administrateur et les paramètres ; contrôlée au navigateur à 1280 × 600.
+- Menus Région/Niveau : position fixe, hauteur bornée et défilement interne ;
+  sélection au clavier (Fin/Entrée), fermeture par Échap et filtrage contrôlés.
+- Recette sur 20 régions fictives : coordonnées et dimensions du menu inchangées
+  pendant le défilement ; filtre Région retournant l'unité attendue.
+- Vérification à 390 × 700 : menu dans la largeur de l'écran et choix du niveau
+  fonctionnel. Compilation et TypeScript réussis.

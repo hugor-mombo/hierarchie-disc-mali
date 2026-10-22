@@ -84,3 +84,11 @@ Le projet est retrouvé par identifiant lors des mises à jour ; son nom peut ê
 dans l'interface sans casser la connexion.
 La page de suivi a également été vérifiée au navigateur sur des données fictives,
 avec une simulation explicitement identifiée et le filtre par site/période.
+
+## Langue de l'interface
+
+Vérification sur l'instance déployée : Lightning `2.18.0`,
+`Gettext.known_locales(LightningWeb.Gettext)` retourne uniquement `["en"]`.
+Le profil ne fournit pas de sélecteur de langue ; aucun catalogue français
+n'est livré dans cette version. Modifier une variable de locale ne traduit
+pas l'interface. L'application de maintenance reste en français.
