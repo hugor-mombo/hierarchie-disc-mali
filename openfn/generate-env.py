@@ -15,8 +15,8 @@ with tempfile.TemporaryDirectory() as directory:
     subprocess.run(['openssl', 'genpkey', '-algorithm', 'RSA', '-pkeyopt', 'rsa_keygen_bits:2048', '-out', str(private)], check=True, capture_output=True)
     subprocess.run(['openssl', 'rsa', '-in', str(private), '-pubout', '-out', str(public)], check=True, capture_output=True)
     values = {
-        'LIGHTNING_IMAGE': 'openfn/lightning:v2.18.0',
-        'WORKER_IMAGE': 'openfn/ws-worker:latest',
+        'LIGHTNING_IMAGE': 'openfn/lightning@sha256:7be7f01bd4e0fa5be22d2254dff02a595d8171c532c372b9f2bc0aae3832c40a',
+        'WORKER_IMAGE': 'openfn/ws-worker@sha256:41c23872ae428ff858e37a86cfb4529683f3a8c77527f7cfbb5d257fd77e5f4d',
         'POSTGRES_PASSWORD': secrets.token_hex(32),
         'SECRET_KEY_BASE': secrets.token_urlsafe(64),
         'PRIMARY_ENCRYPTION_KEY': base64.b64encode(secrets.token_bytes(32)).decode(),

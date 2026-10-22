@@ -67,6 +67,20 @@ non nulles ne signifie pas absence de rapport : la vue SQL actuelle supprime les
 `sh backup.sh` sauvegarde la base et la configuration privée (ne pas partager ces archives).
 La clé de chiffrement de `.env` est indispensable à la restauration des credentials.
 Prévoir une copie hors serveur et un test de restauration avant usage en production.
-Une planification quotidienne peut appeler ce script. Conserver le même dossier `.env`
+Une planification quotidienne peut appeler ce script.
+`provision-test.exs` provisionne le projet, le credential et le workflow de recette
+via les contextes officiels de Lightning, puis conserve leurs identifiants.
+Les réexécutions retrouvent le projet par son identifiant, même après renommage. Conserver le même dossier `.env`
 et les volumes lors des mises à jour ; ne jamais lancer `down -v` sur cette instance.
 Les limites de mémoire et une capacité worker de 1 conviennent à la recette initiale.
+
+## Recette du 22 octobre 2026
+
+Lightning v2.18.0 et son worker sont épinglés par empreinte dans le générateur.
+HTTPS, migration et connexion du worker vérifiés. Le workflow de connexion a terminé
+avec `success` et a produit un événement `dry_run` dans le registre distant.
+Aucun indicateur ni envoi DHIS2. Le déclencheur public a ensuite été désactivé.
+Le projet est retrouvé par identifiant lors des mises à jour ; son nom peut être changé
+dans l'interface sans casser la connexion.
+La page de suivi a également été vérifiée au navigateur sur des données fictives,
+avec une simulation explicitement identifiée et le filtre par site/période.

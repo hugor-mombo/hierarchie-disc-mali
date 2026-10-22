@@ -2,3 +2,4 @@
 .admin-password
 backups/
 *.credential.json
+registry-test-metadata.json
