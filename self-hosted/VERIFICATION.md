@@ -89,3 +89,14 @@ Aucune écriture de recette n’a été effectuée sur DISC-Mali ou DHIS2 en pro
 - Compteurs affichés en haut du comparateur et de l’export sur toute la population des ASC DHIS2 : ouverts, fermés, inconnus et fermetures futures, avec date de lecture du relevé.
 - Tests de régression : fermeture passée, le jour même et future, date impossible, données absentes, population hors groupe/niveau exclue des compteurs, colonnes d’arborescence par niveau réel et CSV enrichi compatible avec l’import de correspondances.
 - Recette API isolée réussie : CSV enrichi authentifié, colonnes d’arborescence présentes et site fermé retiré du téléchargement tout en conservant son mapping dans le registre.
+
+## OpenFn : première connexion au registre
+
+- Tests unitaires : jetons techniques distincts, API désactivée sans jeton, refus des
+  relevés périmés, version stable, exclusion des sites fermés, validation des
+  correspondances et compteurs, distinction test/réel et rejet de contenu arbitraire.
+- Recette PostgreSQL/API jetable : manifeste conservé après évolution du registre,
+  événements idempotents, conflit sur réutilisation d'identifiant, consultation
+  authentifiée et filtrée, refus des erreurs de mapping et des faux succès de test.
+- Compilation et vérification TypeScript réussies. Aucun traitement d'indicateurs
+  ni écriture DHIS2/DISC déclenché par ces vérifications.

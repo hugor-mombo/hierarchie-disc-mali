@@ -233,3 +233,13 @@ Seuls les liens du registre entre un contact DISC `c60_chw_site` et une UO DHIS2
 L'API authentifiée est `/api/export?type=asc-mappings`. Pour recharger les trois groupes et conserver toute la hiérarchie depuis le serveur : `docker compose exec -T web node scripts/refresh-registry.mjs`. Cette commande ne fait aucune écriture sur les plateformes ; elle met à jour le relevé et les correspondances certaines du registre.
 
 Les compteurs en haut du comparateur et de l’export indiquent les sites ASC DHIS2 ouverts, fermés et au statut inconnu sur l’ensemble du groupe, y compris ceux qui ne sont pas rapprochés. Une fermeture est effective dès sa date calendaire ; une fermeture future est signalée et le site reste ouvert jusque-là. Les compteurs indiquent la dernière lecture des relevés et ne constituent pas un contrôle de fonctionnement sur le terrain. Un lien vers un site fermé reste enregistré dans le registre, mais n’est plus livré dans le CSV d’interopérabilité.
+
+## OpenFn : correspondances et audit
+
+La page **Données OpenFn** présente les événements de synchronisation déclarés par
+le moteur, filtrables par site et période. Les simulations sont distinguées des
+envois réels ; un succès déclaré n'est pas une vérification indépendante DHIS2.
+Deux jetons techniques distincts activent la lecture des correspondances versionnées
+et la réception d'audit. Voir [installation et contrat API](../openfn/README.md).
+Le mapping des indicateurs et la migration des workflows métier restent des étapes
+séparées ; l'installation de recette n'active aucun envoi réel vers DHIS2.

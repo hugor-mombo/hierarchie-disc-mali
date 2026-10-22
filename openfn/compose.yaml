@@ -1,0 +1,59 @@
+name: disc-openfn
+services:
+  db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_USER: lightning
+      POSTGRES_DB: lightning
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Generate the private .env first}
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U lightning -d lightning']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    mem_limit: 1g
+  web:
+    image: ${LIGHTNING_IMAGE:?Pin the official Lightning image}
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://lightning:${POSTGRES_PASSWORD}@db:5432/lightning
+      DISABLE_DB_SSL: 'true'
+      PORT: '4000'
+      LISTEN_ADDRESS: '0.0.0.0'
+      URL_HOST: openfn.disc-mali.ml
+      URL_PORT: '443'
+      URL_SCHEME: https
+      ORIGINS: https://openfn.disc-mali.ml
+      ALLOW_SIGNUP: 'false'
+      REQUIRE_EMAIL_VERIFICATION: 'false'
+      USAGE_TRACKING_ENABLED: 'false'
+    ports: [127.0.0.1:5400:4000]
+    volumes: [adaptor_icons:/app/priv/adaptor_icons]
+    depends_on:
+      db: {condition: service_healthy}
+    restart: unless-stopped
+    mem_limit: 2g
+    healthcheck:
+      test: [CMD-SHELL, 'curl -fsS http://localhost:4000/health_check >/dev/null']
+      interval: 10s
+      timeout: 5s
+      start_period: 60s
+      retries: 20
+  worker:
+    image: ${WORKER_IMAGE:?Pin the official worker image}
+    environment:
+      WORKER_SECRET: ${WORKER_SECRET}
+      WORKER_LIGHTNING_PUBLIC_KEY: ${WORKER_LIGHTNING_PUBLIC_KEY}
+      WORKER_CAPACITY: '1'
+      WORKER_MAX_RUN_MEMORY_MB: '512'
+      WORKER_MAX_RUN_DURATION_SECONDS: '300'
+    command: [node, /app/packages/ws-worker/dist/start.js, '-l', 'ws://web:4000/worker']
+    depends_on:
+      web: {condition: service_healthy}
+    restart: unless-stopped
+    mem_limit: 1536m
+volumes:
+  postgres_data:
+  adaptor_icons:

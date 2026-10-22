@@ -25,6 +25,8 @@ services:
       DHIS_USER: qa
       DHIS_PASSWORD: qa
       ENABLE_REMOTE_WRITES: 'true'
+      OPENFN_MAPPING_TOKEN: qa-read-token-for-disposable-stack-only-12345
+      OPENFN_AUDIT_TOKEN: qa-audit-token-for-disposable-stack-only-12345
     command: [node, scripts/migrate.mjs]
     healthcheck:
       disable: true
