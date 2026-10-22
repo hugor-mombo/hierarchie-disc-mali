@@ -243,7 +243,7 @@ Choisissez une **période**, puis une **région**, un **district** ou un **CSCOM
 
 Un **site rapporteur** a déclaré au moins un rapport sur la période. L’absence de rapport est un signal à investiguer, pas une preuve de fermeture. Les indicateurs comptent des **sites**, pas des personnes. Choisissez des **mois civils entiers** pour la période.
 
-[Passer aux listes de relance ASC et aux enfants signalés zéro dose, avec exports CSV/Excel](/superset/dashboard/asc-suivi-operationnel/).''', 34)
+[Listes de relance ASC et enfants signalés zéro dose](/superset/dashboard/asc-suivi-operationnel/) · [Complétude des tâches et exports d’accompagnement](/superset/dashboard/asc-completude-taches/).''', 38)
     row(overview, 'numbers1', [('sites', 4), ('reporters', 4), ('silent', 4)], 22)
     row(overview, 'numbers2', [('reporting_rate', 4), ('reports', 4), ('cscom_count', 4)], 22)
     row(overview, 'region_graph', [('region_rate', 12)], 80)

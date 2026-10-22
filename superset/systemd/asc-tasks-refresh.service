@@ -1,0 +1,11 @@
+[Unit]
+Description=Actualiser la complétude des tâches ASC
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=mombo
+WorkingDirectory=/opt/moh_superset/superset_config/asc-v2
+ExecStart=/usr/bin/docker exec superset_app python -u /app/superset_config/asc-v2/refresh_tasks.py
+TimeoutStartSec=1200

@@ -216,7 +216,7 @@ with app.test_request_context('/'):
     note(asc,'asc_intro','''## Préparer les relances des ASC
 Choisissez la région, le district, le CSCOM et éventuellement le site. Le **seuil est de 30 jours par défaut**, modifiable à 7 ou 14 jours. Cliquez sur **Apply filters** après vos sélections.
 
-Cette liste mesure les **rapports déclarés**, pas la synchronisation du téléphone. Une ligne correspond à un **compte ASC**, identifié par son nom de connexion. La rubrique « À vérifier » distingue les rapports uniquement attribués au site et les rattachements incohérents. [Revenir au pilotage national](/superset/dashboard/asc-pilotage-v2/).''',28)
+Cette liste mesure les **rapports déclarés**, pas la synchronisation du téléphone. Une ligne correspond à un **compte ASC**, identifié par son nom de connexion. La rubrique « À vérifier » distingue les rapports uniquement attribués au site et les rattachements incohérents. [Pilotage national](/superset/dashboard/asc-pilotage-v2/) · [Complétude des tâches](/superset/dashboard/asc-completude-taches/).''',32)
     row(asc,'asc_cards',[('asc_accounts',4),('asc_sites',4),('asc_no_personal',4)],23)
     row(asc,'asc_list',[('asc_list',12)],66)
     note(asc,'asc_export_note','''### Télécharger la liste complète

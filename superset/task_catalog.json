@@ -1,0 +1,286 @@
+{
+  "task.child_longitudinal_followup_1_24": {
+    "label": "Suivi longitudinal de l'enfant 1 à 24 mois",
+    "theme": "Suivi longitudinal de l’enfant"
+  },
+  "task.child_longitudinal_followup_2_5": {
+    "label": "Suivi longitudinal de l'enfant 2 à 5 ans",
+    "theme": "Suivi longitudinal de l’enfant"
+  },
+  "task.child_longitudinal_followup_6_12": {
+    "label": "Suivi longitudinal de l'enfant 6 à 12 ans",
+    "theme": "Suivi longitudinal de l’enfant"
+  },
+  "task.child_longitudinal_followup_13_19": {
+    "label": "Suivi longitudinal de l'enfant 13 à 19 ans",
+    "theme": "Suivi longitudinal de l’enfant"
+  },
+  "task.newborn_registration": {
+    "label": "Création Profil enfant",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.mother_referral_followup": {
+    "label": "Suivi Référence Mère",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.cpon_realisation": {
+    "label": "Référence naissance à domicile",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.postnatal_followup": {
+    "label": "Suivi Après Naissance",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.treatment_followup_under_5": {
+    "label": "Suivi traitement moins de 5 ans",
+    "theme": "Soins et références"
+  },
+  "task.referral_followup_under_5": {
+    "label": "Suivi référence moins de 5 ans",
+    "theme": "Soins et références"
+  },
+  "task.treatment_referral_followup_under_5": {
+    "label": "Suivi traitement après Référence moins de 5 ans",
+    "theme": "Soins et références"
+  },
+  "task.mas_followup_under_5": {
+    "label": "Suivi malnutrition (MAS Sans Complication) moins de 5 ans",
+    "theme": "Nutrition"
+  },
+  "task.mam_followup_under_5": {
+    "label": "Suivi MAM moins de 5 ans",
+    "theme": "Nutrition"
+  },
+  "task.vaccine_followup_under_5": {
+    "label": "Suivi vaccinal moins de 5 ans",
+    "theme": "Vaccination"
+  },
+  "task.treatment_followup_multiple": {
+    "label": "Suivi Traitement Multiple",
+    "theme": "Soins et références"
+  },
+  "task.treatment_followup_under_5.diarrhea": {
+    "label": "Suivi Traitement Diarrhée",
+    "theme": "Soins et références"
+  },
+  "task.treatment_followup_under_5.pneumonia": {
+    "label": "Suivi Traitement Pneumonie",
+    "theme": "Soins et références"
+  },
+  "task.treatment_followup_under_5.malaria": {
+    "label": "Suivi Traitement Paludisme",
+    "theme": "Soins et références"
+  },
+  "task.pregnancy_followup": {
+    "label": "Suivi Grossesse",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.pregnancy_confirmation": {
+    "label": "Confirmation de la grossesse",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.pregnancy_referral_followup": {
+    "label": "Suivi Référence Femme enceinte",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.anc_followup": {
+    "label": "Réalisation Visite CPN",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.fp_reference_followup": {
+    "label": "Référence FP",
+    "theme": "Planification familiale"
+  },
+  "task.fp_renewal_followup": {
+    "label": "Suivi PF",
+    "theme": "Planification familiale"
+  },
+  "task.treatment_followup_over_5": {
+    "label": "Suivi traitement",
+    "theme": "Soins et références"
+  },
+  "task.referral_followup_over_5": {
+    "label": "Suivi référence +5 ans",
+    "theme": "Soins et références"
+  },
+  "task.tb_treatment_followup": {
+    "label": "Suivi Traitement Hebdomadaire TB",
+    "theme": "Soins et références"
+  },
+  "task.vaccination_scheduled": {
+    "label": "Vaccination (Planifiée)",
+    "theme": "Vaccination"
+  },
+  "task.mapi_reference_followup": {
+    "label": "Suivi Référence MAPI",
+    "theme": "Vaccination"
+  },
+  "task.referral_followup": {
+    "label": "Suivi référence",
+    "theme": "Soins et références"
+  },
+  "task.treatment.malaria": {
+    "label": "Suivi traitement malaria",
+    "theme": "Soins et références"
+  },
+  "task.treatment.diarrhea": {
+    "label": "Suivi traitement diarhée",
+    "theme": "Soins et références"
+  },
+  "task.treatment.ari": {
+    "label": "Suivi traitement pneumonie",
+    "theme": "Soins et références"
+  },
+  "task.treatment.multiple": {
+    "label": "Suivi traitement multiple",
+    "theme": "Soins et références"
+  },
+  "task.treatment.malnutrition": {
+    "label": "Suivi traitement malnutrition",
+    "theme": "Nutrition"
+  },
+  "task.pnc_followup": {
+    "label": "Suivi réalisation CPON",
+    "theme": "Autres tâches"
+  },
+  "task.anc_supervision_followup": {
+    "label": "Suivi réalisation CPN",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.newborn_followup": {
+    "label": "Suivi Nouveau-né",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.prenatal_followup": {
+    "label": "Suivi CPN",
+    "theme": "Autres tâches"
+  },
+  "task.supervision_visit_realization": {
+    "label": "Réalisation de la visite de Supervision",
+    "theme": "Supervision et accompagnement"
+  },
+  "task.supervision_with_chw_confirmation": {
+    "label": "Visite du site d'ASC",
+    "theme": "Supervision et accompagnement"
+  },
+  "task.supervision_without_chw_confirmation": {
+    "label": "Visite dans la communauté sans l'ASC",
+    "theme": "Supervision et accompagnement"
+  },
+  "task.individual_feedback_confirmation": {
+    "label": "Rencontre Individuelle",
+    "theme": "Supervision et accompagnement"
+  },
+  "task.oca_supervision_visit_realization": {
+    "label": "Réalisation de la visite de coaching de la PC",
+    "theme": "Supervision et accompagnement"
+  },
+  "task.oca_supervision_visit_scheduling": {
+    "label": "Planification de la visite de coaching (PC)",
+    "theme": "Supervision et accompagnement"
+  },
+  "task.meeting_with_authorities_realization": {
+    "label": "Réalisation de la réunion avec les autorités",
+    "theme": "Autres tâches"
+  },
+  "task.visit_with_pc_realization": {
+    "label": "Réalisation Visite Avec la PC",
+    "theme": "Autres tâches"
+  },
+  "task.visit_realisation_without_pc": {
+    "label": "Réalisation Visite des Ménages sans PC",
+    "theme": "Autres tâches"
+  },
+  "task.oca_individual_feedback_confirmation": {
+    "label": "Réalisation Rencontre individuelle",
+    "theme": "Supervision et accompagnement"
+  },
+  "task.sebac_alert_sort": {
+    "label": "Tri de l'alerte",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_alert_verification": {
+    "label": "Vérification d'Alerte",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_alert_verification_2": {
+    "label": "Vérification d'Alerte",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_verification_notification": {
+    "label": "Notification Vérification d'Alerte",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_verification_result": {
+    "label": "Résultat Vérification d'Alerte",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_test_result_reminder": {
+    "label": "Rappel des Résultat des Tests",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_test_result": {
+    "label": "Résultat des Tests",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_result_notification_supervisor": {
+    "label": "Notification Résultat Tests Superviseur",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_result_notification_chw": {
+    "label": "Notification Résultat Tests ASC",
+    "theme": "Surveillance et alertes"
+  },
+  "task.sebac_alert_notification_dtc": {
+    "label": "Notification d'alerte DTC",
+    "theme": "Surveillance et alertes"
+  },
+  "task.individual_feedback": {
+    "label": "Rencontre Individuelle",
+    "theme": "Supervision et accompagnement"
+  },
+  "task.missed_vaccine_followup_alert": {
+    "label": "Suivi Vaccinal non réalisé",
+    "theme": "Vaccination"
+  },
+  "task.missed_pregnancy_followup_alert": {
+    "label": "Suivi Grossesse non réalisé",
+    "theme": "Santé maternelle et néonatale"
+  },
+  "task.savings.loan_reminder": {
+    "label": "Rappel de prêt",
+    "theme": "Autres tâches"
+  },
+  "task.savings.confirmation_of_expenditure": {
+    "label": "Confirmation des dépenses",
+    "theme": "Autres tâches"
+  },
+  "task.savings.loan_reimbursement": {
+    "label": "Remboursement de prêt",
+    "theme": "Autres tâches"
+  },
+  "cht-stock-monitoring-workflow.stock_count.tasks.stock-count": {
+    "label": "Inventaire",
+    "theme": "Gestion des stocks"
+  },
+  "cht-stock-monitoring-workflow.stock_supply.tasks.reception-confirmation": {
+    "label": "Stock reçu",
+    "theme": "Gestion des stocks"
+  },
+  "cht-stock-monitoring-workflow.stock_supply.tasks.stock-descreptancy": {
+    "label": "Résolution Conflit",
+    "theme": "Gestion des stocks"
+  },
+  "cht-stock-monitoring-workflow.stock_return.tasks.return-confirmation": {
+    "label": "Confirmation Retour",
+    "theme": "Gestion des stocks"
+  },
+  "cht-stock-monitoring-workflow.stock_out.tasks.stock_out": {
+    "label": "Stock épuisé",
+    "theme": "Gestion des stocks"
+  },
+  "cht-stock-monitoring-workflow.stock_order.tasks.stock_supply": {
+    "label": "Stock à livrer",
+    "theme": "Gestion des stocks"
+  }
+}
