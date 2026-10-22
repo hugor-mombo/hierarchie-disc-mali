@@ -96,11 +96,14 @@ with app.test_request_context('/'):
     ]
     ds = dataset('sites', 'ASC V2 — Sites et rapports mensuels', 'sites_monthly.sql', columns, metrics)
     quality = dataset('quality', 'ASC V2 — Qualité nationale des rapports', 'quality_monthly.sql', [
+        ('region_uuid', 'TEXT', 'Périmètre national uniquement'),
         ('reported_month', 'DATE', 'Mois'), ('quality', 'TEXT', 'Catégorie'),
         ('report_count', 'BIGINT', 'Rapports'), ('last_reported', 'TIMESTAMP', 'Dernière date déclarée'),
         ('refreshed_at', 'TIMESTAMP WITH TIME ZONE', 'Calcul V2 (UTC)'),
     ], [('reports', 'Rapports', 'SUM(report_count)'),
         ('refresh_at', 'Calcul V2 actualisé le (UTC)', 'MAX(refreshed_at)')])
+    from regional_security import apply_regional_security
+    apply_regional_security([ds, quality])
 
     charts = {}
 
@@ -238,7 +241,9 @@ with app.test_request_context('/'):
     note(overview, 'intro', '''## Où concentrer l’accompagnement des ASC ?
 Choisissez une **période**, puis une **région**, un **district** ou un **CSCOM**, et cliquez sur **Appliquer les filtres**. Par défaut : dernier mois complet, ensemble du périmètre, Bamako inclus.
 
-Un **site rapporteur** a déclaré au moins un rapport sur la période. L’absence de rapport est un signal à investiguer, pas une preuve de fermeture. Les indicateurs comptent des **sites**, pas des personnes. Choisissez des **mois civils entiers** pour la période.''', 28)
+Un **site rapporteur** a déclaré au moins un rapport sur la période. L’absence de rapport est un signal à investiguer, pas une preuve de fermeture. Les indicateurs comptent des **sites**, pas des personnes. Choisissez des **mois civils entiers** pour la période.
+
+[Passer aux listes de relance ASC et aux enfants signalés zéro dose, avec exports CSV/Excel](/superset/dashboard/asc-suivi-operationnel/).''', 34)
     row(overview, 'numbers1', [('sites', 4), ('reporters', 4), ('silent', 4)], 22)
     row(overview, 'numbers2', [('reporting_rate', 4), ('reports', 4), ('cscom_count', 4)], 22)
     row(overview, 'region_graph', [('region_rate', 12)], 80)
@@ -269,7 +274,7 @@ Les tableaux présentent uniquement des structures et des agrégats : aucun nom 
 
 **Actualisation.** Le calcul V2 est actualisé chaque heure à partir des sources analytiques disponibles. L’horodatage ci-dessous date le calcul V2, pas la dernière réplication DISC. La fraîcheur du relevé amont reste à instrumenter. Choisissez des mois civils entiers : par exemple, du 1er septembre au 1er octobre pour analyser septembre.
 
-**Portée des contrôles ci-dessous : nationale.** Le filtre de période s’applique ; les filtres Région/District/CSCOM ne s’y appliquent pas, car les rapports non attribués n’ont pas de localisation fiable.''', 72)
+**Portée des contrôles ci-dessous : nationale, réservée aux profils nationaux.** Le filtre de période s’applique ; les filtres Région/District/CSCOM ne s’y appliquent pas, car les rapports non attribués n’ont pas de localisation fiable. Un profil régional ne reçoit pas ces résultats nationaux.''', 76)
     row(method, 'quality', [('quality', 8), ('refresh', 4)], 38)
     note(method, 'categories', '''**Contrôle des volumes :** la somme des catégories retrouve tous les rapports de la source sur la période. Seuls les rapports attribués sans contradiction à un site du périmètre et sans date future entrent dans les indicateurs de participation.
 
