@@ -269,7 +269,7 @@ Les tableaux présentent uniquement des structures et des agrégats : aucun nom 
 
 **Actualisation.** Le calcul V2 est actualisé chaque heure à partir des sources analytiques disponibles. L’horodatage ci-dessous date le calcul V2, pas la dernière réplication DISC. La fraîcheur du relevé amont reste à instrumenter. Choisissez des mois civils entiers : par exemple, du 1er septembre au 1er octobre pour analyser septembre.
 
-**Portée des contrôles ci-dessous : nationale.** Le filtre de période s’applique ; les filtres Région/District/CSCOM ne s’y appliquent pas, car les rapports non attribués n’ont pas de localisation fiable.''', 136)
+**Portée des contrôles ci-dessous : nationale.** Le filtre de période s’applique ; les filtres Région/District/CSCOM ne s’y appliquent pas, car les rapports non attribués n’ont pas de localisation fiable.''', 72)
     row(method, 'quality', [('quality', 8), ('refresh', 4)], 38)
     note(method, 'categories', '''**Contrôle des volumes :** la somme des catégories retrouve tous les rapports de la source sur la période. Seuls les rapports attribués sans contradiction à un site du périmètre et sans date future entrent dans les indicateurs de participation.
 
