@@ -1,0 +1,11 @@
+[Unit]
+Description=Actualiser la source analytique ASC V2
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=mombo
+WorkingDirectory=/opt/moh_superset/superset_config/asc-v2
+ExecStart=/usr/bin/docker exec superset_app python /app/superset_config/asc-v2/refresh_source.py
+TimeoutStartSec=240
