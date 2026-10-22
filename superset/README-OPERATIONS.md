@@ -118,6 +118,8 @@ la livraison si le volume complet ne tient pas dans cette limite.
 `verify_operational_exports.py` appelle l'API native Superset dans un client de
 test local au serveur : CSV et XLSX sont analysés en mémoire, puis comparés aux
 effectifs SQL indépendants. Aucun contenu individuel n'est imprimé ou sauvegardé.
+Chaque client de test possède un contexte applicatif distinct et vérifie son identité
+via l'API avant l'export, afin d'éviter le réemploi de l'identité administrateur par Flask-Login.
 Le test régional envoie volontairement une requête sans filtre géographique :
 la limitation doit venir de la sécurité, pas de la bonne utilisation de l'interface.
 
