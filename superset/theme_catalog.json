@@ -1,0 +1,1011 @@
+[
+  {
+    "key": "vaccination",
+    "title": "Vaccination et zéro dose",
+    "source": "mv_vaccination_indicators_shared",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "up_to_date",
+        "label": "Suivis déclarant une vaccination à jour",
+        "expression": "s.nbr_vaccinated_up_to_date",
+        "unit": "rapports",
+        "note": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+        "source": "mv_vaccination_indicators_shared",
+        "card_title": "Suivis à jour"
+      },
+      {
+        "key": "at_23m",
+        "label": "Suivis à 23 mois déclarant une vaccination à jour",
+        "expression": "s.fully_vaccinated_23m",
+        "unit": "rapports",
+        "note": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+        "source": "mv_vaccination_indicators_shared",
+        "card_title": "À jour à 23 mois"
+      },
+      {
+        "key": "found",
+        "label": "Enfants retrouvés pour vaccination · observations mensuelles",
+        "expression": "s.nbr_children_found_for_vac",
+        "unit": "enfants par site et mois",
+        "note": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+        "source": "mv_vaccination_indicators_shared",
+        "card_title": "Retrouvés pour vaccin"
+      },
+      {
+        "key": "referred",
+        "label": "Enfants référés pour vaccination · observations mensuelles",
+        "expression": "s.nbr_children_referred_to_vaccine",
+        "unit": "enfants par site et mois",
+        "note": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+        "source": "mv_vaccination_indicators_shared",
+        "card_title": "Référés pour vaccin"
+      },
+      {
+        "key": "historic_zero",
+        "label": "Signalements historiques Penta 1 non reçu",
+        "expression": "s.nbr_zero_dose",
+        "unit": "signalements mensuels",
+        "note": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+        "source": "mv_vaccination_indicators_shared"
+      }
+    ],
+    "question": "Où renforcer le suivi vaccinal et retrouver les enfants signalés zéro dose ?",
+    "method": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+    "historical_charts": [
+      32,
+      33,
+      36,
+      40,
+      78
+    ],
+    "primary": [
+      "up_to_date",
+      "at_23m",
+      "found",
+      "referred"
+    ]
+  },
+  {
+    "key": "nutrition",
+    "title": "Nutrition",
+    "source": "mv_pec_u5_indicators_shared",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "malnutrition",
+        "label": "Observations de malnutrition chez les moins de 5 ans",
+        "expression": "coalesce(s.malnutrition_male_inf_1y,0)+coalesce(s.malnutrition_male_sup_1y,0)+coalesce(s.malnutrition_female_inf_1y,0)+coalesce(s.malnutrition_female_sup_1y,0)",
+        "unit": "déclarations",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "mv_pec_u5_indicators_shared",
+        "card_title": "Malnutrition signalée"
+      },
+      {
+        "key": "mam",
+        "label": "Observations de malnutrition aiguë modérée (MAM)",
+        "expression": "coalesce(s.mam_male_inf_1y,0)+coalesce(s.mam_male_sup_1y,0)+coalesce(s.mam_female_inf_1y,0)+coalesce(s.mam_female_sup_1y,0)",
+        "unit": "déclarations",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "mv_pec_u5_indicators_shared",
+        "card_title": "MAM signalée"
+      },
+      {
+        "key": "mas",
+        "label": "Observations de MAS sans complication",
+        "expression": "coalesce(s.mas_no_complication_male_inf_1y,0)+coalesce(s.mas_no_complication_male_sup_1y,0)+coalesce(s.mas_no_complication_female_inf_1y,0)+coalesce(s.mas_no_complication_female_sup_1y,0)",
+        "unit": "déclarations",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "mv_pec_u5_indicators_shared",
+        "card_title": "MAS sans complication"
+      },
+      {
+        "key": "mam_cured",
+        "label": "Sorties/suivis MAM signalant : guérison",
+        "expression": "coalesce(s.mam_cured_male_inf_1y,0)+coalesce(s.mam_cured_male_sup_1y,0)+coalesce(s.mam_cured_female_inf_1y,0)+coalesce(s.mam_cured_female_sup_1y,0)",
+        "unit": "rapports de suivi",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "malnutrition_indicators",
+        "card_title": "Guérisons déclarées · MAM"
+      },
+      {
+        "key": "mam_abandonment",
+        "label": "Sorties/suivis MAM signalant : enfant non retrouvé",
+        "expression": "coalesce(s.mam_abandonment_male_inf_1y,0)+coalesce(s.mam_abandonment_male_sup_1y,0)+coalesce(s.mam_abandonment_female_inf_1y,0)+coalesce(s.mam_abandonment_female_sup_1y,0)",
+        "unit": "rapports de suivi",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "malnutrition_indicators"
+      },
+      {
+        "key": "mam_no_response",
+        "label": "Sorties/suivis MAM signalant : non-réponse au huitième suivi",
+        "expression": "coalesce(s.mam_no_response_male_inf_1y,0)+coalesce(s.mam_no_response_male_sup_1y,0)+coalesce(s.mam_no_response_female_inf_1y,0)+coalesce(s.mam_no_response_female_sup_1y,0)",
+        "unit": "rapports de suivi",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "malnutrition_indicators"
+      },
+      {
+        "key": "mas_cured",
+        "label": "Sorties/suivis MAS signalant : guérison",
+        "expression": "coalesce(s.mas_cured_male_inf_1y,0)+coalesce(s.mas_cured_male_sup_1y,0)+coalesce(s.mas_cured_female_inf_1y,0)+coalesce(s.mas_cured_female_sup_1y,0)",
+        "unit": "rapports de suivi",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "malnutrition_indicators"
+      },
+      {
+        "key": "mas_abandonment",
+        "label": "Sorties/suivis MAS signalant : enfant non retrouvé",
+        "expression": "coalesce(s.mas_abandonment_male_inf_1y,0)+coalesce(s.mas_abandonment_male_sup_1y,0)+coalesce(s.mas_abandonment_female_inf_1y,0)+coalesce(s.mas_abandonment_female_sup_1y,0)",
+        "unit": "rapports de suivi",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "malnutrition_indicators"
+      },
+      {
+        "key": "mas_no_response",
+        "label": "Sorties/suivis MAS signalant : non-réponse au huitième suivi",
+        "expression": "coalesce(s.mas_no_response_male_inf_1y,0)+coalesce(s.mas_no_response_male_sup_1y,0)+coalesce(s.mas_no_response_female_inf_1y,0)+coalesce(s.mas_no_response_female_sup_1y,0)",
+        "unit": "rapports de suivi",
+        "note": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+        "source": "malnutrition_indicators"
+      }
+    ],
+    "question": "Où se concentrent les signalements de malnutrition et les difficultés de suivi ?",
+    "method": "Les observations diagnostiques proviennent des consultations des moins de cinq ans ; elles ne donnent ni prévalence ni effectif courant d’enfants malnutris. Les sorties de suivi sont des rapports MAM/MAS, pas une cohorte d’admissions suivie jusqu’à sa sortie. Aucun taux de guérison n’est calculé en divisant les sorties par les diagnostics du même mois.",
+    "historical_charts": [
+      34
+    ],
+    "primary": [
+      "malnutrition",
+      "mam",
+      "mas",
+      "mam_cured"
+    ]
+  },
+  {
+    "key": "maternelle",
+    "title": "Santé maternelle",
+    "source": "mv_palu_sm_smi_tpig_indicators",
+    "grain": "cscom",
+    "metrics": [
+      {
+        "key": "pregnant",
+        "label": "Patientes avec grossesse confirmée déclarée",
+        "expression": "c.pregnant",
+        "unit": "patientes distinctes par CSCOM et mois",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "formview_pregnancy_registration + formview_pregnancy_confirmation",
+        "card_title": "Grossesses confirmées"
+      },
+      {
+        "key": "followup",
+        "label": "Suivis de grossesse déclarés",
+        "expression": "s.nbr_pregnant_followup",
+        "unit": "observations mensuelles",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "mv_palu_sm_smi_tpig_indicators",
+        "card_title": "Suivis de grossesse"
+      },
+      {
+        "key": "anc",
+        "label": "Suivis signalant une CPN réalisée",
+        "expression": "s.nber_patient_been_to_anc",
+        "unit": "observations mensuelles",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "mv_palu_sm_smi_tpig_indicators"
+      },
+      {
+        "key": "anc_no",
+        "label": "Grossesses avec CPN non réalisée déclarée",
+        "expression": "s.cpn_refered",
+        "unit": "observations mensuelles",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "mv_palu_sm_smi_tpig_indicators"
+      },
+      {
+        "key": "sp1",
+        "label": "Déclarations de première administration SP",
+        "expression": "s.nber_sp1_given",
+        "unit": "déclarations",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "mv_palu_sm_smi_tpig_indicators"
+      },
+      {
+        "key": "sp3_month",
+        "label": "Dossiers avec ≥3 administrations SP déclarées dans le même mois",
+        "expression": "s.women_received_at_least_3_sp",
+        "unit": "dossiers mensuels",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "mv_palu_sm_smi_tpig_indicators"
+      },
+      {
+        "key": "facility",
+        "label": "Accouchements en formation sanitaire déclarés",
+        "expression": "s.hf_delivery",
+        "unit": "dossiers par CSCOM et mois",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "mv_palu_sm_smi_tpig_indicators",
+        "card_title": "Accouchements en structure"
+      },
+      {
+        "key": "home",
+        "label": "Accouchements à domicile déclarés",
+        "expression": "s.home_delivery",
+        "unit": "dossiers par CSCOM et mois",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "mv_palu_sm_smi_tpig_indicators",
+        "card_title": "Accouchements à domicile"
+      },
+      {
+        "key": "death",
+        "label": "Décès maternels signalés dans la source de soins",
+        "expression": "s.number_maternal_deaths",
+        "unit": "déclarations",
+        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "source": "mv_palu_sm_smi_tpig_indicators"
+      }
+    ],
+    "question": "Où renforcer les CPN, le suivi de grossesse et l’orientation des accouchements ?",
+    "method": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+    "historical_charts": [
+      22,
+      37
+    ],
+    "primary": [
+      "pregnant",
+      "followup",
+      "facility",
+      "home"
+    ]
+  },
+  {
+    "key": "neonatale",
+    "title": "Santé néonatale",
+    "source": "mv_neonat_indicators_superset",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "newborn",
+        "label": "Enregistrements de nouveau-nés",
+        "expression": "s.nber_newborn",
+        "unit": "déclarations",
+        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+        "source": "mv_neonat_indicators_superset",
+        "card_title": "Enregistrements néonatals"
+      },
+      {
+        "key": "three_visits",
+        "label": "Suivis indiquant trois visites",
+        "expression": "s.newborn_with_3_visit",
+        "unit": "déclarations",
+        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+        "source": "mv_neonat_indicators_superset",
+        "card_title": "Trois visites signalées"
+      },
+      {
+        "key": "on_time",
+        "label": "Suivis déclarés dans les délais par la source",
+        "expression": "s.newborn_with_visits_on_time",
+        "unit": "déclarations",
+        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+        "source": "mv_neonat_indicators_superset",
+        "card_title": "Suivis déclarés à temps"
+      },
+      {
+        "key": "civil",
+        "label": "Déclarations à l’état civil signalées",
+        "expression": "s.newborn_declared_civil_status",
+        "unit": "déclarations",
+        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+        "source": "mv_neonat_indicators_superset",
+        "card_title": "État civil signalé"
+      },
+      {
+        "key": "certificate",
+        "label": "Actes de naissance signalés",
+        "expression": "s.newborn_with_birth_certificate",
+        "unit": "déclarations",
+        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+        "source": "mv_neonat_indicators_superset"
+      },
+      {
+        "key": "referred",
+        "label": "Références néonatales signalées",
+        "expression": "s.newborn_referred",
+        "unit": "déclarations",
+        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+        "source": "mv_neonat_indicators_superset"
+      },
+      {
+        "key": "death24",
+        "label": "Décès néonatals dans les 24 h signalés",
+        "expression": "s.newborn_died_in_24h",
+        "unit": "déclarations",
+        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+        "source": "mv_neonat_indicators_superset"
+      },
+      {
+        "key": "home",
+        "label": "Accouchements à domicile signalés dans les suivis néonatals",
+        "expression": "s.newborn_mother_given_birth_at_home",
+        "unit": "déclarations",
+        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+        "source": "mv_neonat_indicators_superset"
+      }
+    ],
+    "question": "Où renforcer le suivi des nouveau-nés et les démarches d’état civil ?",
+    "method": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+    "historical_charts": [
+      38
+    ],
+    "primary": [
+      "newborn",
+      "three_visits",
+      "on_time",
+      "civil"
+    ]
+  },
+  {
+    "key": "planification",
+    "title": "Planification familiale",
+    "source": "mv_family_planning_summary_superset",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "counseling",
+        "label": "Counselings PF enregistrés",
+        "expression": "s.fp_counseling",
+        "unit": "déclarations",
+        "note": "La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
+        "source": "mv_family_planning_summary_superset",
+        "card_title": "Counselings PF"
+      },
+      {
+        "key": "new_user",
+        "label": "Nouvelles utilisations de méthode déclarées",
+        "expression": "s.fp_new_user",
+        "unit": "déclarations",
+        "note": "La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
+        "source": "mv_family_planning_summary_superset",
+        "card_title": "Nouvelles utilisations"
+      },
+      {
+        "key": "users",
+        "label": "Utilisations de méthode enregistrées dans la source",
+        "expression": "s.fp_total_user",
+        "unit": "déclarations",
+        "note": "La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
+        "source": "mv_family_planning_summary_superset",
+        "card_title": "Utilisations enregistrées"
+      }
+    ],
+    "question": "Où renforcer le conseil et l’accompagnement en planification familiale ?",
+    "method": "La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
+    "historical_charts": [
+      39
+    ],
+    "primary": [
+      "counseling",
+      "new_user",
+      "users"
+    ]
+  },
+  {
+    "key": "paludisme",
+    "title": "Paludisme et soins des plus de 5 ans",
+    "source": "mv_over5_pregnant_malaria_superset",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "fever",
+        "label": "Cas de fièvre enregistrés · plus de 5 ans et grossesse",
+        "expression": "s.total_fever_cases",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset",
+        "card_title": "Fièvres enregistrées"
+      },
+      {
+        "key": "tested",
+        "label": "TDR réalisés enregistrés",
+        "expression": "s.total_rdt_realized",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset",
+        "card_title": "TDR réalisés"
+      },
+      {
+        "key": "positive",
+        "label": "TDR positifs enregistrés",
+        "expression": "s.total_rdt_positive",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset",
+        "card_title": "TDR positifs"
+      },
+      {
+        "key": "negative",
+        "label": "TDR négatifs enregistrés",
+        "expression": "s.total_rdt_negative",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset",
+        "card_title": "TDR négatifs"
+      },
+      {
+        "key": "pregnant",
+        "label": "Cas de paludisme pendant la grossesse enregistrés",
+        "expression": "s.total_malaria_cases_pregnant_women",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset"
+      },
+      {
+        "key": "pregnant_cta",
+        "label": "Traitements CTA pendant la grossesse enregistrés",
+        "expression": "s.malaria_cases_pregnant_treated_by_cta",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset"
+      },
+      {
+        "key": "other_cta",
+        "label": "Traitements CTA hors grossesse enregistrés",
+        "expression": "s.malaria_cases_other_treated_by_cta",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset"
+      },
+      {
+        "key": "over5",
+        "label": "Cas de paludisme des plus de 5 ans enregistrés",
+        "expression": "s.total_malaria_cases_over5",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset"
+      },
+      {
+        "key": "over5_ref",
+        "label": "Références paludisme des plus de 5 ans",
+        "expression": "s.total_malaria_cases_over5_referred",
+        "unit": "déclarations",
+        "note": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+        "source": "mv_over5_pregnant_malaria_superset"
+      }
+    ],
+    "question": "Où se concentrent les cas de fièvre, les TDR positifs et les besoins de référence ?",
+    "method": "Ce tableau couvre les soins des plus de cinq ans et la grossesse, selon le périmètre de la source historique ; les moins de cinq ans figurent dans le tableau PEC enfant. Les volumes représentent des observations/épisodes et non une incidence populationnelle. Aucun taux de traitement ou de référence n’est calculé entre des cohortes non appariées.",
+    "historical_charts": [
+      62,
+      63
+    ],
+    "primary": [
+      "fever",
+      "tested",
+      "positive",
+      "negative"
+    ]
+  },
+  {
+    "key": "references",
+    "title": "Références et continuité des soins",
+    "source": "mv_over5_pregnant_malaria_superset",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "pregnant_ref",
+        "label": "Références de femmes enceintes enregistrées",
+        "expression": "s.total_pregnant_women_referred",
+        "unit": "déclarations",
+        "note": "Les références initiales et les suivis d’arrivée ne sont pas reliés ici par un identifiant d’épisode. Une arrivée du mois peut concerner une référence ancienne ; absence de suivi enregistré ne prouve pas absence d’arrivée. Aucun taux de référence aboutie ni soustraction « référées moins arrivées » n’est calculé. Les signaux sont des volumes pour orienter la vérification, pas une liste de patients à relancer.",
+        "source": "mv_over5_pregnant_malaria_superset",
+        "card_title": "Références grossesse"
+      },
+      {
+        "key": "pregnant_arrived",
+        "label": "Suivis grossesse signalant une arrivée au CSCOM",
+        "expression": "s.total_pregnant_women_reached_cscom",
+        "unit": "déclarations",
+        "note": "Les références initiales et les suivis d’arrivée ne sont pas reliés ici par un identifiant d’épisode. Une arrivée du mois peut concerner une référence ancienne ; absence de suivi enregistré ne prouve pas absence d’arrivée. Aucun taux de référence aboutie ni soustraction « référées moins arrivées » n’est calculé. Les signaux sont des volumes pour orienter la vérification, pas une liste de patients à relancer.",
+        "source": "mv_over5_pregnant_malaria_superset",
+        "card_title": "Arrivées signalées"
+      },
+      {
+        "key": "pregnant_not_completed",
+        "label": "Suivis grossesse signalés non aboutis",
+        "expression": "s.total_pregnant_women_referred_not_completed",
+        "unit": "déclarations",
+        "note": "Les références initiales et les suivis d’arrivée ne sont pas reliés ici par un identifiant d’épisode. Une arrivée du mois peut concerner une référence ancienne ; absence de suivi enregistré ne prouve pas absence d’arrivée. Aucun taux de référence aboutie ni soustraction « référées moins arrivées » n’est calculé. Les signaux sont des volumes pour orienter la vérification, pas une liste de patients à relancer.",
+        "source": "mv_over5_pregnant_malaria_superset",
+        "card_title": "Suivis non aboutis"
+      },
+      {
+        "key": "malaria_ref",
+        "label": "Références paludisme pendant la grossesse",
+        "expression": "s.total_malaria_pregnant_women_referred",
+        "unit": "déclarations",
+        "note": "Les références initiales et les suivis d’arrivée ne sont pas reliés ici par un identifiant d’épisode. Une arrivée du mois peut concerner une référence ancienne ; absence de suivi enregistré ne prouve pas absence d’arrivée. Aucun taux de référence aboutie ni soustraction « référées moins arrivées » n’est calculé. Les signaux sont des volumes pour orienter la vérification, pas une liste de patients à relancer.",
+        "source": "mv_over5_pregnant_malaria_superset",
+        "card_title": "Références palu · grossesse"
+      },
+      {
+        "key": "malaria_arrived",
+        "label": "Suivis paludisme grossesse signalant une arrivée au CSCOM",
+        "expression": "s.total_malaria_pregnant_reached_cscom",
+        "unit": "déclarations",
+        "note": "Les références initiales et les suivis d’arrivée ne sont pas reliés ici par un identifiant d’épisode. Une arrivée du mois peut concerner une référence ancienne ; absence de suivi enregistré ne prouve pas absence d’arrivée. Aucun taux de référence aboutie ni soustraction « référées moins arrivées » n’est calculé. Les signaux sont des volumes pour orienter la vérification, pas une liste de patients à relancer.",
+        "source": "mv_over5_pregnant_malaria_superset"
+      },
+      {
+        "key": "danger_over5",
+        "label": "Références pour signe de danger · source plus de 5 ans",
+        "expression": "coalesce(s.sign_danger_referred_male,0)+coalesce(s.sign_danger_referred_female,0)",
+        "unit": "déclarations",
+        "note": "Les références initiales et les suivis d’arrivée ne sont pas reliés ici par un identifiant d’épisode. Une arrivée du mois peut concerner une référence ancienne ; absence de suivi enregistré ne prouve pas absence d’arrivée. Aucun taux de référence aboutie ni soustraction « référées moins arrivées » n’est calculé. Les signaux sont des volumes pour orienter la vérification, pas une liste de patients à relancer.",
+        "source": "mv_over5_pregnant_malaria_superset"
+      },
+      {
+        "key": "tb",
+        "label": "Références pour suspicion de tuberculose",
+        "expression": "coalesce(s.suspicion_tb_referred_male,0)+coalesce(s.suspicion_tb_referred_female,0)",
+        "unit": "déclarations",
+        "note": "Les références initiales et les suivis d’arrivée ne sont pas reliés ici par un identifiant d’épisode. Une arrivée du mois peut concerner une référence ancienne ; absence de suivi enregistré ne prouve pas absence d’arrivée. Aucun taux de référence aboutie ni soustraction « référées moins arrivées » n’est calculé. Les signaux sont des volumes pour orienter la vérification, pas une liste de patients à relancer.",
+        "source": "mv_over5_pregnant_malaria_superset"
+      }
+    ],
+    "question": "Où investiguer les références et les arrivées au centre de santé ?",
+    "method": "Les références initiales et les suivis d’arrivée ne sont pas reliés ici par un identifiant d’épisode. Une arrivée du mois peut concerner une référence ancienne ; absence de suivi enregistré ne prouve pas absence d’arrivée. Aucun taux de référence aboutie ni soustraction « référées moins arrivées » n’est calculé. Les signaux sont des volumes pour orienter la vérification, pas une liste de patients à relancer.",
+    "historical_charts": [
+      62
+    ],
+    "primary": [
+      "pregnant_ref",
+      "pregnant_arrived",
+      "pregnant_not_completed",
+      "malaria_ref"
+    ]
+  },
+  {
+    "key": "pec-enfant",
+    "title": "Consultations et morbidités des moins de 5 ans",
+    "source": "mv_pec_u5_indicators_shared",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "new_consult",
+        "label": "Nouvelles consultations enregistrées",
+        "expression": "coalesce(s.new_healing_consultations_under_5_male,0)+coalesce(s.new_healing_consultations_under_5_female,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared",
+        "card_title": "Nouvelles consultations"
+      },
+      {
+        "key": "old_consult",
+        "label": "Consultations de suivi enregistrées",
+        "expression": "coalesce(s.old_healing_consultations_under_5_male,0)+coalesce(s.old_healing_consultations_under_5_female,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared",
+        "card_title": "Consultations de suivi"
+      },
+      {
+        "key": "malaria_suspected",
+        "label": "Observations de suspicion de paludisme",
+        "expression": "coalesce(s.suspicion_malaria_male_inf_1y,0)+coalesce(s.suspicion_malaria_male_sup_1y,0)+coalesce(s.suspicion_malaria_female_inf_1y,0)+coalesce(s.suspicion_malaria_female_sup_1y,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared",
+        "card_title": "Suspicions de paludisme"
+      },
+      {
+        "key": "malaria_simple",
+        "label": "Observations de paludisme simple",
+        "expression": "coalesce(s.simple_malaria_male_inf_1y,0)+coalesce(s.simple_malaria_male_sup_1y,0)+coalesce(s.simple_malaria_female_inf_1y,0)+coalesce(s.simple_malaria_female_sup_1y,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared",
+        "card_title": "Paludisme simple signalé"
+      },
+      {
+        "key": "diarrhea",
+        "label": "Observations de diarrhée",
+        "expression": "coalesce(s.diarrhea_male_inf_1y,0)+coalesce(s.diarrhea_male_sup_1y,0)+coalesce(s.diarrhea_female_inf_1y,0)+coalesce(s.diarrhea_female_sup_1y,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared"
+      },
+      {
+        "key": "pneumonia",
+        "label": "Observations de pneumonie",
+        "expression": "coalesce(s.pneumonia_male_inf_1y,0)+coalesce(s.pneumonia_male_sup_1y,0)+coalesce(s.pneumonia_female_inf_1y,0)+coalesce(s.pneumonia_female_sup_1y,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared"
+      },
+      {
+        "key": "cough",
+        "label": "Observations de toux/rhume",
+        "expression": "coalesce(s.cough_cold_male_inf_1y,0)+coalesce(s.cough_cold_male_sup_1y,0)+coalesce(s.cough_cold_female_inf_1y,0)+coalesce(s.cough_cold_female_sup_1y,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared"
+      },
+      {
+        "key": "danger_ref",
+        "label": "Références pour signe de danger enregistrées",
+        "expression": "coalesce(s.sign_danger_referred_male,0)+coalesce(s.sign_danger_referred_female,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared"
+      },
+      {
+        "key": "other_ref",
+        "label": "Autres références enregistrées",
+        "expression": "coalesce(s.other_male_referred_by_chw,0)+coalesce(s.other_female_referred_by_chw,0)",
+        "unit": "déclarations",
+        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+        "source": "mv_pec_u5_indicators_shared"
+      }
+    ],
+    "question": "Où renforcer la prise en charge des enfants malades et la vigilance sur les signes de danger ?",
+    "method": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+    "historical_charts": [
+      34,
+      35,
+      64
+    ],
+    "primary": [
+      "new_consult",
+      "old_consult",
+      "malaria_suspected",
+      "malaria_simple"
+    ]
+  },
+  {
+    "key": "promotion",
+    "title": "Promotion de la santé et WASH",
+    "source": "form_metadata + couchdb (rapports uniques de communication)",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "communications",
+        "label": "Communications de proximité enregistrées",
+        "expression": "s.communications",
+        "unit": "activités",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)",
+        "card_title": "Communications"
+      },
+      {
+        "key": "promotion_visits",
+        "label": "Visites à domicile promotionnelles déclarées",
+        "expression": "s.promotion_visits",
+        "unit": "activités",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)",
+        "card_title": "VAD promotionnelles"
+      },
+      {
+        "key": "talks",
+        "label": "Causeries enregistrées",
+        "expression": "s.talks",
+        "unit": "activités",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)",
+        "card_title": "Causeries"
+      },
+      {
+        "key": "men",
+        "label": "Participations masculines déclarées aux visites",
+        "expression": "s.men",
+        "unit": "participations",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "women",
+        "label": "Participations féminines déclarées aux visites",
+        "expression": "s.women",
+        "unit": "participations",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_malaria",
+        "label": "Communications abordant : Paludisme",
+        "expression": "s.theme_malaria",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_vaccination",
+        "label": "Communications abordant : Vaccination",
+        "expression": "s.theme_vaccination",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_hiv",
+        "label": "Communications abordant : VIH",
+        "expression": "s.theme_hiv",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_tuberculosis",
+        "label": "Communications abordant : Tuberculose",
+        "expression": "s.theme_tuberculosis",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_nutrition",
+        "label": "Communications abordant : Nutrition",
+        "expression": "s.theme_nutrition",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_wash",
+        "label": "Communications abordant : WASH",
+        "expression": "s.theme_wash",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)",
+        "card_title": "Communications WASH"
+      },
+      {
+        "key": "theme_family_planning",
+        "label": "Communications abordant : Planification familiale",
+        "expression": "s.theme_family_planning",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_anc",
+        "label": "Communications abordant : CPN",
+        "expression": "s.theme_anc",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_ira",
+        "label": "Communications abordant : Infections respiratoires",
+        "expression": "s.theme_ira",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "theme_diarrhea",
+        "label": "Communications abordant : Diarrhée",
+        "expression": "s.theme_diarrhea",
+        "unit": "séances multithématiques",
+        "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+        "source": "form_metadata + couchdb (rapports uniques de communication)"
+      }
+    ],
+    "question": "Quels territoires déclarent des activités promotionnelles, et sur quels sujets ?",
+    "method": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+    "historical_charts": [
+      20,
+      21,
+      41
+    ],
+    "primary": [
+      "communications",
+      "promotion_visits",
+      "talks",
+      "theme_wash"
+    ]
+  },
+  {
+    "key": "enregistrements",
+    "title": "Inscriptions et population enregistrée",
+    "source": "couchdb (contacts uniques, quatre types historiques)",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "villages",
+        "label": "Villages créés selon les critères historiques",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c70_village' AND created_by NOT ILIKE '%formation%')",
+        "unit": "enregistrements",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)",
+        "card_title": "Villages créés"
+      },
+      {
+        "key": "concessions",
+        "label": "Concessions créées selon les critères historiques",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c80_concession' AND created_by LIKE '%asc%')",
+        "unit": "enregistrements",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)",
+        "card_title": "Concessions créées"
+      },
+      {
+        "key": "households",
+        "label": "Ménages créés selon les critères historiques",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c90_household' AND created_by LIKE '%asc%')",
+        "unit": "enregistrements",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)",
+        "card_title": "Ménages créés"
+      },
+      {
+        "key": "members",
+        "label": "Membres créés selon les critères historiques",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND created_by LIKE '%asc%')",
+        "unit": "enregistrements",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)",
+        "card_title": "Membres inscrits"
+      },
+      {
+        "key": "age_inf1_male",
+        "label": "Inscriptions · Moins de 1 an · sexe masculin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='inf1' AND sex='male')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_inf1_female",
+        "label": "Inscriptions · Moins de 1 an · sexe féminin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='inf1' AND sex='female')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_inf1_unknown",
+        "label": "Inscriptions · Moins de 1 an · sexe non renseigné",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='inf1' AND sex='unknown')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_1_5_male",
+        "label": "Inscriptions · 1–5 ans · sexe masculin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='1_5' AND sex='male')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_1_5_female",
+        "label": "Inscriptions · 1–5 ans · sexe féminin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='1_5' AND sex='female')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_1_5_unknown",
+        "label": "Inscriptions · 1–5 ans · sexe non renseigné",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='1_5' AND sex='unknown')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_6_12_male",
+        "label": "Inscriptions · 6–12 ans · sexe masculin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='6_12' AND sex='male')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_6_12_female",
+        "label": "Inscriptions · 6–12 ans · sexe féminin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='6_12' AND sex='female')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_6_12_unknown",
+        "label": "Inscriptions · 6–12 ans · sexe non renseigné",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='6_12' AND sex='unknown')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_13_19_male",
+        "label": "Inscriptions · 13–19 ans · sexe masculin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='13_19' AND sex='male')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_13_19_female",
+        "label": "Inscriptions · 13–19 ans · sexe féminin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='13_19' AND sex='female')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_13_19_unknown",
+        "label": "Inscriptions · 13–19 ans · sexe non renseigné",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='13_19' AND sex='unknown')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_20plus_male",
+        "label": "Inscriptions · 20 ans ou plus · sexe masculin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='20plus' AND sex='male')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_20plus_female",
+        "label": "Inscriptions · 20 ans ou plus · sexe féminin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='20plus' AND sex='female')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_20plus_unknown",
+        "label": "Inscriptions · 20 ans ou plus · sexe non renseigné",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='20plus' AND sex='unknown')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_unknown_male",
+        "label": "Inscriptions · Âge non renseigné/invalide · sexe masculin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='unknown' AND sex='male')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_unknown_female",
+        "label": "Inscriptions · Âge non renseigné/invalide · sexe féminin",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='unknown' AND sex='female')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      },
+      {
+        "key": "age_unknown_unknown",
+        "label": "Inscriptions · Âge non renseigné/invalide · sexe non renseigné",
+        "expression": "COUNT(*) FILTER (WHERE contact_type='c92_household' AND age_group='unknown' AND sex='unknown')",
+        "unit": "contacts uniques par mois",
+        "note": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+        "source": "couchdb (contacts uniques, quatre types historiques)"
+      }
+    ],
+    "question": "Où progresse l’enregistrement des ménages et des personnes ?",
+    "method": "Les créations sont recalculées sur les identifiants uniques des contacts (village, concession, ménage, membre), avant le rattachement géographique. Les filtres historiques de créateur sont conservés : villages hors comptes contenant formation, autres types avec créateur contenant asc. Ces créations ne sont pas un recensement. Le détail âge/sexe porte sur les membres uniques, tous créateurs confondus, classés par mois d’inscription et âge renseigné au dossier ; il ne mesure pas la population actuelle. Les tranches sont exclusives : moins de 1 an, 1–5, 6–12, 13–19, 20 ans ou plus. Les âges/sexes manquants restent visibles.",
+    "historical_charts": [
+      12,
+      13,
+      14,
+      16
+    ],
+    "primary": [
+      "villages",
+      "concessions",
+      "households",
+      "members"
+    ]
+  }
+]

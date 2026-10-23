@@ -94,3 +94,7 @@ peut rester en place pour faciliter un retour arrière. Ne pas restaurer toute
 la base de métadonnées pour une simple modification de V2.
 
 Documentation : [filtres et tableaux Superset](https://superset.apache.org/docs/using-superset/creating-your-first-dashboard/).
+
+## Tableaux thématiques
+
+Le [lot 4 — tableaux thématiques ASC](README-THEMES.md) complète ce pilotage avec dix thèmes cliniques et communautaires, leurs méthodes et leurs exports territoriaux.

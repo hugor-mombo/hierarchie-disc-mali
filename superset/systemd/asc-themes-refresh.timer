@@ -1,0 +1,10 @@
+[Unit]
+Description=Actualisation des tableaux thématiques ASC toutes les six heures
+
+[Timer]
+OnCalendar=*-*-* 02,08,14,20:35:00 UTC
+RandomizedDelaySec=120
+Persistent=true
+
+[Install]
+WantedBy=timers.target
