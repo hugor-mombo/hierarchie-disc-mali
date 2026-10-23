@@ -190,3 +190,46 @@ au SQL. Les accès régionaux et le refus par défaut ont été vérifiés sur l
 21 datasets. Les exports hors région sont vides, y compris la liste zéro dose.
 Les dix synthèses, les filtres en cascade et le dictionnaire ont été inspectés
 dans le navigateur. Le minuteur dédié est activé, sans changer les autres minuteurs.
+
+## Correction du paludisme simple des moins de cinq ans — 23 octobre 2026
+
+Le compteur `malaria_simple` utilise la classification native explicitement
+positive `has_malaria = 'yes'` du formulaire, avec âge renseigné entre 0 et moins
+de 5 ans. Il décrit des consultations classées paludisme, sans attester un
+traitement CTA. Le champ de traitement antérieur `nb_days_cta_treatment`,
+conditionnel dans le formulaire, ne sert plus à exclure ces premières consultations.
+L’audit retrouve notamment 6647 TDR positifs et 6451 classifications paludisme
+brutes en septembre 2026, avant déduplication et rattachement, alors que l’ancien
+compteur préparé était à zéro. Tous ces TDR positifs ont un nombre de jours de
+traitement CTA antérieur absent. Ces effectifs bruts ne sont pas le total final
+affiché et ne constituent pas des enfants uniques.
+
+`sql/themes/malaria_u5.sql` retient la dernière évaluation par enfant et date de
+consultation déclarée (sinon date du rapport). Les derniers horodatages ex æquo
+restent exclus comme ambigus ; un enfant sans identifiant ne fusionne pas avec
+les autres dossiers anonymes : chaque rapport conserve sa clé. Les âges absents,
+invalides ou hors [0,5[ ne sont pas comptés comme moins de cinq ans. Une réponse
+absente ne devient pas un diagnostic positif ; aucune classification clinique
+n’est recalculée à partir d’une simple suspicion ou d’un TDR isolé.
+
+La projection finale ne contient que les volumes par site et mois, jamais les
+identifiants patients. Les mois/sites manquants dans la source historique sont
+conservés ; leurs autres compteurs restent NULL. Les autres compteurs existants
+sont inchangés, ce que vérifie une référence mensuelle avant/après.
+
+Le tableau, ses filtres, son audience, ses RLS et ses identifiants de graphiques
+restent les mêmes. `update_malaria_method.py` met seulement ses deux notes de
+méthode à jour, sans reprovisionner les autres tableaux. Les prochaines exécutions
+de `provision_themes.py` utilisent aussi la méthode corrigée du catalogue.
+
+```sh
+docker exec superset_app python /app/superset_config/asc-v2/verify_malaria_u5.py --save-baseline /tmp/malaria-baseline.json
+docker exec superset_app python /app/superset_config/asc-v2/refresh_themes.py --only pec-enfant
+docker exec superset_app python /app/superset_config/asc-v2/update_malaria_method.py
+docker exec superset_app python /app/superset_config/asc-v2/verify_malaria_u5.py --baseline /tmp/malaria-baseline.json
+docker exec superset_app python /app/superset_config/asc-v2/validate_themes.py --only pec-enfant --source
+docker exec superset_app python /app/superset_config/asc-v2/verify_themes_access.py --only pec-enfant --readers
+```
+
+Le timer thématique existant réutilise cette correction aux actualisations suivantes.
+Les vues cliniques d’origine et les flux OpenFn ne sont pas modifiés par cette correction.

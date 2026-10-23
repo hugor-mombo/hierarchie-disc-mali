@@ -1,0 +1,36 @@
+{
+  "audit_date": "2026-10-23",
+  "dashboard_slug": "asc-theme-pec-enfant",
+  "indicator": "malaria_simple",
+  "classification_field": "fields.has_malaria",
+  "form_bindings": [
+    {
+      "nodeset": "/patient_assessment_under_5/has_malaria",
+      "type": "string",
+      "calculate": "if( /patient_assessment_under_5/RDT_indication_sample/tdr_result  = 'positive' and  /patient_assessment_under_5/ferver_persist_3_days_after_cta  = 'no' and  /patient_assessment_under_5/fever/has_rashes  = 'no', 'yes', 'no')"
+    },
+    {
+      "nodeset": "/patient_assessment_under_5/complaints_history/nb_days_cta_treatment",
+      "type": "int",
+      "constraint": ".>0 and .<=15",
+      "{http://openrosa.org/javarosa}requiredMsg": "jr:itext('/patient_assessment_under_5/complaints_history/nb_days_cta_treatment:jr:requiredMsg')",
+      "relevant": " /patient_assessment_under_5/complaints_history/cta_treatment  = 'yes' and  /patient_assessment_under_5/complaints_history/has_positif_tdr_past_15  = 'yes' and  /patient_assessment_under_5/inputs/user/role  != 'oca'",
+      "required": "true()",
+      "{http://openrosa.org/javarosa}constraintMsg": "jr:itext('/patient_assessment_under_5/complaints_history/nb_days_cta_treatment:jr:constraintMsg')"
+    },
+    {
+      "nodeset": "/patient_assessment_under_5/out/rdt_treatment_cta_under_5",
+      "type": "string",
+      "calculate": "if(( /patient_assessment_under_5/constant/constant_temperature  >=37.5 or  /patient_assessment_under_5/complaints_history/has_history_hot_body_touch  = 'yes') and  /patient_assessment_under_5/RDT_indication_sample/tdr_result  = 'positive' and  /patient_assessment_under_5/summary/treatment_group/give_artemether  = 'yes' and  /patient_assessment_under_5/fever/has_rashes  = 'no', 'yes', 'no')"
+    }
+  ],
+  "september_2026_before_deduplication": {
+    "positive_rdt_reports": 6647,
+    "positive_rdt_reports_without_prior_cta_days": 6647,
+    "native_malaria_positive_reports": 6451,
+    "native_cta_positive_reports": 6340,
+    "previous_snapshot_malaria_simple": 0
+  },
+  "legacy_counting_issue": "The historical formula also counts a user-parent alias _id as a distinct UUID, instead of a report UUID. The corrected counter uses the true report UUID and encounter-day recency.",
+  "scope": "Only the malaria_simple thematic counter is corrected; other monthly counters are compared before and after. Clinical source views and interoperability jobs are unchanged."
+}

@@ -600,10 +600,10 @@
       {
         "key": "malaria_simple",
         "label": "Observations de paludisme simple",
-        "expression": "coalesce(s.simple_malaria_male_inf_1y,0)+coalesce(s.simple_malaria_male_sup_1y,0)+coalesce(s.simple_malaria_female_inf_1y,0)+coalesce(s.simple_malaria_female_sup_1y,0)",
+        "expression": "c.malaria_simple",
         "unit": "déclarations",
-        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
-        "source": "mv_pec_u5_indicators_shared",
+        "note": "Classification paludisme explicitement déclarée (has_malaria = yes) dans les évaluations des moins de 5 ans. Dernière évaluation par enfant et jour de consultation ; les dernières évaluations de même horodatage sont exclues comme ambiguës. Sans identifiant enfant, le rapport reste une observation distincte. Âge renseigné entre 0 et moins de 5 ans. Date de consultation déclarée, sinon date du rapport. Ce compteur ne prouve pas un traitement par CTA et ne déduit pas un diagnostic d’un champ absent.",
+        "source": "formview_patient_assessment_under_5 · classification native has_malaria",
         "card_title": "Paludisme simple signalé"
       },
       {
@@ -648,7 +648,7 @@
       }
     ],
     "question": "Où renforcer la prise en charge des enfants malades et la vigilance sur les signes de danger ?",
-    "method": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
+    "method": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé. Le paludisme simple utilise maintenant la classification native has_malaria = yes, sur la dernière évaluation par enfant et jour de consultation (âge renseigné < 5 ans). Les ex æquo de dernière date sont exclus ; sans identifiant enfant, chaque rapport reste distinct. Aucun traitement CTA n’est déduit. Les autres compteurs restent issus de la source historique.",
     "historical_charts": [
       34,
       35,

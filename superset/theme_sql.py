@@ -15,6 +15,17 @@ def raw_source_sql(theme):
     entity="concat(coalesce(s.region_uuid,'?'),'|',coalesce(s.district_uuid,'?'),'|',coalesce(s.health_area_uuid,'?'))" if theme['grain']=='cscom' else 's.chw_site_uuid'
     def projection(items):
         return ',\n'.join('('+expression+')::numeric AS '+name for name,expression in items)
+    if key=='pec-enfant':
+        corrected=(ROOT/'sql/themes/malaria_u5.sql').read_text()
+        legacy_projection=projection([(m['key'],m['expression']) for m in metrics if m['key']!='malaria_simple'])
+        items=','.join(('coalesce(c.malaria_simple,0)' if m['key']=='malaria_simple' else 's.'+m['key'])+'::numeric AS '+m['key'] for m in metrics)
+        return ('WITH corrected AS ('+corrected+"""), legacy AS (
+          SELECT """+entity+""" AS entity_uuid,s.reported_month,"""+legacy_projection+"""
+          FROM public."""+theme['source']+""" s WHERE """+period+"""), periods AS (
+          SELECT entity_uuid,reported_month FROM corrected UNION SELECT entity_uuid,reported_month FROM legacy)
+          SELECT p.entity_uuid,p.reported_month,"""+items+""" FROM periods p
+          LEFT JOIN legacy s ON s.entity_uuid IS NOT DISTINCT FROM p.entity_uuid AND s.reported_month=p.reported_month
+          LEFT JOIN corrected c ON c.entity_uuid IS NOT DISTINCT FROM p.entity_uuid AND c.reported_month=p.reported_month""")
     if key=='maternelle':
         corrected=(ROOT/'sql/themes/maternal_confirmed.sql').read_text()
         items=','.join(('c.pregnant' if m['key']=='pregnant' else 's.'+m['expression'].split('.')[-1])+ '::numeric AS '+m['key'] for m in metrics)
