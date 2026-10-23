@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from uuid import UUID, uuid5
 from superset.app import create_app
+from dashboard_branding import brand_primary_dashboards
 
 ROOT = Path(__file__).resolve().parent
 NAMESPACE = UUID('a88972a5-b85f-4772-92cf-8ff98e473283')
@@ -291,6 +292,7 @@ Référence : [définition opérationnelle zéro dose — OMS](https://www.who.i
 .dashboard-component-chart-holder {border:1px solid #e3eaf3;border-radius:10px;}
 .dashboard-markdown h2 {color:#153854;}
 '''
+    brand_primary_dashboards(db.session)
     db.session.commit()
     print(json.dumps(dict(id=dash.id,slug=dash.slug,published=dash.published,
         datasets={'accounts':accounts.id,'children':children.id,'geography':geography.id},

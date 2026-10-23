@@ -1,0 +1,82 @@
+/* Scoped to the Mali emblem: tables, indicators and other Markdown are unaffected. */
+.dashboard-markdown:has(img[alt="Armoiries de la République du Mali"]) {
+  color: #17324d;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  position: relative;
+  padding: 12px 20px;
+  border: 1px solid #dce6ec;
+  border-radius: 10px;
+  background: linear-gradient(105deg, #ffffff 55%, #f1f8f5);
+  box-shadow: 0 2px 6px rgb(23 50 77 / 4%);
+  overflow: hidden;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"])::after {
+  content: "";
+  position: absolute;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to right, #21864d 0% 33.33%, #e8bd35 33.33% 66.66%, #b94944 66.66% 100%);
+}
+.dashboard-markdown img[alt="Armoiries de la République du Mali"] {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  flex: 0 0 64px;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > div {
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.45;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > div > strong {
+  color: #526779;
+  font-size: 11px;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > div > b {
+  color: #17324d;
+  font-size: 19px;
+  font-weight: 650;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > div > span {
+  color: #526779;
+  font-size: 12px;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > p {
+  flex: 0 0 auto;
+  margin: 0;
+  text-align: right;
+  line-height: 1.7;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > p > strong {
+  display: inline-block;
+  padding: 2px 10px;
+  border: 1px solid #d3e8dc;
+  border-radius: 20px;
+  background: #eaf5ee;
+  color: #236044;
+  font-size: 12px;
+}
+.dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > p > em {
+  color: #65788a;
+  font-size: 11px;
+  font-style: normal;
+}
+@media (max-width: 800px) {
+  .dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) {gap: 12px; padding: 10px 12px;}
+  .dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > p {max-width: 140px;}
+  .dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > div > span {display: none;}
+}
+@media (max-width: 560px) {
+  .dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > p > em {display: none;}
+  .dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > div > strong {font-size: 9px; letter-spacing: .5px;}
+  .dashboard-markdown div:has(> img[alt="Armoiries de la République du Mali"]) > div > b {font-size: 15px;}
+}

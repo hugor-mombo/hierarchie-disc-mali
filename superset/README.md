@@ -113,3 +113,8 @@ Le lot [Géolocalisation et classements](README-GEO-CLASSEMENTS.md) ajoute les c
 GPS et exports, les top 10 et listes d’appui, avec critères, effectifs minimums
 et restrictions territoriales appliqués avant classement. Les résultats concernent
 DISC ; ASA reste une source distincte.
+
+## Identité visuelle
+
+Le [bandeau institutionnel Mali](branding/README.md) est partagé par les tableaux
+ASC et SD, avec repères de source DISC / ASA et visuel hébergé sur le même domaine.

@@ -3,6 +3,7 @@ import argparse
 import json
 from uuid import UUID,uuid5
 from superset.app import create_app
+from dashboard_branding import brand_primary_dashboards
 from theme_sql import CATALOG,NS,table_name
 parser=argparse.ArgumentParser()
 parser.add_argument('--publish',action='store_true')
@@ -228,5 +229,6 @@ Les sources historiques sont conservées et les corrections de présentation son
  hub.row(q,'availability',[('availability',12)],70)
  hub.finish(filters_for(hub))
  assert historical_snapshot==(history.position_json,history.json_metadata,[s.id for s in history.slices],history.published),'Historical dashboard modified'
+ brand_primary_dashboards(db.session)
  db.session.commit()
  print(json.dumps(dict(status='OK',published=args.publish,datasets=len(new_datasets),dashboards=reports),ensure_ascii=False),flush=True)

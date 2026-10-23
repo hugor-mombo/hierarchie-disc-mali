@@ -2,6 +2,7 @@
 import argparse
 import json
 from superset.app import create_app
+from dashboard_branding import brand_primary_dashboards
 from sd_catalog import ROOT,SOURCES,FRESHNESS,uid,sql
 parser=argparse.ArgumentParser()
 parser.add_argument('--publish',action='store_true')
@@ -209,5 +210,6 @@ Supervisions 2019–2025, exports natifs ASA et indicateurs FM/GAVI disponibles 
  b.finish([])
  for d in db.session.query(Dashboard).filter(Dashboard.id.in_([1,2])).all():
   assert originals[d.id]==(d.position_json,d.json_metadata,[c.id for c in d.slices],d.published),'Historical dashboard changed'
+ brand_primary_dashboards(db.session)
  db.session.commit()
  print(json.dumps(dict(status='OK',published=args.publish,datasets={k:d.id for k,d in datasets.items()},dashboards=reports),ensure_ascii=False),flush=True)

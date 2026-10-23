@@ -1,0 +1,8 @@
+{
+  "asset": "armoiries-mali-87405e53.png",
+  "source_repository": "config-moh-mali-chw",
+  "source_path": "branding/mali.png",
+  "source_commit": "67a690e96f666ee53d4f1c7395914fc632ebd10f",
+  "sha256": "87405e53f11a45e811db7ff0b2038b748acf50f9cef9799a85a6cf61b6668bc0",
+  "transformation": "Aucune : fichier repris à l’identique, dimensions d’affichage définies en CSS."
+}

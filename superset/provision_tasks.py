@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from uuid import UUID, uuid5
 from superset.app import create_app
+from dashboard_branding import brand_primary_dashboards
 
 ROOT=Path(__file__).resolve().parent
 NS=UUID('c5e388d0-45bc-47d7-ae63-9eb53b2abbde')
@@ -264,6 +265,7 @@ Références techniques : [analyse des tâches CHT](https://docs.communityhealth
 .dashboard-markdown h2 {color:#153854;}
 .dashboard-markdown {color:#334e68;}
 '''
+ brand_primary_dashboards(db.session)
  db.session.commit()
  print(json.dumps({'dashboard':dash.id,'slug':dash.slug,'published':dash.published,
   'datasets':{'facts':facts.id,'quality':quality.id},'charts':{k:c.id for k,c in charts.items()}},ensure_ascii=False),flush=True)

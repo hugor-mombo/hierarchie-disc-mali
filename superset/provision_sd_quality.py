@@ -1,6 +1,7 @@
 """Publish SD quality indicators from each native database; clinical sources stay separate."""
 import argparse,json
 from superset.app import create_app
+from dashboard_branding import brand_primary_dashboards
 from sd_quality_sql import ROOT,CATALOG,CORE,COUNTERS,GEO,SOURCES,TABLE,uid,literal
 parser=argparse.ArgumentParser();parser.add_argument('--publish',action='store_true');args=parser.parse_args()
 app=create_app()
@@ -177,5 +178,6 @@ Les ratios territoriaux sont calculés sur les sommes des numérateurs et dénom
   b.finish(filters)
  apply_regional_security(datasets)
  for d in db.session.query(Dashboard).filter(Dashboard.id.in_([1,2])).all():assert original[d.id]==(d.position_json,d.json_metadata,[s.id for s in d.slices],d.published)
+ brand_primary_dashboards(db.session)
  db.session.commit()
  print(json.dumps(dict(status='OK',published=args.publish,datasets=[d.id for d in datasets],dashboards=reports),ensure_ascii=False),flush=True)

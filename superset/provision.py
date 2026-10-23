@@ -9,6 +9,7 @@ from pathlib import Path
 from uuid import UUID, uuid5
 
 from superset.app import create_app
+from dashboard_branding import brand_primary_dashboards
 
 ROOT = Path(__file__).resolve().parent
 NAMESPACE = UUID('57827c7a-4258-4364-bb34-42e237772808')
@@ -312,6 +313,7 @@ Le tableau [ASC historique](/superset/dashboard/1/) reste disponible pour les au
 .dashboard-markdown h2 { color: #153854; }
 .dashboard-markdown { color: #334e68; }
 '''
+    brand_primary_dashboards(db.session)
     db.session.commit()
     print(json.dumps({'dashboard_id': dash.id, 'slug': dash.slug,
                       'datasets': [ds.id, quality.id],
