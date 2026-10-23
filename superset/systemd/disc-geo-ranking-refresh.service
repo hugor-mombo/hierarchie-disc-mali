@@ -1,0 +1,11 @@
+[Unit]
+Description=Actualiser la couverture GPS et les comparaisons SD et sites ASC DISC
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=mombo
+WorkingDirectory=/opt/moh_superset/superset_config/asc-v2
+ExecStart=/usr/bin/docker exec superset_app python -u /app/superset_config/asc-v2/refresh_geo_rank.py
+TimeoutStartSec=1500

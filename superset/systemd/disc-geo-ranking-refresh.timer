@@ -1,0 +1,10 @@
+[Unit]
+Description=Actualisation six heures des relevés GPS et comparaisons DISC
+
+[Timer]
+OnCalendar=*-*-* 03,09,15,21:35:00
+RandomizedDelaySec=120
+Persistent=true
+
+[Install]
+WantedBy=timers.target

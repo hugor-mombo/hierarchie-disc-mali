@@ -106,3 +106,10 @@ Le [premier lot supervision](README-SUPERVISION.md) propose un pilotage DISC et 
 ## Compétences, qualité SD et français
 
 Les [31 indicateurs de compétences et qualité SD](README-SD-QUALITE.md) sont disponibles dans des tableaux DISC et ASA séparés. Le [français Superset](i18n/README.md) comprend les catalogues compilés et les libellés métier affichés dans les tableaux et exports.
+
+## Géolocalisation et comparaisons SD / sites ASC
+
+Le lot [Géolocalisation et classements](README-GEO-CLASSEMENTS.md) ajoute les contrôles
+GPS et exports, les top 10 et listes d’appui, avec critères, effectifs minimums
+et restrictions territoriales appliqués avant classement. Les résultats concernent
+DISC ; ASA reste une source distincte.
