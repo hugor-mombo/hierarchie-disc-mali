@@ -218,7 +218,7 @@ Ouvrez une thématique, choisissez votre période et votre territoire, puis expl
  for i in range(0,len(CATALOG),2):
   pair=CATALOG[i:i+2]
   content='\n\n'.join('### ['+t['title']+'](/superset/dashboard/'+slug(t['key'])+'/)\n'+t['question'] for t in pair)
-  hub.note(start,'themes'+str(i),content,18)
+  hub.note(start,'themes'+str(i),content,26)
  q=hub.tab('availability','Disponibilité et lecture')
  hub.chart('availability','Relevés disponibles — période et droits appliqués',quality,groupby=['theme','attribution'],metrics=['rows','first_month','last_month','calculation'],**table)
  hub.note(q,'scope','''## Vérifier la période disponible avant d’interpréter les résultats
