@@ -3,7 +3,7 @@ import argparse,json
 from time import perf_counter
 from sqlalchemy import text
 from superset.app import create_app
-from geo_rank_sql import ROOT,TABLES
+from geo_rank_sql import ROOT,REFRESH_TABLES as TABLES
 parser=argparse.ArgumentParser();parser.add_argument('--create',action='store_true');args=parser.parse_args()
 app=create_app()
 with app.app_context():
@@ -26,6 +26,10 @@ with app.app_context():
     if key=='geo':
      assert c.execute(text('SELECT count(*) FROM '+target)).scalar()==c.execute(text('SELECT count(*) FROM mv_superset_sd_portfolio')).scalar()
      assert not c.execute(text('SELECT 1 FROM '+target+" WHERE gps_valid NOT IN (0,1) OR outside_envelope>gps_valid OR older_year>gps_valid LIMIT 1")).first()
+    if key=='map':
+     assert not c.execute(text('SELECT 1 FROM '+target+' WHERE latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -90 AND 90 OR longitude NOT BETWEEN -180 AND 180 OR (latitude=0 AND longitude=0) LIMIT 1')).first()
+     geo='mv_disc_gps_quality_v1_next' if c.execute(text("SELECT to_regclass('public.mv_disc_gps_quality_v1_next')")).scalar() else 'mv_disc_gps_quality_v1'
+     assert c.execute(text('SELECT count(*) FROM '+target)).scalar()==c.execute(text('SELECT sum(gps_valid) FROM '+geo)).scalar(),'GPS/map snapshot disagreement'
     if key=='asc':
      assert not c.execute(text('SELECT 1 FROM '+target+' WHERE assessed+unusable<>visited OR acceptable>assessed OR score_total<0 OR score_total>100*assessed LIMIT 1')).first()
     c.execute(text('CREATE UNIQUE INDEX '+target+'_pk ON '+target+'(site_uuid,reported_month)'))

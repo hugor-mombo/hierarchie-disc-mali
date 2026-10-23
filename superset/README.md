@@ -118,3 +118,9 @@ DISC ; ASA reste une source distincte.
 
 Le [bandeau institutionnel Mali](branding/README.md) est partagé par les tableaux
 ASC et SD, avec repères de source DISC / ASA et visuel hébergé sur le même domaine.
+
+## Carte et comptes district
+
+La [carte des sites](map/README.md) complète la géolocalisation avec les mêmes
+restrictions de périmètre. Les [comptes district](README-DISTRICTS.md) reprennent
+la nomenclature des lecteurs régionaux avec une règle RLS propre à chaque district.

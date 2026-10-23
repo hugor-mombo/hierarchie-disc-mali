@@ -20,8 +20,9 @@ ne donne pas le statut fonctionnel DHIS2.
 Le dernier rapport daté au plus tard à l’instant du calcul est retenu. Des rapports
 à la même dernière date sont ambigus, sans choix arbitraire. Les deux premières
 composantes du geopoint sont latitude et longitude. Elles doivent être numériques,
-dans [-90,90] et [-180,180], et différentes ensemble de (0,0). Les coordonnées
-précises ne sont pas stockées dans la nouvelle vue ni exposées par les datasets.
+dans [-90,90] et [-180,180], et différentes ensemble de (0,0). Le relevé de
+synthèse ne stocke pas les coordonnées précises. Un relevé privé distinct les
+porte pour la [carte native](map/README.md), avec authentification et RLS.
 Un ancien point valide ne masque pas un dernier point invalide.
 
 Quatre états exclusifs : sans relevé, coordonnées absentes/invalides, dernier
@@ -110,10 +111,10 @@ identifiant de patient ou coordonnée précise n’est ajouté.
 
 ## Exploitation et vérification
 
-`geo_rank_sql.py` génère les trois SQL versionnés. `refresh_geo_rank.py` construit
+`geo_rank_sql.py` génère les SQL versionnés des trois relevés et de la carte. `refresh_geo_rank.py` construit
 ses seules nouvelles vues matérialisées dans la connexion DISC (id 1). Transaction
 à lecture répétable, verrou consultatif, contrôle du grain et du répertoire,
-préparation à côté puis remplacement atomique des trois relevés. Un échec laisse
+préparation à côté puis remplacement atomique des quatre relevés. Un échec laisse
 le précédent ensemble intact. Aucun objet clinique amont n’est modifié.
 
 `disc-geo-ranking-refresh.timer` : 03/09/15/21 h 35 UTC, décalage aléatoire maximal

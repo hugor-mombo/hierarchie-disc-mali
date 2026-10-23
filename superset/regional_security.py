@@ -1,9 +1,9 @@
 """Réutiliser les restrictions territoriales existantes sur les sources dérivées."""
 from superset import db
-from superset.connectors.sqla.models import RowLevelSecurityFilter
 
 
 def apply_regional_security(datasets):
+    from superset.connectors.sqla.models import RowLevelSecurityFilter
     # Le jeu historique de relances couvre l'ensemble des rôles territoriaux.
     rules=[r for r in db.session.query(RowLevelSecurityFilter).all()
            if any(t.id==7 for t in r.tables)]
@@ -33,5 +33,7 @@ def apply_regional_security(datasets):
     for dataset in datasets:
         if dataset.id not in attached:
             base.tables.append(dataset)
+    from district_security import apply_district_security
+    apply_district_security(datasets)
     db.session.flush()
     return len(rules)

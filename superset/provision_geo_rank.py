@@ -2,6 +2,7 @@
 import argparse,json
 from superset.app import create_app
 from dashboard_branding import brand_primary_dashboards
+from site_map import provision_site_map
 from geo_rank_sql import uid,TABLES
 from reporting_board import board_class
 parser=argparse.ArgumentParser();parser.add_argument('--publish',action='store_true');args=parser.parse_args()
@@ -140,5 +141,6 @@ La date du relevé est celle du calcul, sans certifier la synchronisation du té
    notes[0]['meta']['height']=max(notes[0]['meta'].get('height',0),40)
    d.position_json=json.dumps(layout,ensure_ascii=False)
  for d in db.session.query(Dashboard).filter(Dashboard.id.in_([1,2])).all():assert originals[d.id]==(d.position_json,d.json_metadata,[s.id for s in d.slices],d.published)
+ provision_site_map(db.session)
  brand_primary_dashboards(db.session)
  db.session.commit();print(json.dumps(dict(status='OK',published=args.publish,datasets={k:d.id for k,d in datasets.items()},dashboards=reports),ensure_ascii=False),flush=True)

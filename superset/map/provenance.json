@@ -1,0 +1,7 @@
+{
+  "source": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+  "source_sha256": "6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f",
+  "retrieved_on": "2026-10-23",
+  "transformation": "Géométries inchangées. Propriétés réduites au code pays et au nom. Aucun point de site ou donnée utilisateur.",
+  "features": 177
+}

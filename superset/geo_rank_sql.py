@@ -71,7 +71,10 @@ SD="""SELECT region_uuid,region,district_uuid,district AS district_name,
  FROM public.mv_superset_sd_chw_monthly_status
  WHERE reported_month<date_trunc('month',CURRENT_DATE)"""
 TABLES={'geo':('mv_disc_gps_quality_v1',GPS),'asc':('mv_disc_asc_ranking_v1',ASC),'sd':('mv_disc_sd_ranking_v1',SD)}
+MAP_SQL=GPS.replace('SELECT '+GEO+',CURRENT_DATE AS reported_month',
+ 'SELECT '+GEO+',r.lat AS latitude,r.lon AS longitude,CURRENT_DATE AS reported_month')+" WHERE r.ties=1 AND r.valid"
+REFRESH_TABLES={**TABLES,'map':('mv_disc_sites_map_v1',MAP_SQL)}
 def write_sources():
  p=ROOT/'sql/supervision/geo-ranking';p.mkdir(parents=True,exist_ok=True)
- for key,(_,sql) in TABLES.items():(p/(key+'.sql')).write_text(sql+'\n')
+ for key,(_,sql) in REFRESH_TABLES.items():(p/(key+'.sql')).write_text(sql+'\n')
 if __name__=='__main__':write_sources()
