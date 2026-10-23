@@ -98,3 +98,7 @@ Documentation : [filtres et tableaux Superset](https://superset.apache.org/docs/
 ## Tableaux thématiques
 
 Le [lot 4 — tableaux thématiques ASC](README-THEMES.md) complète ce pilotage avec dix thèmes cliniques et communautaires, leurs méthodes et leurs exports territoriaux.
+
+## Supervision dédiée
+
+Le [premier lot supervision](README-SUPERVISION.md) propose un pilotage DISC et un historique ASA distincts, avec les limites de cohorte, méthodes et contrôles d’accès.

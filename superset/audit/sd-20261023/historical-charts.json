@@ -1,0 +1,1974 @@
+[
+  {
+    "id": 42,
+    "title": "Total sites ASC suivis",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "aggregate": "SUM",
+      "column": {
+        "advanced_data_type": null,
+        "certification_details": null,
+        "certified_by": null,
+        "column_name": "indicator_value",
+        "description": null,
+        "expression": null,
+        "filterable": true,
+        "groupby": true,
+        "id": 536,
+        "is_certified": false,
+        "is_dttm": false,
+        "python_date_format": null,
+        "type": "NUMERIC",
+        "type_generic": 0,
+        "verbose_name": null,
+        "warning_markdown": null
+      },
+      "datasourceWarning": false,
+      "expressionType": "SIMPLE",
+      "hasCustomLabel": false,
+      "label": "SUM(indicator_value)",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6",
+      "sqlExpression": null
+    },
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "period_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": "total_chw_sites",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 43,
+    "title": "Couverture SD complète",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "aggregate": null,
+      "column": null,
+      "datasourceWarning": false,
+      "expressionType": "SQL",
+      "hasCustomLabel": false,
+      "label": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6",
+      "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100"
+    },
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "period_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": "sd_complete_quota_coverage_rate",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 44,
+    "title": "Sites ayant reçu toutes les étapes",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "aggregate": null,
+      "column": null,
+      "datasourceWarning": false,
+      "expressionType": "SQL",
+      "hasCustomLabel": false,
+      "label": "SUM(numerator)",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6",
+      "sqlExpression": "SUM(numerator)"
+    },
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "period_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": "sd_complete_quota_coverage_rate",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 45,
+    "title": "Sites non supervisés selon quota complet",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "expressionType": "SQL",
+      "sqlExpression": "SUM(indicator_value)",
+      "column": null,
+      "aggregate": null,
+      "datasourceWarning": false,
+      "hasCustomLabel": false,
+      "label": "SUM(indicator_value)",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6"
+    },
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "chw_sites_not_supervised_complete_quota",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 46,
+    "title": "Taux visites planifiées réalisées",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "expressionType": "SQL",
+      "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "column": null,
+      "aggregate": null,
+      "datasourceWarning": false,
+      "hasCustomLabel": false,
+      "label": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6"
+    },
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "planned_visit_completion_rate",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 47,
+    "title": "Compétence ASC >= 80%, taux",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "aggregate": null,
+      "column": null,
+      "datasourceWarning": false,
+      "expressionType": "SQL",
+      "hasCustomLabel": false,
+      "label": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6",
+      "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100"
+    },
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "acceptable_score_rate",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 48,
+    "title": "Compétence ASC >= 80%, nombre",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "aggregate": null,
+      "column": null,
+      "datasourceWarning": false,
+      "expressionType": "SQL",
+      "hasCustomLabel": false,
+      "label": "SUM(indicator_value)",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6",
+      "sqlExpression": "SUM(indicator_value)"
+    },
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "number_chw_with_acceptable_score",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 49,
+    "title": "Sites géolocalisés, taux",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "expressionType": "SQL",
+      "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "column": null,
+      "aggregate": null,
+      "datasourceWarning": false,
+      "hasCustomLabel": false,
+      "label": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6"
+    },
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "geolocation_coverage_rate",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 50,
+    "title": "Utilisation DISC Mali",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "aggregate": null,
+      "column": null,
+      "datasourceWarning": false,
+      "expressionType": "SQL",
+      "hasCustomLabel": false,
+      "label": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "optionName": "metric_6jyz728nz59_c5hi1n43xa6",
+      "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100"
+    },
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_2lnscdtp7df_77lgr3r7ii",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "period_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": "disc_mali_usage_rate",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_bnimkwo3occ_kjwx5st5uw",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 51,
+    "title": "Sites ayant reçu toutes les étapes",
+    "dataset": 21,
+    "viz": "echarts_timeseries_line",
+    "metrics": [
+      {
+        "aggregate": null,
+        "column": null,
+        "datasourceWarning": false,
+        "expressionType": "SQL",
+        "hasCustomLabel": true,
+        "label": "Sites ayant reçu le paquet complet",
+        "optionName": "metric_17w1i8jsu84_0eyt7ndxpb3b",
+        "sqlExpression": "SUM(numerator)"
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_hpq3rxnlf79_zqmqo0t5qhn",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "reported_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": "sd_complete_quota_coverage_rate",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_v0nvpyp33d_p7dtndeshe",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 52,
+    "title": "Taux visites planifiées réalisées",
+    "dataset": 21,
+    "viz": "echarts_timeseries_line",
+    "metrics": [
+      {
+        "expressionType": "SQL",
+        "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+        "column": null,
+        "aggregate": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Taux visites planifiées réalisées",
+        "optionName": "metric_17w1i8jsu84_0eyt7ndxpb3b"
+      }
+    ],
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "reported_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_hpq3rxnlf79_zqmqo0t5qhn"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "planned_visit_completion_rate",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_v0nvpyp33d_p7dtndeshe"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 53,
+    "title": "Compétence ASC >= 80%, taux",
+    "dataset": 21,
+    "viz": "echarts_timeseries_line",
+    "metrics": [
+      {
+        "expressionType": "SQL",
+        "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+        "column": null,
+        "aggregate": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Compétence ASC >= 80%, taux",
+        "optionName": "metric_17w1i8jsu84_0eyt7ndxpb3b"
+      }
+    ],
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "reported_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_hpq3rxnlf79_zqmqo0t5qhn"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "acceptable_score_rate",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_v0nvpyp33d_p7dtndeshe"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 54,
+    "title": "Compétence ASC >= 80%, nombre",
+    "dataset": 21,
+    "viz": "echarts_timeseries_line",
+    "metrics": [
+      {
+        "expressionType": "SQL",
+        "sqlExpression": "SUM(indicator_value)",
+        "column": null,
+        "aggregate": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Compétence ASC >= 80%, nombre",
+        "optionName": "metric_17w1i8jsu84_0eyt7ndxpb3b"
+      }
+    ],
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "reported_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_hpq3rxnlf79_zqmqo0t5qhn"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "number_chw_with_acceptable_score",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_v0nvpyp33d_p7dtndeshe"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 55,
+    "title": "Couverture SD toutes les étapes par région",
+    "dataset": 21,
+    "viz": "echarts_timeseries_bar",
+    "metrics": [
+      {
+        "aggregate": null,
+        "column": null,
+        "datasourceWarning": false,
+        "expressionType": "SQL",
+        "hasCustomLabel": true,
+        "label": "% Couverture SD complète",
+        "optionName": "metric_17w1i8jsu84_0eyt7ndxpb3b",
+        "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100"
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_hpq3rxnlf79_zqmqo0t5qhn",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "reported_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": "sd_complete_quota_coverage_rate",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_v0nvpyp33d_p7dtndeshe",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 57,
+    "title": "Couverture SD avec toutes les étapes par district",
+    "dataset": 21,
+    "viz": "echarts_timeseries_bar",
+    "metrics": [
+      {
+        "aggregate": null,
+        "column": null,
+        "datasourceWarning": false,
+        "expressionType": "SQL",
+        "hasCustomLabel": true,
+        "label": "% Couverture SD complète",
+        "optionName": "metric_17w1i8jsu84_0eyt7ndxpb3b",
+        "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100"
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_hpq3rxnlf79_zqmqo0t5qhn",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "reported_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": "sd_complete_quota_coverage_rate",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_v0nvpyp33d_p7dtndeshe",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 58,
+    "title": "Planification et couverture",
+    "dataset": 22,
+    "viz": "table",
+    "metrics": [
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "total_chw_sites",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 700,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "BIGINT",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "ASC/sites suivis",
+        "optionName": "metric_n4gp9thtud_4h73euchnla",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "scheduled_visit_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 701,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Visites planifiées",
+        "optionName": "metric_wvdo9yud3rm_2wu8nouaoon",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "planned_visit_done_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 703,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Visites planifiées réalisées",
+        "optionName": "metric_36jf4gxee15_m6htezxyi1",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "planned_visit_all_steps_done_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 704,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Visites de supervision réalisées avec toutes les étapes",
+        "optionName": "metric_ihmmq3bvdpi_f06ct6vti1n",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "not_done_supervisor_unavailable_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 712,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Visites de supervision non réalisées",
+        "optionName": "metric_k2clyfffflj_7squhcefjb",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "rescheduled_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 713,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Visites de supervisions replanifiées",
+        "optionName": "metric_nyicrmfc71k_58r11gdqmll",
+        "sqlExpression": null
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "expressionType": "SIMPLE",
+        "operator": "TEMPORAL_RANGE",
+        "subject": "period_month"
+      }
+    ],
+    "groupby": [
+      "region",
+      "district",
+      "supervisor_area"
+    ],
+    "time_range": null
+  },
+  {
+    "id": 59,
+    "title": "Activités terrain SD",
+    "dataset": 22,
+    "viz": "table",
+    "metrics": [
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "total_chw_sites",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 700,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "BIGINT",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "ASC/sites suivis",
+        "optionName": "metric_ui5whlbw2xo_hi1wbo4rv9"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "visit_chw_site_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 707,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Observation de l'ASC à la tâche",
+        "optionName": "metric_fawkmrbna8u_ompwu0v8vx"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "visit_community_without_chw_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 708,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Visites dans la communauté sans l'ASC",
+        "optionName": "metric_3cx047se24t_jzmuyu0dzik"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "individual_feedback_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 709,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Rencontres individuelles",
+        "optionName": "metric_wa1jcoss0t_cwoyis0r3i"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "chw_sites_with_planned_visit_all_steps_done",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 719,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "BIGINT",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Nombre de site d'ASCs ayant reçu une visite de supervision dédiée avec toutes les étapes",
+        "optionName": "metric_1bjkbj03msq_nwm0uivk75a"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "location_gps_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 711,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Sites géolocalisés",
+        "optionName": "metric_v44xdus5mg_nwcq2c8emm8"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "chw_sites_with_minimum_5_community_visits_without_chw",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 722,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "BIGINT",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Sites ayant fait l'objet d'au moins 5 visites dans la communauté sans l'ASC",
+        "optionName": "metric_veq6r1h6mr_tq746b3nojn"
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "expressionType": "SIMPLE",
+        "operator": "TEMPORAL_RANGE",
+        "subject": "period_month"
+      }
+    ],
+    "groupby": [
+      "region",
+      "district",
+      "supervisor_area"
+    ],
+    "time_range": null
+  },
+  {
+    "id": 60,
+    "title": "Activités terrain SD région",
+    "dataset": 22,
+    "viz": "echarts_timeseries_bar",
+    "metrics": [
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "visit_chw_site_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 707,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Observation de l'ASC à la tâche",
+        "optionName": "metric_fawkmrbna8u_ompwu0v8vx",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "visit_community_without_chw_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 708,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Visites dans la communauté sans l'ASC",
+        "optionName": "metric_3cx047se24t_jzmuyu0dzik",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "individual_feedback_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 709,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Rencontres individuelles",
+        "optionName": "metric_wa1jcoss0t_cwoyis0r3i",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "chw_sites_with_planned_visit_all_steps_done",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 719,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "BIGINT",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Nombre de site d'ASCs ayant reçu une visite de supervision dédiée avec toutes les étapes",
+        "optionName": "metric_1bjkbj03msq_nwm0uivk75a",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "chw_sites_with_minimum_5_community_visits_without_chw",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 722,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "BIGINT",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Sites ayant fait l'objet d'au moins 5 visites dans la communauté sans l'ASC",
+        "optionName": "metric_veq6r1h6mr_tq746b3nojn",
+        "sqlExpression": null
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "expressionType": "SIMPLE",
+        "operator": "TEMPORAL_RANGE",
+        "subject": "period_month"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 61,
+    "title": "Activités terrain SD District",
+    "dataset": 22,
+    "viz": "echarts_timeseries_bar",
+    "metrics": [
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "visit_chw_site_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 707,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Observation de l'ASC à la tâche",
+        "optionName": "metric_fawkmrbna8u_ompwu0v8vx",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "visit_community_without_chw_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 708,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Visites dans la communauté sans l'ASC",
+        "optionName": "metric_3cx047se24t_jzmuyu0dzik",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "individual_feedback_reports",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 709,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Rencontres individuelles",
+        "optionName": "metric_wa1jcoss0t_cwoyis0r3i",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "chw_sites_with_planned_visit_all_steps_done",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 719,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "BIGINT",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Nombre de site d'ASCs ayant reçu une visite de supervision dédiée avec toutes les étapes",
+        "optionName": "metric_1bjkbj03msq_nwm0uivk75a",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "chw_sites_with_minimum_5_community_visits_without_chw",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 722,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "BIGINT",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Sites ayant fait l'objet d'au moins 5 visites dans la communauté sans l'ASC",
+        "optionName": "metric_veq6r1h6mr_tq746b3nojn",
+        "sqlExpression": null
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "expressionType": "SIMPLE",
+        "operator": "TEMPORAL_RANGE",
+        "subject": "period_month"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 66,
+    "title": "ASA MALI - Indicateurs FM - GAVI",
+    "dataset": 24,
+    "viz": "table",
+    "metrics": [
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "numerator",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 926,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Numérateur",
+        "optionName": "metric_pnkgcyrv9fn_q4fmt6uiufh",
+        "sqlExpression": null
+      },
+      {
+        "aggregate": "SUM",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "denominator",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 927,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "hasCustomLabel": true,
+        "label": "Dénominateur",
+        "optionName": "metric_xz4c6izr1gm_b6midtb6kq",
+        "sqlExpression": null
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_pvoonvzame8_y4t78xug5mg",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "period_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": [
+          "rdt_correctly_done_rate",
+          "avg_curative_home_visits_per_chw"
+        ],
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_xs2pf1wfjkq_q2jpwuunrn9",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "IN",
+        "operatorId": "IN",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [
+      "reported_month",
+      "region",
+      "district",
+      "indicator_label"
+    ],
+    "time_range": null
+  },
+  {
+    "id": 67,
+    "title": "DISC-MALI Indicateurs FM - GAVI",
+    "dataset": 21,
+    "viz": "table",
+    "metrics": [
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "numerator",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 674,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Numérateur",
+        "optionName": "metric_ow6bpolkj3_hnql55pkzbu"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "denominator",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 675,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Dénominateur",
+        "optionName": "metric_5jgit5tswzn_g70t20ek3pt"
+      }
+    ],
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_tutnhf8bcwf_ayvcvcy2amu"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "IN",
+        "operatorId": "IN",
+        "comparator": [
+          "avg_curative_home_visits_per_chw",
+          "rdt_correctly_done_rate"
+        ],
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_s2ug6i8j4m_tk3ddtx3rtp"
+      }
+    ],
+    "groupby": [
+      "reported_month",
+      "region",
+      "district",
+      "indicator_label"
+    ],
+    "time_range": null
+  },
+  {
+    "id": 69,
+    "title": "Qualité des soins",
+    "dataset": 21,
+    "viz": "table",
+    "metrics": [
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "numerator",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 674,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Valeur",
+        "optionName": "metric_3gbdm5b5r7_jo3o4eildl"
+      }
+    ],
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_9ruen9exss5_1yh6x2yjemj"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "IN",
+        "operatorId": "IN",
+        "comparator": [
+          "number_chw_observed",
+          "number_cases_hands_washed_correctly_done",
+          "number_rdt_done",
+          "number_chw_with_acceptable_score"
+        ],
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_nea2zlql67_v574nnec04"
+      }
+    ],
+    "groupby": [
+      "period_month",
+      "region",
+      "district",
+      "indicator_label"
+    ],
+    "time_range": null
+  },
+  {
+    "id": 70,
+    "title": "Proportion observation directe pendant évaluation patient",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "expressionType": "SQL",
+      "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100\r\n",
+      "column": null,
+      "aggregate": null,
+      "datasourceWarning": false,
+      "hasCustomLabel": false,
+      "label": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100\r\n",
+      "optionName": "metric_cci1hkgztu_igwb53opa9"
+    },
+    "filters": [
+      {
+        "clause": "WHERE",
+        "comparator": "No filter",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_9ruen9exss5_1yh6x2yjemj",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "TEMPORAL_RANGE",
+        "sqlExpression": null,
+        "subject": "period_month"
+      },
+      {
+        "clause": "WHERE",
+        "comparator": "patient_assessment_observation_rate",
+        "datasourceWarning": false,
+        "expressionType": "SIMPLE",
+        "filterOptionName": "filter_nea2zlql67_v574nnec04",
+        "isExtra": false,
+        "isNew": false,
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "sqlExpression": null,
+        "subject": "indicator_code"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 71,
+    "title": "Proportion ASC avec score acceptable",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "expressionType": "SQL",
+      "sqlExpression": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "column": null,
+      "aggregate": null,
+      "datasourceWarning": false,
+      "hasCustomLabel": false,
+      "label": "(SUM(numerator) / NULLIF(SUM(denominator), 0))*100",
+      "optionName": "metric_cci1hkgztu_igwb53opa9"
+    },
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_9ruen9exss5_1yh6x2yjemj"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "acceptable_score_rate",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_nea2zlql67_v574nnec04"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 72,
+    "title": "Lavage des mains correctement fait",
+    "dataset": 21,
+    "viz": "big_number_total",
+    "metrics": {
+      "expressionType": "SIMPLE",
+      "column": {
+        "advanced_data_type": null,
+        "certification_details": null,
+        "certified_by": null,
+        "column_name": "indicator_value",
+        "description": null,
+        "expression": null,
+        "filterable": true,
+        "groupby": true,
+        "id": 676,
+        "is_certified": false,
+        "is_dttm": false,
+        "python_date_format": null,
+        "type": "NUMERIC",
+        "type_generic": 0,
+        "verbose_name": null,
+        "warning_markdown": null
+      },
+      "aggregate": "SUM",
+      "sqlExpression": null,
+      "datasourceWarning": false,
+      "hasCustomLabel": false,
+      "label": "SUM(indicator_value)",
+      "optionName": "metric_tzwhdepwmo_kkiz74o64k"
+    },
+    "filters": [
+      {
+        "expressionType": "SIMPLE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_9ruen9exss5_1yh6x2yjemj"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "subject": "indicator_code",
+        "operator": "==",
+        "operatorId": "EQUALS",
+        "comparator": "number_cases_hands_washed_correctly_done",
+        "clause": "WHERE",
+        "sqlExpression": null,
+        "isExtra": false,
+        "isNew": false,
+        "datasourceWarning": false,
+        "filterOptionName": "filter_nea2zlql67_v574nnec04"
+      }
+    ],
+    "groupby": [],
+    "time_range": null
+  },
+  {
+    "id": 73,
+    "title": "RSSH/PP HRH-Autre 1 Proportion d'agents de santé communautaires qui ont bénéficié d’au moins une supervision formative au cours de la période de rapportage",
+    "dataset": 27,
+    "viz": "table",
+    "metrics": [
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "supervisions",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 995,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "INTEGER",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": false,
+        "label": "SUM(supervisions)",
+        "optionName": "metric_rffvvuirr3l_yxfso09ndy8"
+      }
+    ],
+    "filters": [],
+    "groupby": [
+      "region",
+      "district",
+      "aire_de_sante",
+      "supervisor_uuid",
+      "supervisor_name",
+      "supervisor_area_uuid",
+      "supervisor_area_name",
+      "chw_uuid",
+      "chw_site",
+      "chw_name"
+    ],
+    "time_range": null
+  },
+  {
+    "id": 74,
+    "title": "Pourcentage soins enfants dans les 24 heures,Pourcentage evaluations enfants moins de 5 ans sans erreur de protocole, Sites ASC en rupture intrants diarrhee",
+    "dataset": 29,
+    "viz": "table",
+    "metrics": [
+      {
+        "expressionType": "SQL",
+        "sqlExpression": "SUM(numerator) / NULLIF(SUM(denominator), 0)*100",
+        "column": null,
+        "aggregate": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Pourcentage",
+        "optionName": "metric_m6q13d31obe_fxd43mbmf5l"
+      },
+      {
+        "expressionType": "SIMPLE",
+        "column": {
+          "advanced_data_type": null,
+          "certification_details": null,
+          "certified_by": null,
+          "column_name": "indicator_value",
+          "description": null,
+          "expression": null,
+          "filterable": true,
+          "groupby": true,
+          "id": 1026,
+          "is_certified": false,
+          "is_dttm": false,
+          "python_date_format": null,
+          "type": "NUMERIC",
+          "type_generic": 0,
+          "verbose_name": null,
+          "warning_markdown": null
+        },
+        "aggregate": "SUM",
+        "sqlExpression": null,
+        "datasourceWarning": false,
+        "hasCustomLabel": true,
+        "label": "Nombre",
+        "optionName": "metric_pxkt2fgk6op_lhyowa2o4g8"
+      }
+    ],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "expressionType": "SIMPLE"
+      }
+    ],
+    "groupby": [
+      "reported_month",
+      "region",
+      "district",
+      "health_area",
+      "indicator_label"
+    ],
+    "time_range": null
+  },
+  {
+    "id": 76,
+    "title": "Proportion d'ASC ayant reçu une visite de supervision mensuelle avec toutes les étapes",
+    "dataset": 31,
+    "viz": "table",
+    "metrics": [],
+    "filters": [
+      {
+        "clause": "WHERE",
+        "subject": "period_month",
+        "operator": "TEMPORAL_RANGE",
+        "comparator": "No filter",
+        "expressionType": "SIMPLE"
+      }
+    ],
+    "groupby": [
+      "region",
+      "district",
+      "health_area",
+      "supervisor_area",
+      "supervisor_name",
+      "numerator",
+      "denominator",
+      "percentage",
+      "reported_month_fr"
+    ],
+    "time_range": null
+  }
+]
