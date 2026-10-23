@@ -83,7 +83,7 @@ with app.test_request_context('/'):
    self.dash.slices=list(self.charts.values());self.dash.position_json=json.dumps(self.layout,ensure_ascii=False)
    self.dash.json_metadata=json.dumps(dict(native_filter_configuration=filters,cross_filters_enabled=False,refresh_frequency=0,
     expanded_slices={},timed_refresh_immune_slices=[],default_filters='{}',chart_configuration={},color_scheme='supersetColors'),ensure_ascii=False)
-   self.dash.css='''.dashboard-content{background:#f3f6fb}.dashboard-component-chart-holder{border:1px solid #dce6ef;border-radius:10px}
+   self.dash.css='''div:has(> .dragdroppable-column){min-width:0}.dashboard-content{background:#f3f6fb}.dashboard-component-chart-holder{border:1px solid #dce6ef;border-radius:10px}
 .dashboard-markdown h2,.dashboard-markdown h3{color:#153854}.dashboard-markdown{color:#334e68}
 .dashboard-markdown a{font-weight:600}.dashboard-markdown table{width:100%}.dashboard-markdown th,.dashboard-markdown td{padding:9px 12px;border-bottom:1px solid #e1e8f0}'''
    db.session.flush();reports.append(dict(key=self.key,id=self.dash.id,slug=self.dash.slug,charts={k:c.id for k,c in self.charts.items()}))
