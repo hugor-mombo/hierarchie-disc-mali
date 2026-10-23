@@ -1,0 +1,377 @@
+{
+  "audit_date": "2026-10-23",
+  "legacy_dashboard_id": 3,
+  "legacy_dataset_id": 30,
+  "legacy_published": false,
+  "DISC_relations": [
+    [
+      "form_metadata",
+      "m"
+    ],
+    [
+      "formview_sebac_alert_notification",
+      "v"
+    ],
+    [
+      "formview_sebac_alert_sort",
+      "v"
+    ],
+    [
+      "formview_sebac_alert_sort_not_done",
+      "v"
+    ],
+    [
+      "formview_sebac_alert_verification",
+      "v"
+    ],
+    [
+      "formview_sebac_detection",
+      "v"
+    ],
+    [
+      "mv_superset_sebac_indicator_long",
+      "m"
+    ],
+    [
+      "sebac_indicators",
+      "m"
+    ]
+  ],
+  "ASA_relations": [
+    [
+      "form_metadata",
+      "m"
+    ]
+  ],
+  "legacy_indicator_dictionary": [
+    {
+      "indicator_key": "alert_notification_count",
+      "indicator_label": "Nombre de notifications d'alerte réalisées par les ASC",
+      "indicator_group": "Détection et notification",
+      "value_type": "count",
+      "calculation_note": "Somme des formulaires sebac_alert_notification notifiés par ASC",
+      "numerator_label": "Notifications ASC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "alert_notification_other_actors_count",
+      "indicator_label": "Nombre de notifications d'alerte réalisées par les autres acteurs communautaires",
+      "indicator_group": "Détection et notification",
+      "value_type": "count",
+      "calculation_note": "Somme des formulaires sebac_alert_notification notifiés par autres acteurs",
+      "numerator_label": "Notifications autres acteurs",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "chw_events_verified_count",
+      "indicator_label": "Nombre de cas d'événements notifiés par les ASC et vérifiés",
+      "indicator_group": "Événements",
+      "value_type": "count",
+      "calculation_note": "Numérateur brut du pourcentage correspondant",
+      "numerator_label": "Événements ASC vérifiés",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "detection_count",
+      "indicator_label": "Nombre de détections réalisées par les ASC",
+      "indicator_group": "Détection et notification",
+      "value_type": "count",
+      "calculation_note": "Somme des formulaires sebac_detection notifiés par ASC",
+      "numerator_label": "Détections ASC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "detection_other_actors_count",
+      "indicator_label": "Nombre de détections réalisées par les autres acteurs communautaires",
+      "indicator_group": "Détection et notification",
+      "value_type": "count",
+      "calculation_note": "Somme des formulaires sebac_detection notifiés par autres acteurs",
+      "numerator_label": "Détections autres acteurs",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "other_actor_events_verified_count",
+      "indicator_label": "Nombre de cas d'événements notifiés par les autres acteurs et vérifiés",
+      "indicator_group": "Événements",
+      "value_type": "count",
+      "calculation_note": "Numérateur brut du pourcentage correspondant",
+      "numerator_label": "Événements autres acteurs vérifiés",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "sebac_percentage_verified_notification_by_chw",
+      "indicator_label": "Pourcentage de cas d'événements notifiés par les ASC et vérifiés",
+      "indicator_group": "Pourcentages",
+      "value_type": "percent",
+      "calculation_note": "Calcul recommandé Superset : 100 * SUM(numerator) / SUM(denominator)",
+      "numerator_label": "Événements ASC vérifiés",
+      "denominator_label": "Alertes notifiées"
+    },
+    {
+      "indicator_key": "sebac_percentage_verified_notification_by_other",
+      "indicator_label": "Pourcentage de cas d'événements notifiés par les autres acteurs et vérifiés",
+      "indicator_group": "Pourcentages",
+      "value_type": "percent",
+      "calculation_note": "Calcul recommandé Superset : 100 * SUM(numerator) / SUM(denominator)",
+      "numerator_label": "Événements autres acteurs vérifiés",
+      "denominator_label": "Alertes notifiées"
+    },
+    {
+      "indicator_key": "sebac_percent_investigated_alerts",
+      "indicator_label": "Pourcentage d'alertes investiguées par le DTC",
+      "indicator_group": "Pourcentages",
+      "value_type": "percent",
+      "calculation_note": "Calcul recommandé Superset : 100 * SUM(numerator) / SUM(denominator)",
+      "numerator_label": "Alertes notifiées ayant une vérification",
+      "denominator_label": "Alertes notifiées"
+    },
+    {
+      "indicator_key": "total_alert_checked_dtc",
+      "indicator_label": "Nombre de cas d'alerte vérifiés par le DTC",
+      "indicator_group": "Investigation",
+      "value_type": "count",
+      "calculation_note": "Vérifications DTC avec alerte vérifiée",
+      "numerator_label": "Alertes vérifiées DTC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_alert_compliant",
+      "indicator_label": "Nombre d'alertes classées conformes après tri",
+      "indicator_group": "Tri et vérification",
+      "value_type": "count",
+      "calculation_note": "Tri d'alerte avec classification conforme",
+      "numerator_label": "Alertes conformes",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_alert_non_compliant",
+      "indicator_label": "Nombre d'alertes classées non conformes après tri",
+      "indicator_group": "Tri et vérification",
+      "value_type": "count",
+      "calculation_note": "Tri d'alerte avec classification non conforme",
+      "numerator_label": "Alertes non conformes",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_alert_sort_done",
+      "indicator_label": "Nombre de tris d'alerte réalisés par le superviseur dédié",
+      "indicator_group": "Tri et vérification",
+      "value_type": "count",
+      "calculation_note": "Nombre de formulaires sebac_alert_sort soumis",
+      "numerator_label": "Tris réalisés",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_alert_sort_not_done",
+      "indicator_label": "Nombre de tris d'alerte non réalisés",
+      "indicator_group": "Tri et vérification",
+      "value_type": "count",
+      "calculation_note": "Tâches/formulaires de tri non réalisés",
+      "numerator_label": "Tris non réalisés",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_alert_validated_dtc",
+      "indicator_label": "Nombre de cas d'alerte validés par le DTC",
+      "indicator_group": "Investigation",
+      "value_type": "count",
+      "calculation_note": "Vérifications DTC avec alerte validée",
+      "numerator_label": "Alertes validées DTC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_alert_verification_not_done",
+      "indicator_label": "Nombre de vérifications d'alerte non réalisées",
+      "indicator_group": "Tri et vérification",
+      "value_type": "count",
+      "calculation_note": "Tâches de vérification échouées, rattachées à l'alerte source",
+      "numerator_label": "Vérifications non réalisées",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_community_deaths_notified_by_chw",
+      "indicator_label": "Nombre de décès communautaires signalés par les ASC",
+      "indicator_group": "Décès",
+      "value_type": "count",
+      "calculation_note": "Somme du nombre de personnes décédées signalées par les ASC",
+      "numerator_label": "Décès communautaires",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_count_chw",
+      "indicator_label": "Nombre d'alertes (maladies et événements) notifiées par les ASC",
+      "indicator_group": "Détection et notification",
+      "value_type": "count",
+      "calculation_note": "Détection + notification, source ASC",
+      "numerator_label": "Alertes ASC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_count_chw_events",
+      "indicator_label": "Nombre d'alertes d'événements notifiées par les ASC",
+      "indicator_group": "Événements",
+      "value_type": "count",
+      "calculation_note": "Alertes événements issues des détections et notifications ASC",
+      "numerator_label": "Événements ASC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_count_chw_mpe",
+      "indicator_label": "Nombre d'alertes de maladies à potentiel épidémique notifiées par les ASC",
+      "indicator_group": "Maladies à potentiel épidémique",
+      "value_type": "count",
+      "calculation_note": "Alertes MPE issues des détections et notifications ASC",
+      "numerator_label": "Alertes MPE ASC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_count_other_actors",
+      "indicator_label": "Nombre d'alertes notifiées par les autres acteurs de la plateforme communautaire",
+      "indicator_group": "Détection et notification",
+      "value_type": "count",
+      "calculation_note": "Détection + notification, source autre acteur",
+      "numerator_label": "Alertes autres acteurs",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_count_other_actors_events",
+      "indicator_label": "Nombre d'alertes d'événements notifiées par les autres acteurs communautaires",
+      "indicator_group": "Événements",
+      "value_type": "count",
+      "calculation_note": "Alertes événements issues des détections et notifications autres acteurs",
+      "numerator_label": "Événements autres acteurs",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_count_other_actors_mpe",
+      "indicator_label": "Nombre d'alertes de maladies à potentiel épidémique notifiées par les autres acteurs communautaires",
+      "indicator_group": "Maladies à potentiel épidémique",
+      "value_type": "count",
+      "calculation_note": "Alertes MPE issues des détections et notifications autres acteurs",
+      "numerator_label": "Alertes MPE autres acteurs",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_count_within_24h",
+      "indicator_label": "Nombre d'alertes notifiées dans les 24 heures suivant l'identification",
+      "indicator_group": "Délais",
+      "value_type": "count",
+      "calculation_note": "Détection + notification avec délai inférieur ou égal à 24 heures",
+      "numerator_label": "Alertes notifiées sous 24h",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_count_within_48h",
+      "indicator_label": "Nombre de cas d'alertes investiguées dans les 48 heures par le DTC",
+      "indicator_group": "Délais",
+      "value_type": "count",
+      "calculation_note": "Vérifications DTC avec délai inférieur ou égal à 48 heures",
+      "numerator_label": "Alertes investiguées sous 48h",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_days_since_last_chw_alert_notification",
+      "indicator_label": "Nombre de jours depuis la dernière notification d'alerte par l'ASC",
+      "indicator_group": "Délais",
+      "value_type": "count",
+      "calculation_note": "Nombre de jours écoulés depuis la dernière notification ASC au terme de la semaine",
+      "numerator_label": "Jours sans notification ASC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_death_case_animals",
+      "indicator_label": "Nombre de décès d'animaux signalés par les ASC",
+      "indicator_group": "Décès",
+      "value_type": "count",
+      "calculation_note": "Notifications d'alertes village avec décès animaux signalé",
+      "numerator_label": "Décès animaux",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_investigated_cases",
+      "indicator_label": "Nombre d'alertes investiguées par le DTC",
+      "indicator_group": "Investigation",
+      "value_type": "count",
+      "calculation_note": "Nombre de formulaires sebac_alert_verification soumis",
+      "numerator_label": "Alertes investiguées",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_suspected_cases",
+      "indicator_label": "Nombre total de cas suspects",
+      "indicator_group": "Cas suspects",
+      "value_type": "count",
+      "calculation_note": "Somme des cas suspects ASC et autres acteurs",
+      "numerator_label": "Cas suspects",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_suspected_cases_chw",
+      "indicator_label": "Nombre de cas suspects parmi les cas d'alerte notifiés par les ASC",
+      "indicator_group": "Cas suspects",
+      "value_type": "count",
+      "calculation_note": "Vérifications DTC avec source ASC et cas suspect",
+      "numerator_label": "Cas suspects ASC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_suspected_cases_chw_mpe",
+      "indicator_label": "Nombre de cas suspects MPE parmi les cas d'alertes notifiées par l'ASC",
+      "indicator_group": "Maladies à potentiel épidémique",
+      "value_type": "count",
+      "calculation_note": "Vérifications DTC source ASC, MPE et cas suspect",
+      "numerator_label": "Cas suspects MPE ASC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_suspected_cases_mpe",
+      "indicator_label": "Nombre total de cas suspects MPE",
+      "indicator_group": "Maladies à potentiel épidémique",
+      "value_type": "count",
+      "calculation_note": "Cas suspects MPE ASC + autres acteurs",
+      "numerator_label": "Cas suspects MPE",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_suspected_cases_other_actors",
+      "indicator_label": "Nombre de cas suspects parmi les cas d'alerte notifiés par les autres acteurs",
+      "indicator_group": "Cas suspects",
+      "value_type": "count",
+      "calculation_note": "Vérifications DTC avec source autre acteur et cas suspect",
+      "numerator_label": "Cas suspects autres acteurs",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_suspected_cases_other_actors_mpe",
+      "indicator_label": "Nombre de cas suspects MPE parmi les cas d'alertes notifiées par les autres acteurs",
+      "indicator_group": "Maladies à potentiel épidémique",
+      "value_type": "count",
+      "calculation_note": "Vérifications DTC source autre acteur, MPE et cas suspect",
+      "numerator_label": "Cas suspects MPE autres acteurs",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "total_verification_forms_dtc",
+      "indicator_label": "Nombre de formulaires de vérification soumis par le DTC",
+      "indicator_group": "Investigation",
+      "value_type": "count",
+      "calculation_note": "Même décompte que les alertes investiguées",
+      "numerator_label": "Formulaires de vérification DTC",
+      "denominator_label": null
+    },
+    {
+      "indicator_key": "verified_notifications_count",
+      "indicator_label": "Nombre d'alertes notifiées ayant une vérification DTC",
+      "indicator_group": "Investigation",
+      "value_type": "count",
+      "calculation_note": "Notifications/détections reliées à une vérification via alert_id",
+      "numerator_label": "Alertes notifiées puis vérifiées",
+      "denominator_label": null
+    }
+  ],
+  "findings": [
+    "Le graphique 75 somme numerator sans distinguer les pourcentages et les jours depuis notification.",
+    "L’ancien tableau SEBAC est conservé tel quel, en brouillon.",
+    "Aucune vue SEBAC identifiée dans la connexion ASA auditée."
+  ]
+}

@@ -124,3 +124,8 @@ ASC et SD, avec repères de source DISC / ASA et visuel hébergé sur le même d
 La [carte des sites](map/README.md) complète la géolocalisation avec les mêmes
 restrictions de périmètre. Les [comptes district](README-DISTRICTS.md) reprennent
 la nomenclature des lecteurs régionaux avec une règle RLS propre à chaque district.
+
+## Surveillance SEBAC
+
+Le [premier lot SEBAC](README-SEBAC.md) distingue les cohortes d’alertes, l’activité
+déclarée et les priorités actuelles, avec contrôles, exports et restrictions territoriales.

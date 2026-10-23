@@ -8,7 +8,7 @@ ROW='ROW-DISC-INSTITUTION';MARKDOWN='MARKDOWN-DISC-INSTITUTION'
 CSS_START='/* DISC institutional banner start */';CSS_END='/* DISC institutional banner end */'
 SLUGS={'asc-pilotage','asc-pilotage-v2','asc-suivi-operationnel','asc-completude-taches','asc-thematiques',
  'sd-supervision','sd-pilotage-disc','sd-historique-asa','sd-qualite-disc','sd-qualite-asa',
- 'sites-geolocalisation','sd-classement-disc','asc-classement-disc'}
+ 'sites-geolocalisation','sd-classement-disc','asc-classement-disc','sebac-pilotage-disc'}
 CSS=(ROOT/'branding/banner.css').read_text()
 def selected(d):
  return d.id in [1,2,25] or d.slug in SLUGS or (d.slug or '').startswith('asc-theme-')
