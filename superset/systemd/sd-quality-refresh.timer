@@ -1,0 +1,10 @@
+[Unit]
+Description=Relevés SD qualité toutes les six heures
+
+[Timer]
+OnCalendar=*-*-* 02,08,14,20:55:00 UTC
+RandomizedDelaySec=120
+Persistent=true
+
+[Install]
+WantedBy=timers.target

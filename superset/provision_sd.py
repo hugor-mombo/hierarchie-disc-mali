@@ -101,13 +101,13 @@ with app.test_request_context('/'):
     controlValues=dict(enableEmptyFilter=False,defaultToFirstItem=False,multiSelect=True,searchAllOptions=True,inverseSelection=False),defaultDataMask={'extraFormData':{},'filterState':{},'ownState':{}},cascadeParentIds=[],
     scope={'rootPath':['ROOT_ID'],'excluded':[c.id for k,c in board.charts.items() if k not in ['sites','export']]},description='Filtre des listes et exports uniquement ; les cartes et taux conservent leur dénominateur complet.'))
   return filters
- table=dict(query_mode='aggregate',all_columns=[],server_pagination=True,server_page_length=20,page_length=20,include_search=False,allow_render_html=False,show_cell_bars=False,order_desc=True,table_timestamp_format='%d/%m/%Y')
+ table=dict(query_mode='aggregate',all_columns=[],server_pagination=True,server_page_length=20,page_length=20,include_search=False,allow_render_html=False,show_cell_bars=False,order_desc=True,table_timestamp_format='%d/%m/%Y',column_config={'quota_rate':{'d3NumberFormat':'.1%'},'rdt_rate':{'d3NumberFormat':'.1%'},'average_visits':{'d3NumberFormat':'.1f'}})
  bar=dict(metrics=['quota_rate'],groupby=[],annotation_layers=[],show_legend=False,color_scheme='supersetColors',rich_tooltip=True,y_axis_format='.0%',y_axis_bounds=[0,1],x_axis_sort_series='name',x_axis_sort_series_ascending=True,truncateXAxis=False)
- nav='[← Espace supervision](/superset/dashboard/sd-supervision/) · [DISC](/superset/dashboard/sd-pilotage-disc/) · [Historique ASA](/superset/dashboard/sd-historique-asa/) · [Ancien SD](/superset/dashboard/2/)'
+ nav='[← Espace supervision](/superset/dashboard/sd-supervision/) · [DISC](/superset/dashboard/sd-pilotage-disc/) · [Historique ASA](/superset/dashboard/sd-historique-asa/) · [Qualité DISC](/superset/dashboard/sd-qualite-disc/) · [Qualité ASA](/superset/dashboard/sd-qualite-asa/) · [Ancien SD](/superset/dashboard/2/)'
  b=Board('disc','SD — Pilotage DISC','sd-pilotage-disc');ds=datasets['disc']
  p=b.tab('pilot','Synthèse DISC')
  b.note(p,'intro','''## Où renforcer les supervisions sur DISC ?
-Choisissez des **mois civils entiers**, puis **Région → District → CSCOM → Zone**, et cliquez sur **Apply filters**.
+Choisissez des **mois civils entiers**, puis **Région → District → CSCOM → Zone**, et cliquez sur **Appliquer les filtres**.
 Le déploiement 2026 a été progressif. Le dénominateur est le **portefeuille courant relu sur les mois passés**, pas le nombre de sites effectivement déployés à chaque date. Ce taux décrit ce portefeuille ; il ne mesure pas la couverture historique du programme.
 
 '''+nav,26)
@@ -121,10 +121,10 @@ Le déploiement 2026 a été progressif. Le dénominateur est le **portefeuille 
  b.note(d,'how','''## Passer du constat à la liste des sites
 **État du quota mensuel** filtre les listes et l’export, sans modifier les cartes ni les dénominateurs de la synthèse. Sélectionnez « Quota incomplet » et « Aucun des trois formulaires » pour obtenir tous les sites-mois hors quota. Le second statut cible ceux sans activité déclarée parmi ces trois formulaires. Les manques correspondent au minimum mensuel, pas à une tâche clinique calculée.
 Les superviseurs et rattachements sont ceux du répertoire courant ; aucune affectation historique n’est inventée.
-Pour télécharger : menu **⋮** du tableau **EXPORT** → **Download** → **Export to .CSV** ou **.XLSX**.''',30)
+Pour télécharger : menu **⋮** du tableau **EXPORT** → **Télécharger** → **Exporter en .CSV** ou **.XLSX**.''',30)
  b.chart('territories','Région, district, CSCOM et zone — quota et activité',ds,groupby=['region','district','cscom','zone'],metrics=['sites','site_months','quota_count','quota_rate','site_visits','community_visits','feedbacks'],**table)
- b.chart('sites','Sites à examiner — une ligne par site et mois',ds,groupby=['reported_month','region','district','cscom','zone','site_name','site_uuid','supervisor_name','assignment_status','quota_status'],metrics=['site_visits','community_visits','feedbacks','missing_site_visits','missing_community_visits','missing_feedbacks'],**table)
- export_cols=['reported_month','region','region_uuid','district_name','district_uuid','cscom_name','health_area_uuid','zone_name','supervisor_area_uuid','site_name','site_uuid','supervisor_name','supervisor_uuid','assignment_status','quota_status','last_activity_at']
+ b.chart('sites','Sites à examiner — une ligne par site et mois',ds,groupby=['reported_month','region','district','cscom','zone','site_name','site_uuid','supervisor_name','assignment_label','quota_status'],metrics=['site_visits','community_visits','feedbacks','missing_site_visits','missing_community_visits','missing_feedbacks'],**table)
+ export_cols=['reported_month','region','region_uuid','district_name','district_uuid','cscom_name','health_area_uuid','zone_name','supervisor_area_uuid','site_name','site_uuid','supervisor_name','supervisor_uuid','assignment_label','quota_status','last_activity_at']
  b.chart('export','EXPORT DISC — sites, quotas et arborescence',ds,groupby=export_cols,metrics=['site_visits','community_visits','feedbacks','missing_site_visits','missing_community_visits','missing_feedbacks'],**{**table,'server_pagination':False})
  b.row(d,'territories',[('territories',12)],55);b.row(d,'sites',[('sites',12)],60);b.row(d,'export',[('export',12)],60)
  q=b.tab('method','Méthode et qualité DISC')
@@ -138,7 +138,7 @@ Pour télécharger : menu **⋮** du tableau **EXPORT** → **Download** → **E
 - Source DISC uniquement : aucune donnée ASA n’est ajoutée au numérateur ou au dénominateur. Les quotas ASA utilisent un autre périmètre.
 ''',70)
  b.chart('available','Mois DISC disponibles — périmètre et déclarations',ds,time_range='No filter',groupby=['reported_month'],metrics=['sites','site_months','quota_count','site_visits','community_visits','feedbacks'],**table)
- b.chart('assignment','Rattachement superviseur — contrôle du portefeuille',ds,groupby=['assignment_status'],metrics=['sites','site_months','quota_count'],**table)
+ b.chart('assignment','Rattachement superviseur — contrôle du portefeuille',ds,groupby=['assignment_label'],metrics=['sites','site_months','quota_count'],**table)
  b.row(q,'available',[('available',12)],48);b.row(q,'assignment',[('assignment',12)],36)
  b.finish(filters_for(b,ds))
  b=Board('asa','SD — Historique ASA Mali','sd-historique-asa');ds=datasets['asa_history'];recent=datasets['asa_recent']
@@ -157,7 +157,7 @@ L’ancienne « aire de santé » est ici la même structure que la zone de supe
  d=b.tab('exports','Territoires et exports ASA')
  b.note(d,'how','''## Exporter une extraction reproductible
 Les listes suivent uniquement la **période et la géographie ASA**. Les unités natives et identifiants ASA sont conservés. Une ligne représente une **zone ASA et un mois**, sans détail par site reconstruit artificiellement.
-Menu **⋮** du tableau **EXPORT** → **Download** → **Export to .CSV** ou **.XLSX**. Les taux sont toujours calculés sur les sommes des numérateurs et dénominateurs, jamais sur la moyenne des pourcentages de zones.''',27)
+Menu **⋮** du tableau **EXPORT** → **Télécharger** → **Exporter en .CSV** ou **.XLSX**. Les taux sont toujours calculés sur les sommes des numérateurs et dénominateurs, jamais sur la moyenne des pourcentages de zones.''',27)
  b.chart('territories','Territoires ASA — activité et quota',ds,time_range='2025-01-01 : 2026-01-01',groupby=['region','district','zone'],metrics=['eligible','quota_count','incomplete','quota_rate','site_visits','community_visits','feedbacks'],**table)
  asa_cols=['reported_month','region','region_uuid','district_name','district_uuid','zone_name','supervisor_area_uuid','supervisor_contact_id','supervisor_name']
  b.chart('export','EXPORT ASA — supervisions 2019–2025',ds,time_range='2025-01-01 : 2026-01-01',groupby=asa_cols,metrics=['eligible','quota_count','incomplete','quota_rate','site_visits','community_visits','feedbacks','inactive_quota','unknown_creation'],**{**table,'server_pagination':False})
@@ -191,15 +191,19 @@ La migration a été **progressive en 2026** : pilote vers février, centre/sud 
 ### [Piloter les supervisions DISC →](/superset/dashboard/sd-pilotage-disc/)
 Quota mensuel, visites avec/sans ASC, entretiens, territoires et listes de sites à examiner. Dernier mois complet par défaut.
 
+[Compétences et 31 indicateurs de qualité DISC →](/superset/dashboard/sd-qualite-disc/)
+
 ### [Consulter l’historique ASA →](/superset/dashboard/sd-historique-asa/)
 Supervisions 2019–2025, exports natifs ASA et indicateurs FM/GAVI disponibles jusqu’en 2026. Les lacunes d’archives et les différences de périmètre restent visibles.
 
+[Compétences et 31 indicateurs de qualité ASA →](/superset/dashboard/sd-qualite-asa/)
+
 [Ancien dashboard SD](/superset/dashboard/2/) · [Tableaux thématiques ASC](/superset/dashboard/asc-thematiques/)
-''',40)
+''',49)
  b.note(p,'lots','''## Travaux par lots
 1. **Socle livré :** audit, pilotage DISC, historique ASA déjà disponible, filtres corrigés, unités sites/sites-mois, exports et contrôle des accès.
 2. **Supervisions et relances :** prolonger le relevé ASA de supervision sur 2026, vérifier les lacunes 2019/2021, consolider les visites/entretiens par épisode et compléter les listes d’action.
-3. **Qualité et thématiques :** observation des soins, TDR, protocoles, PF, mère-enfant, communauté/TB et qualité des données, avec définitions propres à chaque version.
+3. **Compétences et qualité — premiers indicateurs livrés :** 31 indicateurs issus de la configuration, avec la dernière visite mensuelle, les réponses absentes et les exports français. À approfondir : appariement des épisodes, communauté/TB et versions des formulaires.
 4. **Moyens et pilotage des équipes :** intrants, équipements, supports, retours des ASC et affectations ; classement uniquement après vérification des périmètres et de l’historique des affectations.
 ''',36)
  b.finish([])

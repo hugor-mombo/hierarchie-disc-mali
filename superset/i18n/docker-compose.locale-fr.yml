@@ -1,0 +1,9 @@
+# Use with /opt/moh_superset/docker-compose.yml as the FIRST compose file.
+# Reuses the installed image and settings; adds only the French language catalog.
+services:
+  superset:
+    volumes:
+      - type: bind
+        source: ./superset_config/asc-v2/i18n/build/fr
+        target: /app/superset/translations/fr
+        read_only: true

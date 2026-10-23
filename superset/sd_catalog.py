@@ -12,7 +12,7 @@ SOURCES={
  'disc':dict(db=1,title='SD DISC — Sites et quotas mensuels',sql='disc_sites.sql',columns=GEO+[
  ('health_area_uuid','TEXT','Identifiant CSCOM'),('cscom_name','TEXT','CSCOM'),('cscom','TEXT','CSCOM · Territoire'),
  ('site_uuid','TEXT','Identifiant site DISC'),('site_name','TEXT','Site ASC'),('supervisor_uuid','TEXT','Identifiant superviseur'),
- ('assignment_status','TEXT','Statut de rattachement superviseur'),('quota_status','TEXT','État du quota mensuel'),
+ ('assignment_status','TEXT','Code de rattachement superviseur'),('assignment_label','TEXT','Rattachement superviseur'),('quota_status','TEXT','État du quota mensuel'),
  ('last_activity_at','TIMESTAMP WITH TIME ZONE','Dernière activité déclarée du mois')]+[(k,'NUMERIC',v) for k,v in [
  ('site_visits','Visites avec ASC'),('community_visits','Visites sans ASC'),('feedbacks','Entretiens individuels'),('visited','Site-mois avec visite ASC'),('three_forms','Site-mois avec trois formulaires'),('quota','Site-mois au quota'),('missing_site_visits','Visites avec ASC manquantes'),('missing_community_visits','Visites sans ASC manquantes'),('missing_feedbacks','Entretiens manquants')]],metrics=[
  ('sites','Sites distincts du portefeuille courant','COUNT(DISTINCT site_uuid)'),

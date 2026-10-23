@@ -1,0 +1,11 @@
+[Unit]
+Description=Actualiser les indicateurs SD qualité dans les bases natives DISC et ASA
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=mombo
+WorkingDirectory=/opt/moh_superset/superset_config/asc-v2
+ExecStart=/usr/bin/docker exec superset_app python -u /app/superset_config/asc-v2/refresh_sd_quality.py
+TimeoutStartSec=1500

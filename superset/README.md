@@ -102,3 +102,7 @@ Le [lot 4 — tableaux thématiques ASC](README-THEMES.md) complète ce pilotage
 ## Supervision dédiée
 
 Le [premier lot supervision](README-SUPERVISION.md) propose un pilotage DISC et un historique ASA distincts, avec les limites de cohorte, méthodes et contrôles d’accès.
+
+## Compétences, qualité SD et français
+
+Les [31 indicateurs de compétences et qualité SD](README-SD-QUALITE.md) sont disponibles dans des tableaux DISC et ASA séparés. Le [français Superset](i18n/README.md) comprend les catalogues compilés et les libellés métier affichés dans les tableaux et exports.

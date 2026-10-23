@@ -157,3 +157,7 @@ vérifié sur les trois datasets. La période civile, les cartes DISC/ASA et la
 cascade régionale DISC ont été inspectées dans le navigateur. Les mises à jour
 ultérieures de mise en page sont idempotentes ; les dashboards historiques n’ont
 pas été modifiés. Les tests ne certifient pas l’exhaustivité des archives amont.
+
+## Complément : compétences et qualité
+
+Les [31 indicateurs de compétences et qualité](README-SD-QUALITE.md), analysés à partir de `config-moh-mali-chw`, enrichissent les deux espaces natifs. Ils utilisent la dernière visite mensuelle, rendent visibles les scores non exploitables et proposent des exports français. Les anciens calculs de quota de ce premier lot restent distincts de ces nouvelles observations de qualité.

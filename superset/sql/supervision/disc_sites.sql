@@ -7,6 +7,7 @@ SELECT reported_month, extract(year FROM reported_month)::integer AS year, regio
  concat_ws(' · ',supervisor_area,health_area,district,region) AS zone,
  chw_site_uuid AS site_uuid, chw_site AS site_name,
  supervisor_uuid, supervisor_name, assignment_status,
+ CASE assignment_status WHEN 'assigned' THEN 'Affectation identifiée' WHEN 'conflict' THEN 'Affectation en conflit' ELSE 'Affectation non identifiée' END AS assignment_label,
  visit_chw_site_reports AS site_visits,
  visit_community_without_chw_reports AS community_visits,
  individual_feedback_reports AS feedbacks,

@@ -1,0 +1,475 @@
+[
+  {
+    "key": "competence",
+    "label": "Compétence acceptable ≥ 80 — scores valides",
+    "category": "Compétence",
+    "kind": "score",
+    "denominator": "valid",
+    "note": "Dernière visite du site dans le mois ; score final natif valide entre 0 et 100. Numérateur : score ≥ 80 ; dénominateur : sites-mois avec score valide. Les scores absents ou invalides sont séparés."
+  },
+  {
+    "key": "competence_visited",
+    "label": "Score ≥ 80 parmi tous les sites-mois visités",
+    "category": "Compétence",
+    "kind": "score",
+    "denominator": "visited",
+    "note": "Même numérateur, avec tous les sites-mois visités au dénominateur, y compris les scores absents/invalides. Ce dénominateur se rapproche du target CHT, mais la dernière visite remplace son find() dépendant de l’ordre des rapports."
+  },
+  {
+    "key": "score_available",
+    "label": "Disponibilité d’un score valide",
+    "category": "Compétence",
+    "kind": "score_available",
+    "note": "Sites-mois avec score valide / sites-mois visités. Un score vide, non numérique ou hors 0–100 ne devient pas zéro."
+  },
+  {
+    "key": "patient_assessed",
+    "label": "Observation de l’évaluation du patient",
+    "category": "Observation clinique",
+    "kind": "enum",
+    "field": "s_patient_assessed",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Réponse oui parmi les réponses oui/non de la dernière visite du mois ; les réponses absentes sont signalées."
+  },
+  {
+    "key": "hands",
+    "label": "Lavage des mains correct",
+    "category": "Gestes techniques",
+    "kind": "enum",
+    "field": "s_hands_washed",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_patient_assessed='yes'",
+    "note": "Dernière visite mensuelle avec évaluation de patient. Le dénominateur retient les gestes renseignés et applicables ; not_applicable, réponses absentes et valeurs inattendues restent distincts."
+  },
+  {
+    "key": "weighing",
+    "label": "Pesée de l’enfant correcte",
+    "category": "Gestes techniques",
+    "kind": "enum",
+    "field": "s_child_weighted",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_patient_assessed='yes'",
+    "note": "Dernière visite mensuelle avec évaluation de patient. Le dénominateur retient les gestes renseignés et applicables ; not_applicable, réponses absentes et valeurs inattendues restent distincts."
+  },
+  {
+    "key": "danger",
+    "label": "Recherche correcte des signes de danger",
+    "category": "Gestes techniques",
+    "kind": "enum",
+    "field": "s_danger_signs_check",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_patient_assessed='yes'",
+    "note": "Dernière visite mensuelle avec évaluation de patient. Le dénominateur retient les gestes renseignés et applicables ; not_applicable, réponses absentes et valeurs inattendues restent distincts."
+  },
+  {
+    "key": "temperature",
+    "label": "Prise de température correcte",
+    "category": "Gestes techniques",
+    "kind": "enum",
+    "field": "s_child_temperature",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_patient_assessed='yes'",
+    "note": "Dernière visite mensuelle avec évaluation de patient. Le dénominateur retient les gestes renseignés et applicables ; not_applicable, réponses absentes et valeurs inattendues restent distincts."
+  },
+  {
+    "key": "muac",
+    "label": "Mesure correcte du périmètre brachial",
+    "category": "Gestes techniques",
+    "kind": "enum",
+    "field": "s_brachial_perimeter",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_patient_assessed='yes'",
+    "note": "Dernière visite mensuelle avec évaluation de patient. Le dénominateur retient les gestes renseignés et applicables ; not_applicable, réponses absentes et valeurs inattendues restent distincts."
+  },
+  {
+    "key": "respiratory",
+    "label": "Mesure correcte de la fréquence respiratoire",
+    "category": "Gestes techniques",
+    "kind": "enum",
+    "field": "s_respiratory_mouvements",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_patient_assessed='yes'",
+    "note": "Dernière visite mensuelle avec évaluation de patient. Le dénominateur retient les gestes renseignés et applicables ; not_applicable, réponses absentes et valeurs inattendues restent distincts."
+  },
+  {
+    "key": "rdt",
+    "label": "Conformité TDR — checklist documentée",
+    "category": "Gestes techniques",
+    "kind": "rdt",
+    "note": "Dernière visite mensuelle avec TDR déclaré. La checklist complète de la configuration DISC est évaluée si les réponses requises sont connues. Le solvant historique ASA « 4 » est accepté comme l’ancienne valeur documentée. Une réponse requise absente ne devient pas un TDR non conforme ; elle est signalée séparément. Ce calcul explicite diffère de l’ancien agrégat ASA à cinq critères et ne le remplace pas."
+  },
+  {
+    "key": "bercer",
+    "label": "Respect des étapes BERCER en PF",
+    "category": "PF et accompagnement",
+    "kind": "enum",
+    "field": "s_fp_bercer_respect",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "TRUE",
+    "note": "Dernière visite mensuelle. Seulement les réponses renseignées et applicables ; les non applicables et absences ne sont pas des échecs."
+  },
+  {
+    "key": "fp_eligibility",
+    "label": "Contrôle d’éligibilité PF correct",
+    "category": "PF et accompagnement",
+    "kind": "enum",
+    "field": "s_fp_eligibility_control",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "TRUE",
+    "note": "Dernière visite mensuelle. Seulement les réponses renseignées et applicables ; les non applicables et absences ne sont pas des échecs."
+  },
+  {
+    "key": "anje_activity",
+    "label": "Activité ANJE observée",
+    "category": "PF et accompagnement",
+    "kind": "enum",
+    "field": "s_anje_activity_done",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Déclaration oui/non de la dernière visite mensuelle ; pas un dénombrement de bénéficiaires uniques."
+  },
+  {
+    "key": "newborn",
+    "label": "Suivi de nouveau-né observé",
+    "category": "PF et accompagnement",
+    "kind": "enum",
+    "field": "s_newborn_followup_done",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Déclaration oui/non de la dernière visite mensuelle ; pas un dénombrement de bénéficiaires uniques."
+  },
+  {
+    "key": "anje_evaluation",
+    "label": "ANJE : évaluer, analyser, agir",
+    "category": "PF et accompagnement",
+    "kind": "enum",
+    "field": "s_anje_steps_followed",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_anje_activity_done='yes'",
+    "note": "Sites-mois où une activité ANJE est déclarée ; seulement les réponses renseignées et applicables de la dernière visite."
+  },
+  {
+    "key": "anje_demonstration",
+    "label": "Démonstration nutritionnelle correcte",
+    "category": "PF et accompagnement",
+    "kind": "enum",
+    "field": "s_anje_nutrition_steps_followed",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_anje_activity_done='yes'",
+    "note": "Sites-mois où une activité ANJE est déclarée ; seulement les réponses renseignées et applicables de la dernière visite."
+  },
+  {
+    "key": "anje_group",
+    "label": "Animation du groupe de soutien correcte",
+    "category": "PF et accompagnement",
+    "kind": "enum",
+    "field": "s_anje_support_group_steps_followed",
+    "success": [
+      "yes_correctly_done"
+    ],
+    "answers": [
+      "yes_correctly_done",
+      "yes_not_correctly_done",
+      "not_done"
+    ],
+    "gate": "s_anje_activity_done='yes'",
+    "note": "Sites-mois où une activité ANJE est déclarée ; seulement les réponses renseignées et applicables de la dernière visite."
+  },
+  {
+    "key": "medication_register",
+    "label": "Registre de médicaments disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_medication_register",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Disponibilité déclarée lors de la dernière visite mensuelle, parmi les réponses oui/non. Une absence de réponse ou un ancien champ non collecté ne signifie pas indisponible."
+  },
+  {
+    "key": "consultation_register",
+    "label": "Registre de consultation disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_consultation_register",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Disponibilité déclarée lors de la dernière visite mensuelle, parmi les réponses oui/non. Une absence de réponse ou un ancien champ non collecté ne signifie pas indisponible."
+  },
+  {
+    "key": "fp_register",
+    "label": "Registre PF disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_fp_register",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Disponibilité déclarée lors de la dernière visite mensuelle, parmi les réponses oui/non. Une absence de réponse ou un ancien champ non collecté ne signifie pas indisponible."
+  },
+  {
+    "key": "monthly_register",
+    "label": "Rapports mensuels disponibles",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_monthly_reports_register",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Disponibilité déclarée lors de la dernière visite mensuelle, parmi les réponses oui/non. Une absence de réponse ou un ancien champ non collecté ne signifie pas indisponible."
+  },
+  {
+    "key": "inventory",
+    "label": "Registre d’inventaire disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_medication_inventory",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Disponibilité déclarée lors de la dernière visite mensuelle, parmi les réponses oui/non. Une absence de réponse ou un ancien champ non collecté ne signifie pas indisponible."
+  },
+  {
+    "key": "supervision_book",
+    "label": "Cahier de supervision disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_supervision_book",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "Disponibilité déclarée lors de la dernière visite mensuelle, parmi les réponses oui/non. Une absence de réponse ou un ancien champ non collecté ne signifie pas indisponible."
+  },
+  {
+    "key": "balance",
+    "label": "Balance disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_balance",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "État déclaré à la dernière visite mensuelle ; pas un inventaire de stock en temps réel. Les réponses manquantes restent visibles et sont exclues du dénominateur renseigné."
+  },
+  {
+    "key": "thermometer",
+    "label": "Thermomètre disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_thermometer",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "État déclaré à la dernière visite mensuelle ; pas un inventaire de stock en temps réel. Les réponses manquantes restent visibles et sont exclues du dénominateur renseigné."
+  },
+  {
+    "key": "imagebox",
+    "label": "Boîte à images disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_imagebox",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "État déclaré à la dernière visite mensuelle ; pas un inventaire de stock en temps réel. Les réponses manquantes restent visibles et sont exclues du dénominateur renseigné."
+  },
+  {
+    "key": "securebox",
+    "label": "Boîte de sécurité disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_securebox",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "État déclaré à la dernière visite mensuelle ; pas un inventaire de stock en temps réel. Les réponses manquantes restent visibles et sont exclues du dénominateur renseigné."
+  },
+  {
+    "key": "rdt_stock",
+    "label": "Kits TDR disponibles",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_tdr_kit",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "État déclaré à la dernière visite mensuelle ; pas un inventaire de stock en temps réel. Les réponses manquantes restent visibles et sont exclues du dénominateur renseigné."
+  },
+  {
+    "key": "sro_stock",
+    "label": "SRO disponibles",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_sro",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "État déclaré à la dernière visite mensuelle ; pas un inventaire de stock en temps réel. Les réponses manquantes restent visibles et sont exclues du dénominateur renseigné."
+  },
+  {
+    "key": "zinc_stock",
+    "label": "Zinc disponible",
+    "category": "Supports et équipements",
+    "kind": "enum",
+    "field": "s_zinc",
+    "success": [
+      "yes"
+    ],
+    "answers": [
+      "yes",
+      "no"
+    ],
+    "gate": "TRUE",
+    "note": "État déclaré à la dernière visite mensuelle ; pas un inventaire de stock en temps réel. Les réponses manquantes restent visibles et sont exclues du dénominateur renseigné."
+  }
+]

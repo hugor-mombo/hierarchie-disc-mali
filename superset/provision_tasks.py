@@ -187,7 +187,7 @@ with app.test_request_context('/'):
   layout[mid]=dict(id=mid,type='MARKDOWN',children=[],parents=parents+[rid],meta={'code':code,'width':12,'height':height})
  pilot=tab('pilot','Pilotage de la complétude')
  note(pilot,'intro','''## Où concentrer l’accompagnement sur les tâches ?
-Choisissez la **période d’échéance**, puis Région → District → CSCOM → Site et, si nécessaire, une thématique ou un type. Cliquez sur **Apply filters**. Par défaut : dernier mois civil complet. Utilisez des **mois entiers**. L’historique conserve **12 mois complets et les échéances suivantes** ; une période plus ancienne n’est couverte que partiellement.
+Choisissez la **période d’échéance**, puis Région → District → CSCOM → Site et, si nécessaire, une thématique ou un type. Cliquez sur **Appliquer les filtres**. Par défaut : dernier mois civil complet. Utilisez des **mois entiers**. L’historique conserve **12 mois complets et les échéances suivantes** ; une période plus ancienne n’est couverte que partiellement.
 
 La **complétude des échues** = tâches réalisées / tâches enregistrées dont l’échéance est **antérieure à la date de référence**, hors annulations et données invalides. Les tâches encore ouvertes restent dans le dénominateur. Une tâche complétée n’est pas nécessairement réalisée à temps. [Pilotage national](/superset/dashboard/asc-pilotage-v2/) · [Listes de suivi](/superset/dashboard/asc-suivi-operationnel/).''',38)
  row(pilot,'cards1',[('due',4),('done',4),('rate',4)],25)
@@ -208,7 +208,7 @@ Les types de tâches sont regroupés par thématique. Comparez les **volumes ave
  row(action,'territories',[('territories',12)],48)
  row(action,'followup',[('followup',12)],62)
  note(action,'export','''### Télécharger la liste complète d’accompagnement
-Appliquez d’abord les filtres, puis utilisez le menu du tableau **EXPORT TÂCHES : ⋮ → Download → Export to .CSV ou Export to Excel**. Une ligne réunit un compte ASC, un site et un type de tâche sur la période sélectionnée, avec Région, District, CSCOM, téléphone, effectifs, échéance la plus ancienne et dates du calcul. Les mois min/max indiquent les mois effectivement représentés dans cette ligne. Aucun nom de patient n’est inclus.''',22)
+Appliquez d’abord les filtres, puis utilisez le menu du tableau **EXPORT TÂCHES : ⋮ → Télécharger → Exporter en .CSV ou Exporter vers Excel**. Une ligne réunit un compte ASC, un site et un type de tâche sur la période sélectionnée, avec Région, District, CSCOM, téléphone, effectifs, échéance la plus ancienne et dates du calcul. Les mois min/max indiquent les mois effectivement représentés dans cette ligne. Aucun nom de patient n’est inclus.''',22)
  row(action,'export',[('export',12)],52)
  method=tab('method','Méthode et qualité')
  note(method,'rules','''## Lire les taux et les états

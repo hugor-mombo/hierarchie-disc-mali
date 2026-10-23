@@ -214,13 +214,13 @@ with app.test_request_context('/'):
 
     asc=tab('asc','ASC à relancer')
     note(asc,'asc_intro','''## Préparer les relances des ASC
-Choisissez la région, le district, le CSCOM et éventuellement le site. Le **seuil est de 30 jours par défaut**, modifiable à 7 ou 14 jours. Cliquez sur **Apply filters** après vos sélections.
+Choisissez la région, le district, le CSCOM et éventuellement le site. Le **seuil est de 30 jours par défaut**, modifiable à 7 ou 14 jours. Cliquez sur **Appliquer les filtres** après vos sélections.
 
 Cette liste mesure les **rapports déclarés**, pas la synchronisation du téléphone. Une ligne correspond à un **compte ASC**, identifié par son nom de connexion. La rubrique « À vérifier » distingue les rapports uniquement attribués au site et les rattachements incohérents. [Pilotage national](/superset/dashboard/asc-pilotage-v2/) · [Complétude des tâches](/superset/dashboard/asc-completude-taches/).''',32)
     row(asc,'asc_cards',[('asc_accounts',4),('asc_sites',4),('asc_no_personal',4)],23)
     row(asc,'asc_list',[('asc_list',12)],66)
     note(asc,'asc_export_note','''### Télécharger la liste complète
-Le tableau **EXPORT ASC** ci-dessous conserve les colonnes d’arborescence et les identifiants. Ouvrez son menu **⋮ → Download → Export to .CSV** ou **Export to Excel**. L’export correspond aux filtres appliqués, au-delà de la seule page affichée. Conservez le seuil sélectionné pour comparer le nombre de comptes et le fichier exporté.''',18)
+Le tableau **EXPORT ASC** ci-dessous conserve les colonnes d’arborescence et les identifiants. Ouvrez son menu **⋮ → Télécharger → Exporter en .CSV** ou **Exporter vers Excel**. L’export correspond aux filtres appliqués, au-delà de la seule page affichée. Conservez le seuil sélectionné pour comparer le nombre de comptes et le fichier exporté.''',18)
     row(asc,'asc_export',[('asc_export',12)],50)
     row(asc,'asc_freshness',[('asc_freshness',12)],14)
 
@@ -232,7 +232,7 @@ Une seule ligne par identifiant enfant. L’âge vient de la date de naissance d
     row(child,'child_cards',[('child_children',4),('child_areas',4),('child_old',4)],23)
     row(child,'child_list',[('child_list',12)],66)
     note(child,'child_export_note','''### Export pour le suivi terrain
-Utilisez le menu **⋮ → Download → Export to .CSV** ou **Export to Excel** du tableau **EXPORT ENFANTS**. Il inclut Région, District, CSCOM, zone de supervision, site, identifiant enfant, âge au calcul, dernière observation et motif de suivi. Les informations nominatives et les fichiers restent réservés aux personnes autorisées au suivi.''',18)
+Utilisez le menu **⋮ → Télécharger → Exporter en .CSV** ou **Exporter vers Excel** du tableau **EXPORT ENFANTS**. Il inclut Région, District, CSCOM, zone de supervision, site, identifiant enfant, âge au calcul, dernière observation et motif de suivi. Les informations nominatives et les fichiers restent réservés aux personnes autorisées au suivi.''',18)
     row(child,'child_export',[('child_export',12)],50)
     row(child,'child_freshness',[('child_freshness',12)],14)
 

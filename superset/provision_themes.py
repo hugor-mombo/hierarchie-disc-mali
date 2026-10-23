@@ -159,7 +159,7 @@ with app.test_request_context('/'):
   current_ids=[]
   p=b.tab('pilot','Synthèse')
   b.note(p,'intro','## '+theme['question']+'''
-Choisissez des **mois civils entiers**, puis **Région → District → CSCOM** et **Indicateur à explorer**. Cliquez sur **Apply filters**.
+Choisissez des **mois civils entiers**, puis **Région → District → CSCOM** et **Indicateur à explorer**. Cliquez sur **Appliquer les filtres**.
 Cartes selon la période choisie ; tendance sur **12 mois complets**. Unités du répertoire courant.
 
 [← Tous les tableaux thématiques](/superset/dashboard/asc-thematiques/) · [Suivi opérationnel](/superset/dashboard/asc-suivi-operationnel/) · [Complétude des tâches](/superset/dashboard/asc-completude-taches/)
@@ -173,7 +173,7 @@ Cartes selon la période choisie ; tendance sur **12 mois complets**. Unités du
   b.note(d,'intro','''## Comparer, puis télécharger
 Les tableaux de détail suivent l’**indicateur choisi**. Comparez les volumes dans leur contexte : l’absence d’activité enregistrée ne prouve pas une absence de soins.
 
-**EXPORT TOUS LES INDICATEURS** conserve les filtres de **période et territoire**, et ignore le sélecteur d’indicateur. Une ligne correspond à un '''+('site/mois' if theme['grain']=='site' else 'CSCOM/mois')+''' ; les noms et identifiants territoriaux sont inclus. Menu **⋮ → Download → Export to .CSV ou Export to Excel**. Les noms de colonnes et unités sont détaillés dans l’onglet Méthode. Aucun nom de patient n’est ajouté à cet export agrégé.''',34)
+**EXPORT TOUS LES INDICATEURS** conserve les filtres de **période et territoire**, et ignore le sélecteur d’indicateur. Une ligne correspond à un '''+('site/mois' if theme['grain']=='site' else 'CSCOM/mois')+''' ; les noms et identifiants territoriaux sont inclus. Menu **⋮ → Télécharger → Exporter en .CSV ou Exporter vers Excel**. Les noms de colonnes et unités sont détaillés dans l’onglet Méthode. Aucun nom de patient n’est ajouté à cet export agrégé.''',34)
   b.row(d,'territories',[('territories',12)],52)
   if theme['grain']=='site':b.row(d,'sites',[('sites',12)],52)
   b.row(d,'export',[('export',12)],58)
