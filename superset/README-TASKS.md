@@ -108,6 +108,17 @@ avec la version réellement déployée et la fréquence métier attendue.
 Le présent lot ne change pas les règles CHT et ne déduplique pas arbitrairement
 les documents. Un avertissement et le poids longitudinal restent visibles.
 
+## Correction longitudinale du 23 octobre 2026
+
+Le diagnostic a été confirmé dans les règles réellement déployées. Le calendrier
+ASC/OCA a été confirmé par l'utilisateur et la correction ciblée a été déployée
+à 09:13 UTC, avec sauvegarde. Les échéances restent désormais ancrées aux jalons
+prévus ; le contrôle des décès et l'isolement des dates ont aussi été corrigés.
+Les 13 tests ciblés passent sur la source corrigée et le bundle de production.
+L'historique et les calculs de ce tableau sont conservés. L'effet dépend de la
+réception des règles sur les appareils et de leurs prochains recalculs.
+Voir [le diagnostic, les limites des tests et le retour arrière](cht/README.md).
+
 ## Déploiement et vérification
 
 Livrer le dossier `superset` de l'archive du commit validé dans

@@ -1,0 +1,457 @@
+diff --git a/tasks.extras.js b/tasks.extras.js
+index 724e498..1d0fadc 100644
+--- a/tasks.extras.js
++++ b/tasks.extras.js
+@@ -100,159 +100,99 @@ const getMonthBirthdays = (date, step = 1, limit = 24) => {
+   return monthBirthdays;
+ };
+ 
+-const childLongitudinalTemplate = (form) => ({
+-  name: `task.${form}`,
+-  title: taskTitle(form),
+-  icon: 'icon-healthcare',
+-  appliesTo: 'contacts',
+-  appliesToType: ['c92_household'],
+-  appliesIf: (contact) => {
+-    if (!isAlive) {
+-      return false;
+-    }
+-    const userRole = getUserRole();
+-    const now = DateTime.now();
+-    const dateOfBirth = DateTime.fromISO(contact.contact.date_of_birth);
+-    const diff = Interval.fromDateTimes(dateOfBirth, now);
+-
+-    const relation = contact && contact.contact && contact.contact.relation;
+-    const isSingle = relation && relation.matrimonial_status === 'single';
+-
+-    if (userRole === 'savings' || userRole === 'savings oca'|| userRole === 'oca_supervisor') {
+-      return false;
+-    }
+-
+-    if (!diff.isValid) {
+-      return false;
+-    }
+-
+-    const nbMonths = Math.round(diff.length('months'));
+-
+-    if (nbMonths < 1 || nbMonths > 19 * 12) {
+-      return false;
+-    }
+-
+-    if (nbMonths > 5 * 12 && userRole === 'oca') {
+-      return false;
+-    }
+-
+-    if(form === Forms.CHILD_LONGITUDINAL_FOLLOWUP_13_19 && (!isSingle || isPregnant(contact.reports))){
+-      return;
+-    }
+-
+-    const semesters = diff.splitBy({ 'months': 6 });
+-    const [lastSemesterInterval] = semesters.slice(-1);
+-    const lastSemesterNbDays = lastSemesterInterval.length('days');
++const childLongitudinalTemplate = (form) => {
++  // Each form owns its date; every evaluation resets it before checking eligibility.
++  let dueDate = null;
++  return {
++    name: `task.${form}`,
++    title: taskTitle(form),
++    icon: 'icon-healthcare',
++    appliesTo: 'contacts',
++    appliesToType: ['c92_household'],
++    appliesIf: (contact) => {
++      dueDate = null;
++      if (!contact || !contact.contact || !isAlive(contact, contact.reports || [])) {
++        return false;
++      }
++      const userRole = getUserRole();
++      if (userRole !== 'chw' && userRole !== 'oca') {
++        return false;
++      }
++      const now = DateTime.now().startOf('day');
++      const dateOfBirth = DateTime.fromISO(contact.contact.date_of_birth || '').startOf('day');
++      const diff = Interval.fromDateTimes(dateOfBirth, now);
++      if (!diff.isValid) {
++        return false;
++      }
++      const nbMonths = Math.round(diff.length('months'));
++      if (nbMonths < 1 || nbMonths > 228 || (userRole === 'oca' && nbMonths > 60)) {
++        return false;
++      }
+ 
+-    // Calculate due date based on conditions
+-    if (userRole === 'oca' && form === Forms.CHILD_LONGITUDINAL_FOLLOWUP_2_5) {
+-      const lastReport = Utils.getMostRecentReport(contact.reports, Forms.CHILD_LONGITUDINAL_FOLLOWUP_2_5);
+-      const nbMonthToNextMonth = Interval.fromDateTimes(dateOfBirth, now.plus({ month: 1 })).length('months');
+-      if (lastReport && nbMonthToNextMonth > 24 && nbMonthToNextMonth <= 66) {
+-        this.dueDate = getDynamicReportedDate(lastReport).plus({ month: 1 }).toJSDate();
++      let actionForm = '';
++      if (nbMonths <= 24) {
++        actionForm = Forms.CHILD_LONGITUDINAL_FOLLOWUP_1_24;
++      } else if (nbMonths <= 66) {
++        actionForm = Forms.CHILD_LONGITUDINAL_FOLLOWUP_2_5;
++      } else if (nbMonths >= 72 && nbMonths <= 150) {
++        actionForm = Forms.CHILD_LONGITUDINAL_FOLLOWUP_6_12;
++      } else if (nbMonths >= 156) {
++        actionForm = Forms.CHILD_LONGITUDINAL_FOLLOWUP_13_19;
+       }
+-    } else if (nbMonths < 25) {
+-      const chwAges = [1, 3, 6, 9, 12, 18, 24];
+-      const monthBirthdays = getMonthBirthdays(contact.contact.date_of_birth);
+-      const birthdayIndex = monthBirthdays.findIndex(monthBirthday =>
+-        monthBirthday >= now.minus({ days: 2 }) && monthBirthday <= now.plus({ days: 2 }));
+-      const nextMonthBirthday = birthdayIndex === -1 ? null : monthBirthdays[birthdayIndex];
+-      const nbBirth = birthdayIndex+1;
+-      if (birthdayIndex === -1) {
+-        this.dueDate = null;
+-      } else if (userRole === 'chw' && chwAges.includes(nbBirth)) {
+-        this.dueDate = nextMonthBirthday.toJSDate();
+-      } else if (userRole === 'oca') {
+-        this.dueDate = nextMonthBirthday.toJSDate();
++      if (actionForm !== form) {
++        return false;
++      }
++      const reports = contact.reports || [];
++      const relation = contact.contact.relation;
++      if (form === Forms.CHILD_LONGITUDINAL_FOLLOWUP_13_19 &&
++          (!relation || relation.matrimonial_status !== 'single' || isPregnant(reports))) {
++        return false;
++      }
++      const lastReport = Utils.getMostRecentReport(reports, form);
++      if (lastReport && Utils.getField(lastReport, 's_general_info.s_task.task_to_perform') === 'close_followup') {
++        return false;
+       }
+-    } else if (lastSemesterNbDays > 2) {
+-      // Fix: Prevent Task Due Date from Exceeding the Last Semester Interval
+-      //
+-      // Problem: If we blindly add `plus({ months: 6 })` to `lastSemesterInterval.start`, 
+-      // it may push the due date **past the last semester's end date**, leading to incorrect 
+-      // results (e.g., pushing due dates into **Feb 28, 2026** instead of the expected September 2025).
+-      //
+-      // Scenario:
+-      // - Current Date: **1 March** 
+-      // - Date of Birth: **(Today - 2 years - 1 day) → 28 Feb 2023**  
+-      // - Splitting this into **6-month semesters** results in:
+-      //   ```
+-      //   [28 Feb 2023 – 28 Aug 2023],  
+-      //   [28 Aug 2023 – 28 Feb 2024],  
+-      //   [28 Feb 2024 – 28 Aug 2024],  
+-      //   [28 Aug 2024 – 28 Feb 2025],  
+-      //   [28 Feb 2025 – 28 Aug 2025],  
+-      //   [28 Aug 2025 – **1 Sep 2025**] ← ⚠ **Last interval is shorter than 6 months!**
+-      //   ```
+-      // - Notice that the last interval **only spans 1 month** (**Aug 28 → Sept 1**).
+-      // - If we naively compute `lastSemesterInterval.start + 6 months`, we get **Feb 28, 2026**,
+-      //   which is outside the valid range.
+-      //
+-      // **Expected Behavior vs. Buggy Behavior**
+-      // - **Correct Due Date**: March 1 + 6 months → **Sept 1, 2025** ✅  
+-      // - **Buggy Due Date**: Aug 28 + 6 months → **Feb 28, 2026** ❌ (out of bounds)
+-      //
+-      // **Solution**
+-      // Instead of blindly adding `6 months`, we check if `lastSemesterInterval.start.plus({ months: 6 })`  
+-      // **exceeds the last interval's end** (`lastSemesterInterval.end`).  
+-      // - If it does, we **cap the due date at `lastSemesterInterval.end`** to ensure it remains within range.  
+-      // - Otherwise, we use the calculated date normally.
+-      //
+-      const tentativeDueDate = lastSemesterInterval.start.plus({ months: 6 }).startOf('day');
+-      this.dueDate = tentativeDueDate > lastSemesterInterval.end
+-        ? lastSemesterInterval.end.startOf('day').toJSDate()
+-        : tentativeDueDate.toJSDate();
+-    } else {
+-      this.dueDate = lastSemesterInterval.start.startOf('day').toJSDate();
+-    }
+ 
+-    let actionForm = '';
+-    let lastForm = null;
+-    //For 1 to 24 month old
+-    if (nbMonths <= 24) {
+-      actionForm = Forms.CHILD_LONGITUDINAL_FOLLOWUP_1_24;
+-      lastForm = Utils.getMostRecentReport(contact.reports, Forms.CHILD_LONGITUDINAL_FOLLOWUP_1_24);
+-    }
+-    //From 2 to 5.5 years old
+-    else if (nbMonths > 2 * 12 && nbMonths <= 5 * 12 + 6) {
+-      actionForm = Forms.CHILD_LONGITUDINAL_FOLLOWUP_2_5;
+-      lastForm = Utils.getMostRecentReport(contact.reports, Forms.CHILD_LONGITUDINAL_FOLLOWUP_2_5);
+-    }
+-    //From 6 to 12.5 years old
+-    else if (nbMonths >= 6 * 12 && nbMonths <= 12 * 12 + 6) {
+-      actionForm = Forms.CHILD_LONGITUDINAL_FOLLOWUP_6_12;
+-      lastForm = Utils.getMostRecentReport(contact.reports, Forms.CHILD_LONGITUDINAL_FOLLOWUP_6_12);
+-    }
+-    //From 13 to 19 years old
+-    else if (nbMonths >= 13 * 12 && nbMonths <= 19 * 12) {
+-      actionForm = Forms.CHILD_LONGITUDINAL_FOLLOWUP_13_19;
+-      lastForm = Utils.getMostRecentReport(contact.reports, Forms.CHILD_LONGITUDINAL_FOLLOWUP_13_19);
+-    }
+-    if (lastForm && Utils.getField(lastForm, 's_general_info.s_task.task_to_perform') === 'close_followup') {
+-      return false;
+-    }
+-    const childLongitudinalReports = contact.reports.filter(report => report.form === form);
+-    const diffReportedDate = Interval.fromDateTimes(DateTime.fromMillis(contact.contact.reported_date), now);
+-    if (childLongitudinalReports.length === 0 && diffReportedDate.length('days') <= 2) {
+-      this.dueDate = DateTime.fromMillis(contact.contact.reported_date).toJSDate();
+-    }
++      let scheduledDate = null;
++      if (nbMonths <= 24) {
++        const chwAges = [1, 3, 6, 9, 12, 18, 24];
++        const ages = userRole === 'chw' ? chwAges : Array.from({ length: 24 }, (_, i) => i + 1);
++        scheduledDate = ages.map(months => dateOfBirth.plus({ months }))
++          .find(birthday => birthday >= now.minus({ days: 2 }) && birthday <= now.plus({ days: 2 }));
++      } else if (userRole === 'oca' && lastReport) {
++        scheduledDate = getDynamicReportedDate(lastReport).plus({ months: 1 }).startOf('day');
++      } else {
++        const step = userRole === 'oca' ? 1 : 6;
++        // Anchor directly to birth, including leap days and the end of a month.
++        let months = Math.floor(diff.length('months') / step) * step;
++        scheduledDate = dateOfBirth.plus({ months });
++        if (scheduledDate.plus({ days: 2 }) < now) {
++          months += step;
++          scheduledDate = dateOfBirth.plus({ months });
++        }
++        // Do not schedule a visit beyond the existing form's age bracket.
++        const maxMonths = form === Forms.CHILD_LONGITUDINAL_FOLLOWUP_2_5 ? 66 :
++          form === Forms.CHILD_LONGITUDINAL_FOLLOWUP_6_12 ? 150 : 228;
++        if (months > maxMonths || (userRole === 'oca' && months > 60)) {
++          scheduledDate = null;
++        }
++      }
+ 
+-    return actionForm === form && this.dueDate;
+-  },
+-  actions: [
+-    {
+-      form
+-    }
+-  ],
+-  events: [
+-    {
+-      id: form,
+-      dueDate: () => this.dueDate,
+-      start: 2,
+-      end: 2,
+-    }
+-  ]
+-});
++      const registration = DateTime.fromMillis(Number(contact.contact.reported_date));
++      const daysSinceRegistration = Interval.fromDateTimes(registration, DateTime.now()).length('days');
++      if (!lastReport && daysSinceRegistration >= 0 && daysSinceRegistration <= 2) {
++        scheduledDate = registration;
++      }
++      if (!scheduledDate || !scheduledDate.isValid) {
++        return false;
++      }
++      dueDate = scheduledDate.toJSDate();
++      return true;
++    },
++    actions: [{ form }],
++    events: [{ id: form, dueDate: () => dueDate, start: 2, end: 2 }]
++  };
++};
+ 
+ const supervisorRealizationFollowup = (sourceForm, actionForm, step, startDate, userRole = 'supervisor') => defaultedTaskTemplate({
+   sourceForm,
+diff --git a/test/tasks/child_longitudinal_schedule.spec.js b/test/tasks/child_longitudinal_schedule.spec.js
+new file mode 100644
+index 0000000..45cb756
+--- /dev/null
++++ b/test/tasks/child_longitudinal_schedule.spec.js
+@@ -0,0 +1,199 @@
++const { expect } = require('chai');
++const fs = require('fs');
++const vm = require('vm');
++const sinon = require('sinon');
++const { DateTime, Interval } = require('luxon');
++const Harness = require('cht-conf-test-harness');
++const common = require('../../common');
++const { Forms } = common;
++
++// Run against source by default; TASK_SETTINGS also verifies the exact deployed bundle.
++const settingsPath = process.env.TASK_SETTINGS;
++const code = settingsPath ? JSON.parse(fs.readFileSync(settingsPath)).tasks.rules :
++  fs.readFileSync('tasks.extras.js', 'utf8');
++const start = code.indexOf('const childLongitudinalTemplate =');
++const end = code.indexOf('\nconst supervisorRealizationFollowup =', start);
++const factoryCode = code.slice(start, end) + '\nchildLongitudinalTemplate;';
++const forms = [Forms.CHILD_LONGITUDINAL_FOLLOWUP_1_24, Forms.CHILD_LONGITUDINAL_FOLLOWUP_2_5,
++  Forms.CHILD_LONGITUDINAL_FOLLOWUP_6_12, Forms.CHILD_LONGITUDINAL_FOLLOWUP_13_19];
++const utils = {
++  getMostRecentReport: (reports, form) => reports.filter(r => [].concat(form).includes(r.form))
++    .sort((a, b) => b.reported_date - a.reported_date)[0],
++  getField: (report, path) => path.split('.').reduce((value, key) => value && value[key], report.fields || {})
++};
++
++describe('longitudinal scheduling regressions (no browser)', () => {
++  let factory;
++  let actor;
++  let previousUtils;
++  const setNow = date => { sinon.restore(); sinon.useFakeTimers(Date.parse(date)); };
++  const person = (dob = '2018-01-15') => ({ contact: { date_of_birth: dob,
++    reported_date: Date.parse('2020-01-01'), relation: { matrimonial_status: 'single' } }, reports: [] });
++  const date = (task, contact) => task.appliesIf(contact) ?
++    DateTime.fromJSDate(task.events[0].dueDate()).toISODate() : null;
++  beforeEach(() => {
++    previousUtils = global.Utils;
++    global.Utils = utils;
++    actor = { role: 'chw' };
++    factory = vm.runInNewContext(factoryCode, Object.assign({}, common, { DateTime, Interval,
++      Utils: utils, user: actor, getUserRole: () => actor.role,
++      getMonthBirthdays: date => Array.from({ length: 24 }, (_, i) => DateTime.fromISO(date).plus({ months: i + 1 })) }));
++    setNow('2026-10-20');
++  });
++  afterEach(() => { sinon.restore(); global.Utils = previousUtils; });
++
++  it('keeps one birth-anchored semester date throughout repeated evaluations', () => {
++    const task = factory(forms[2]);
++    for (const day of ['2026-10-20', '2026-10-21', '2026-11-15', '2027-01-13', '2027-01-17']) {
++      setNow(day);
++      expect(date(task, person()), day).to.equal('2027-01-15');
++    }
++    setNow('2027-01-18');
++    expect(date(task, person())).to.equal('2027-07-15');
++  });
++
++  it('retains all seven ASC milestones and the full two-day window', () => {
++    const task = factory(forms[0]);
++    const birth = DateTime.fromISO('2025-01-15');
++    for (let months = 1; months <= 24; months++) {
++      const due = birth.plus({ months });
++      for (const offset of [-2, 0, 2]) {
++        setNow(due.plus({ days: offset }).toISODate());
++        expect(date(task, person(birth.toISODate())), `${months} months, ${offset} days`)
++          .to.equal([1, 3, 6, 9, 12, 18, 24].includes(months) ? due.toISODate() : null);
++      }
++    }
++  });
++
++  it('retains monthly OCA visits, including children with no previous report', () => {
++    actor.role = 'oca';
++    const task = factory(forms[0]);
++    for (let months = 1; months <= 24; months++) {
++      setNow(DateTime.fromISO('2025-01-15').plus({ months }).toISODate());
++      expect(date(task, person('2025-01-15'))).to.equal(DateTime.now().toISODate());
++    }
++    setNow('2026-10-20');
++    expect(date(factory(forms[1]), person('2023-01-15'))).to.equal('2026-11-15');
++  });
++
++  it('anchors OCA next follow-up to the latest report plus one month', () => {
++    actor.role = 'oca';
++    const contact = person('2023-01-15');
++    contact.reports.push({ form: forms[1], reported_date: Date.parse('2026-10-05') });
++    expect(date(factory(forms[1]), contact)).to.equal('2026-11-05');
++  });
++
++  it('excludes recorded deaths and death reports', () => {
++    const contact = person();
++    contact.contact.date_of_death = '2026-10-01';
++    expect(date(factory(forms[2]), contact)).to.equal(null);
++    delete contact.contact.date_of_death;
++    contact.reports.push({ form: Forms.DEATH_REPORT });
++    expect(date(factory(forms[2]), contact)).to.equal(null);
++  });
++
++  it('preserves explicit closure and adolescent marriage/pregnancy restrictions', () => {
++    const contact = person();
++    contact.reports.push({ form: forms[2], reported_date: Date.now(),
++      fields: { s_general_info: { s_task: { task_to_perform: 'close_followup' } } } });
++    expect(date(factory(forms[2]), contact)).to.equal(null);
++    const adolescent = person('2009-01-15');
++    expect(date(factory(forms[3]), adolescent)).to.equal('2027-01-15');
++    adolescent.contact.relation.matrimonial_status = 'married';
++    expect(date(factory(forms[3]), adolescent)).to.equal(null);
++    adolescent.contact.relation.matrimonial_status = 'single';
++    adolescent.reports.push({ form: Forms.PREGNANCY_CONFIRMATION, reported_date: Date.now(),
++      fields: { g_pregnancy_confirmation: { pregnancy_confirmed: 'yes' } } });
++    expect(date(factory(forms[3]), adolescent)).to.equal(null);
++  });
++
++  it('does not leak dates between contacts, forms or unsupported roles', () => {
++    const infant = factory(forms[0]);
++    expect(date(infant, person('2026-09-20'))).to.equal('2026-10-20');
++    expect(date(infant, person('2026-09-02'))).to.equal(null);
++    actor.role = 'supervisor';
++    expect(date(infant, person('2026-09-20'))).to.equal(null);
++    actor.role = 'oca';
++    expect(date(factory(forms[1]), person('2023-01-15'))).to.equal('2026-11-15');
++  });
++
++  it('keeps registration catch-up fixed, and excludes invalid/future birth dates', () => {
++    const task = factory(forms[2]);
++    const contact = person();
++    contact.contact.reported_date = Date.parse('2026-10-20');
++    expect(date(task, contact)).to.equal('2026-10-20');
++    setNow('2026-10-21');
++    expect(date(task, contact)).to.equal('2026-10-20');
++    expect(date(task, person('invalid'))).to.equal(null);
++    expect(date(task, person('2030-01-01'))).to.equal(null);
++    contact.contact.reported_date = Date.parse('2030-01-01');
++    expect(date(task, contact)).to.equal('2027-01-15');
++  });
++
++  it('keeps leap-day anniversaries anchored to birth without accumulating drift', () => {
++    const task = factory(forms[2]);
++    setNow('2026-02-28');
++    expect(date(task, person('2016-02-29'))).to.equal('2026-02-28');
++    setNow('2026-03-03');
++    expect(date(task, person('2016-02-29'))).to.equal('2026-08-29');
++  });
++
++  it('preserves existing age gaps and does not create tasks beyond the upper age', () => {
++    expect(date(factory(forms[1]), person('2023-01-15'))).to.equal('2027-01-15');
++    expect(date(factory(forms[1]), person('2021-01-15'))).to.equal(null); // Existing 5.5–6 year gap.
++    expect(date(factory(forms[2]), person('2021-01-15'))).to.equal(null);
++    expect(date(factory(forms[3]), person('2007-10-15'))).to.equal(null);
++    expect(date(factory(forms[2]), person('2013-05-15'))).to.equal(null);
++  });
++});
++
++describe('longitudinal rules in the CHT task engine (no browser)', function() {
++  this.timeout(35000);
++  let harness;
++  beforeEach(() => {
++    harness = new Harness(settingsPath ? { appSettingsPath: settingsPath } : {});
++    harness.subject.date_of_birth = '2018-01-15';
++    harness.subject.reported_date = Date.parse('2020-01-01');
++  });
++  afterEach(async () => { await harness.stop(); });
++
++  it('keeps one scheduled document through consecutive contact recalculations', async () => {
++    for (const day of ['2026-10-20', '2026-10-21', '2026-10-24', '2026-10-27']) {
++      sinon.restore();
++      harness.setNow(day);
++      harness.subject.name = day; // Force the same recalculation that a contact update triggers.
++      await harness.getTasks();
++      const docs = (await harness.coreAdapter.fetchTaskDocs())
++        .filter(t => t.emission.actions[0].form === forms[2]);
++      expect(docs).to.have.length(1);
++      expect(docs[0].emission.dueDate).to.equal('2027-01-15');
++      expect(docs[0].state).to.equal('Draft');
++    }
++  });
++
++  it('emits a Ready task inside the confirmed window and none for a deceased contact', async () => {
++    harness.setNow('2027-01-14');
++    let tasks = await harness.getTasks({ actionForm: forms[2] });
++    expect(tasks).to.have.length(1);
++    expect(tasks[0].emission.dueDate).to.equal('2027-01-15');
++    harness.subject.date_of_death = '2027-01-14';
++    tasks = await harness.getTasks({ actionForm: forms[2] });
++    expect(tasks).to.have.length(0);
++  });
++
++  it('resolves a submitted visit once and does not reopen it after a contact edit', async () => {
++    harness.setNow('2027-01-15');
++    expect(await harness.getTasks({ actionForm: forms[2] })).to.have.length(1);
++    harness.pushMockedDoc({ _id: 'synthetic-longitudinal-visit', form: forms[2],
++      reported_date: Date.parse('2027-01-15'),
++      fields: { patient_uuid: harness.subject._id } });
++    expect(await harness.getTasks({ actionForm: forms[2] })).to.have.length(0);
++    harness.subject.name = 'Edited after visit';
++    expect(await harness.getTasks({ actionForm: forms[2] })).to.have.length(0);
++    const docs = (await harness.coreAdapter.fetchTaskDocs())
++      .filter(t => t.emission.actions[0].form === forms[2]);
++    expect(docs).to.have.length(1);
++    expect(docs[0].state).to.equal('Completed');
++  });
++
++});
