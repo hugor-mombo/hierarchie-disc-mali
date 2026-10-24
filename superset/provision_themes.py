@@ -7,7 +7,9 @@ from dashboard_branding import brand_primary_dashboards
 from theme_sql import CATALOG,NS,table_name
 parser=argparse.ArgumentParser()
 parser.add_argument('--publish',action='store_true')
+parser.add_argument('--only',choices=[t['key'] for t in CATALOG])
 args=parser.parse_args()
+selected=[t for t in CATALOG if not args.only or t['key']==args.only]
 uid=lambda key:uuid5(UUID(NS),key)
 slug=lambda key:'asc-theme-'+key
 literal=lambda value:"'"+value.replace("'","''")+"'"
@@ -30,6 +32,7 @@ with app.test_request_context('/'):
  owner=security_manager.find_user(username='hmombo');assert owner
  login_user(owner);g.user=owner
  history=db.session.query(Dashboard).filter_by(id=1).one()
+ unrelated={d.id:(d.position_json,d.json_metadata,d.css,d.published,sorted(c.id for c in d.slices)) for d in db.session.query(Dashboard).all() if args.only and d.uuid!=uid('dashboard:'+args.only)}
  historical_snapshot=(history.position_json,history.json_metadata,[s.id for s in history.slices],history.published)
  geography=db.session.query(SqlaTable).filter_by(uuid=uuid5(UUID('a88972a5-b85f-4772-92cf-8ff98e473283'),'geography')).one()
  new_datasets=[]
@@ -52,7 +55,7 @@ with app.test_request_context('/'):
   ('last_month','Dernier mois disponible','MAX(reported_month)'),('rows','Lignes de relevé','COUNT(*)'),('input_rows','Lignes amont regroupées','SUM(input_rows)'),
   ('unknown','Lignes hors répertoire courant',"COUNT(*) FILTER(WHERE attribution='Hors répertoire courant')")]
  facts={};longs={}
- for theme in CATALOG:
+ for theme in selected:
   key=theme['key'];metrics=theme['metrics']
   facts[key]=dataset(key, 'ASC Thème — '+theme['title'],'SELECT * FROM public.'+table_name(theme),COMMON+
    [(m['key'],'NUMERIC',m['label']) for m in metrics],
@@ -63,11 +66,12 @@ with app.test_request_context('/'):
    ' f CROSS JOIN LATERAL (VALUES '+values+')i(indicator_key,indicator,unit,value)',COMMON+
    [('indicator_key','TEXT','Code indicateur'),('indicator','TEXT','Indicateur'),('unit','TEXT','Unité'),('value','NUMERIC','Volume enregistré')],
    [('volume','Volume enregistré','SUM(value)')]+freshness)
- quality_parts=[]
- for theme in CATALOG:
-  quality_parts.append('SELECT '+literal(theme['title'])+' AS theme,input_rows,reported_month,region_uuid,region,district,cscom,attribution,calculated_at FROM public.'+table_name(theme))
- quality=dataset('availability','ASC Thèmes — Disponibilité des relevés',' UNION ALL '.join(quality_parts),
-  [('theme','TEXT','Tableau thématique')]+[c for c in COMMON if c[0] in ['input_rows','reported_month','region_uuid','region','district','cscom','attribution','calculated_at']],freshness)
+ if not args.only:
+  quality_parts=[]
+  for theme in CATALOG:
+   quality_parts.append('SELECT '+literal(theme['title'])+' AS theme,input_rows,reported_month,region_uuid,region,district,cscom,attribution,calculated_at FROM public.'+table_name(theme))
+  quality=dataset('availability','ASC Thèmes — Disponibilité des relevés',' UNION ALL '.join(quality_parts),
+   [('theme','TEXT','Tableau thématique')]+[c for c in COMMON if c[0] in ['input_rows','reported_month','region_uuid','region','district','cscom','attribution','calculated_at']],freshness)
  apply_regional_security(new_datasets)
  table=dict(query_mode='aggregate',all_columns=[],server_pagination=True,server_page_length=20,page_length=20,
   include_search=False,allow_render_html=False,show_cell_bars=False,order_desc=True,table_timestamp_format='%d/%m/%Y')
@@ -137,7 +141,7 @@ with app.test_request_context('/'):
     cascadeParentIds=[prefix+'region',prefix+'district',prefix+'cscom'],scope={'rootPath':['ROOT_ID'],'excluded':[c.id for k,c in board.charts.items() if c.id not in scopes]},
     description='Choix pour la comparaison, la tendance et les tableaux détaillés. Les cartes et EXPORT TOUS LES INDICATEURS conservent leur propre indicateur.'))
   return filters
- for theme in CATALOG:
+ for theme in selected:
   key=theme['key'];ds=facts[key];long=longs[key];primary=theme['primary'];metrics=theme['metrics']
   b=Board(key,'ASC — '+theme['title'],slug(key))
   for m in metrics:
@@ -165,7 +169,9 @@ Cartes selon la période choisie ; tendance sur **12 mois complets**. Unités du
 
 [← Tous les tableaux thématiques](/superset/dashboard/asc-thematiques/) · [Suivi opérationnel](/superset/dashboard/asc-suivi-operationnel/) · [Complétude des tâches](/superset/dashboard/asc-completude-taches/)
 ''',24)
-  b.row(p,'cards',[('card_'+x,12//len(primary)) for x in primary],23)
+  for offset in range(0,len(primary),4):
+   chunk=primary[offset:offset+4]
+   b.row(p,'cards'+(str(offset//4) if len(primary)>4 else ''),[('card_'+x,12//len(chunk)) for x in chunk],23)
   extra_note={'references':'\n\n[Références des moins de cinq ans](/superset/dashboard/asc-theme-pec-enfant/) · [Références néonatales](/superset/dashboard/asc-theme-neonatale/)', 'paludisme':'\n\n[Paludisme chez les moins de cinq ans](/superset/dashboard/asc-theme-pec-enfant/)'}.get(key,'')
   b.note(p,'interpretation','**À lire avant de comparer :** '+theme['method']+extra_note,28)
   b.row(p,'regions',[('regions',12)],66)
@@ -208,27 +214,33 @@ Le calcul prépare les **12 mois civils complets** précédents. Les sources his
 Les lignes absentes du répertoire courant restent dans le contrôle national ; celles ayant perdu leur identifiant de site en amont sont regroupées par mois, avec leurs volumes conservés et le nombre de lignes amont regroupées. Aucun site fictif n’est créé. Ces lignes n’ont pas de rattachement régional utilisable. Les lecteurs régionaux n’obtiennent que leur périmètre autorisé. Un CSCOM trouvé dans plusieurs branches n’est jamais réparti entre ses sites : le chemin complet de la source est vérifié. Le répertoire ne certifie pas l’ouverture DHIS2 du site.''',24)
   b.row(method,'quality',[('quality',12)],28)
   dictionary='### Dictionnaire des indicateurs\n\n| Indicateur | Unité de lecture | Code de colonne export |\n|---|---|---|\n'+'\n'.join('| '+m['label']+' | '+m['unit']+' | `m_'+m['key']+'` |' for m in metrics)
-  b.note(method,'dictionary',dictionary,max(40,14+len(metrics)*5))
+  if key=='pec-enfant':
+   dictionary+='\n\n### Définitions du parcours paludisme\n\n'+'\n\n'.join('**'+m['label']+'** — '+m['note'] for m in metrics if m['key'].startswith('malaria_'))
+  b.note(method,'dictionary',dictionary,max(40,14+len(metrics)*5)+(100 if key=='pec-enfant' else 0))
   b.finish(filters_for(b,long,theme,current_ids))
- hub=Board('hub','ASC — Tableaux thématiques','asc-thematiques')
- start=hub.tab('start','Choisir un tableau')
- hub.note(start,'intro','''## La santé communautaire, du signal à l’action
-Ouvrez une thématique, choisissez votre période et votre territoire, puis explorez l’indicateur utile à votre décision. Chaque tableau propose une **synthèse**, des **détails territoriaux**, un **export CSV/Excel** et une **méthode de lecture**.
+ if not args.only:
+  hub=Board('hub','ASC — Tableaux thématiques','asc-thematiques')
+  start=hub.tab('start','Choisir un tableau')
+  hub.note(start,'intro','''## La santé communautaire, du signal à l’action
+ Ouvrez une thématique, choisissez votre période et votre territoire, puis explorez l’indicateur utile à votre décision. Chaque tableau propose une **synthèse**, des **détails territoriaux**, un **export CSV/Excel** et une **méthode de lecture**.
 
-[Rapportage national](/superset/dashboard/asc-pilotage-v2/) · [Relances ASC et listes de suivi](/superset/dashboard/asc-suivi-operationnel/) · [Complétude des tâches](/superset/dashboard/asc-completude-taches/) · [Tableau ASC historique](/superset/dashboard/1/)''',23)
- for i in range(0,len(CATALOG),2):
-  pair=CATALOG[i:i+2]
-  content='\n\n'.join('### ['+t['title']+'](/superset/dashboard/'+slug(t['key'])+'/)\n'+t['question'] for t in pair)
-  hub.note(start,'themes'+str(i),content,26)
- q=hub.tab('availability','Disponibilité et lecture')
- hub.chart('availability','Relevés disponibles — période et droits appliqués',quality,groupby=['theme','attribution'],metrics=['rows','first_month','last_month','calculation'],**table)
- hub.note(q,'scope','''## Vérifier la période disponible avant d’interpréter les résultats
-Les indicateurs mensuels couvrent **au maximum les 12 derniers mois complets**, selon ce qui existe dans chaque source. Une ligne de relevé n’est pas une consultation ou une personne. Certaines sources contiennent des grilles à zéro ; l’absence de valeur ou de ligne reste distincte d’un zéro.
+ [Rapportage national](/superset/dashboard/asc-pilotage-v2/) · [Relances ASC et listes de suivi](/superset/dashboard/asc-suivi-operationnel/) · [Complétude des tâches](/superset/dashboard/asc-completude-taches/) · [Tableau ASC historique](/superset/dashboard/1/)''',23)
+  for i in range(0,len(CATALOG),2):
+   pair=CATALOG[i:i+2]
+   content='\n\n'.join('### ['+t['title']+'](/superset/dashboard/'+slug(t['key'])+'/)\n'+t['question'] for t in pair)
+   hub.note(start,'themes'+str(i),content,26)
+  q=hub.tab('availability','Disponibilité et lecture')
+  hub.chart('availability','Relevés disponibles — période et droits appliqués',quality,groupby=['theme','attribution'],metrics=['rows','first_month','last_month','calculation'],**table)
+  hub.note(q,'scope','''## Vérifier la période disponible avant d’interpréter les résultats
+ Les indicateurs mensuels couvrent **au maximum les 12 derniers mois complets**, selon ce qui existe dans chaque source. Une ligne de relevé n’est pas une consultation ou une personne. Certaines sources contiennent des grilles à zéro ; l’absence de valeur ou de ligne reste distincte d’un zéro.
 
-Les sources historiques sont conservées et les corrections de présentation sont documentées dans chaque tableau. Les filtres territoriaux de l’interface complètent les droits d’accès ; ils ne les remplacent pas. Les dates affichées décrivent le calcul des relevés, sans certifier la fraîcheur de la réplication amont. La liste zéro dose est un **relevé actuel** séparé des séries mensuelles.''',40)
- hub.row(q,'availability',[('availability',12)],70)
- hub.finish(filters_for(hub))
+ Les sources historiques sont conservées et les corrections de présentation sont documentées dans chaque tableau. Les filtres territoriaux de l’interface complètent les droits d’accès ; ils ne les remplacent pas. Les dates affichées décrivent le calcul des relevés, sans certifier la fraîcheur de la réplication amont. La liste zéro dose est un **relevé actuel** séparé des séries mensuelles.''',40)
+  hub.row(q,'availability',[('availability',12)],70)
+  hub.finish(filters_for(hub))
  assert historical_snapshot==(history.position_json,history.json_metadata,[s.id for s in history.slices],history.published),'Historical dashboard modified'
- brand_primary_dashboards(db.session)
+ brand_primary_dashboards(db.session,ids=[r['id'] for r in reports] if args.only else None)
+ for identifier,state in unrelated.items():
+  untouched=db.session.query(Dashboard).filter_by(id=identifier).one()
+  assert state==(untouched.position_json,untouched.json_metadata,untouched.css,untouched.published,sorted(c.id for c in untouched.slices)),'Unrelated dashboard modified'
  db.session.commit()
  print(json.dumps(dict(status='OK',published=args.publish,datasets=len(new_datasets),dashboards=reports),ensure_ascii=False),flush=True)

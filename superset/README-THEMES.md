@@ -16,7 +16,7 @@ Dix tableaux spécialisés, construits à côté du tableau ASC historique :
 | Promotion de la santé et WASH | `/superset/dashboard/asc-theme-promotion/` | Communications, VAD explicites, causeries et sujets abordés |
 | Inscriptions et population enregistrée | `/superset/dashboard/asc-theme-enregistrements/` | Créations et inscriptions par âge/sexe, sans prétendre recenser la population actuelle |
 
-Le catalogue `theme_catalog.json` décrit 96 compteurs avec libellé, unité, expression,
+Le catalogue `theme_catalog.json` décrit 101 compteurs avec libellé, unité, expression,
 limites de lecture et correspondance avec les graphiques historiques. Il ne s’agit
 pas de 96 indicateurs de couverture ou de personnes distinctes. Les diagnostics
 peuvent se cumuler ; les observations mensuelles d’un même bénéficiaire peuvent
@@ -26,7 +26,7 @@ réapparaître plusieurs mois. Les séries ne sont donc pas une incidence ni une
 
 Chaque tableau comprend Synthèse, Territoires et exports, Méthode et qualité.
 Vaccination ajoute Zéro dose · liste actuelle. La synthèse propose quatre repères
-(trois pour les thèmes moins fournis), une comparaison régionale et une tendance.
+(trois pour les thèmes moins fournis ; huit pour le parcours paludisme des moins de cinq ans), une comparaison régionale et une tendance.
 
 - Période : dernier mois civil complet par défaut ; choisir des mois entiers.
 - Préparation : douze mois complets au maximum, selon les mois effectivement présents
@@ -233,3 +233,56 @@ docker exec superset_app python /app/superset_config/asc-v2/verify_themes_access
 
 Le timer thématique existant réutilise cette correction aux actualisations suivantes.
 Les vues cliniques d’origine et les flux OpenFn ne sont pas modifiés par cette correction.
+
+## Harmonisation du parcours paludisme — 24 octobre 2026
+
+Cette définition remplace celle du compteur général `malaria_suspected` : l’ancien
+227 de septembre ne représentait que la suspicion sans TDR pour rupture de stock,
+et non l’ensemble des consultations suspectes/testées. L’ancienne vue comptait
+aussi un alias de parent utilisateur comme UUID distinct ; le parcours corrigé
+compte les consultations après déduplication enfant/jour, avec le vrai UUID rapport.
+
+Tous les compteurs ci-dessous utilisent **le même âge < 5 ans renseigné, la même
+date de consultation, la même dernière évaluation non ambiguë par enfant/jour et
+le même rattachement territorial** :
+
+- `malaria_suspected` : consultations avec TDR positif/négatif **ou** classification
+  native `has_malaria_suspicion = yes` sans résultat TDR, union sans doublon.
+- `malaria_tested` : consultations avec résultat TDR positif/négatif renseigné.
+- `malaria_positive`, `malaria_negative` : sous-ensembles selon le résultat TDR.
+- `malaria_presumed` : classification native de suspicion sans résultat TDR. Dans
+  le formulaire, ce champ signifie fièvre, rupture de TDR et absence d’éruption.
+- `malaria_simple` : classification native `has_malaria = yes` **et** TDR positif.
+- `malaria_conflicts` : classification sans preuve TDR positive, présumé avec
+  résultat TDR renseigné, ou résultat TDR non reconnu. Ces cas ne sont pas forcés
+  dans les confirmés pour respecter artificiellement une inégalité.
+
+Identités contrôlées pour chaque site/mois : suspects évalués = TDR interprétables
++ présumés sans TDR ; TDR interprétables = positifs + négatifs ; paludisme simple
+avec TDR positif ≤ TDR positifs ≤ TDR interprétables ≤ suspects évalués. Aucun
+traitement administré, nombre de kits, incidence ou effectif d’enfants uniques
+n’est inféré. Les résultats TDR positifs incluent les autres classifications
+possibles : ils ne sont pas assimilés automatiquement à du paludisme simple.
+
+Cette reconstruction opérationnelle par consultation s’appuie sur les champs
+réellement collectés. Elle est cohérente avec la distinction OMS entre suspects,
+testés, présumés non testés et confirmés ; elle ne prétend pas recenser tous les
+épisodes suspects de la population ni remplacer une définition PNLP validée.
+Source primaire : [métadonnées OMS des cas suspects](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/4633).
+
+Les huit cartes sont réparties en deux lignes, et les compteurs supplémentaires
+figurent dans le sélecteur, le détail et les exports. Le dictionnaire présente
+leurs critères. `provision_themes.py --only pec-enfant --publish` actualise les
+deux datasets et ce seul tableau ; les autres dashboards sont contrôlés inchangés.
+Le timer thématique existant conserve la correction aux calculs suivants.
+
+Contrôle national de septembre 2026, sites rattachés au répertoire courant :
+8 134 suspicions évaluées = 7 896 consultations avec TDR + 238 présumées sans
+TDR ; 7 896 = 6 551 positifs + 1 345 négatifs ; 6 358 paludismes simples avec
+TDR positif. Aucune incohérence de classification n'est observée dans ce relevé.
+Les sept autres compteurs et le paludisme simple sont inchangés sur les douze
+mois par rapport à la référence précédant cette harmonisation.
+
+Pour cette version, après `refresh_themes.py --only pec-enfant`, utiliser
+`provision_themes.py --only pec-enfant --publish` afin de mettre aussi à jour
+les huit cartes, le sélecteur, le dictionnaire et les colonnes d'export.

@@ -590,21 +590,21 @@
       },
       {
         "key": "malaria_suspected",
-        "label": "Observations de suspicion de paludisme",
-        "expression": "coalesce(s.suspicion_malaria_male_inf_1y,0)+coalesce(s.suspicion_malaria_male_sup_1y,0)+coalesce(s.suspicion_malaria_female_inf_1y,0)+coalesce(s.suspicion_malaria_female_sup_1y,0)",
-        "unit": "déclarations",
-        "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
-        "source": "mv_pec_u5_indicators_shared",
-        "card_title": "Suspicions de paludisme"
+        "label": "Suspicions évaluées (TDR ou présumées sans TDR)",
+        "expression": "c.malaria_suspected",
+        "unit": "consultations",
+        "note": "Consultations avec résultat TDR positif/négatif, ou classification native has_malaria_suspicion = yes sans résultat TDR. Union sans double comptage, avec la même dernière consultation par enfant/jour et le même âge < 5 ans que les autres compteurs paludisme. Ce total reconstitué ne constitue pas tous les épisodes cliniques suspectés dans la population.",
+        "source": "formview_patient_assessment_under_5 · TDR et classification native",
+        "card_title": "Suspicions évaluées"
       },
       {
         "key": "malaria_simple",
-        "label": "Observations de paludisme simple",
+        "label": "Paludisme simple déclaré avec TDR positif",
         "expression": "c.malaria_simple",
-        "unit": "déclarations",
-        "note": "Classification paludisme explicitement déclarée (has_malaria = yes) dans les évaluations des moins de 5 ans. Dernière évaluation par enfant et jour de consultation ; les dernières évaluations de même horodatage sont exclues comme ambiguës. Sans identifiant enfant, le rapport reste une observation distincte. Âge renseigné entre 0 et moins de 5 ans. Date de consultation déclarée, sinon date du rapport. Ce compteur ne prouve pas un traitement par CTA et ne déduit pas un diagnostic d’un champ absent.",
+        "unit": "consultations",
+        "note": "Dernière consultation par enfant/jour, âge renseigné < 5 ans, avec classification native has_malaria = yes ET TDR positif. Aucun traitement CTA déduit. Les classifications sans preuve TDR positive sont signalées dans les incohérences.",
         "source": "formview_patient_assessment_under_5 · classification native has_malaria",
-        "card_title": "Paludisme simple signalé"
+        "card_title": "Paludisme simple · TDR +"
       },
       {
         "key": "diarrhea",
@@ -645,10 +645,55 @@
         "unit": "déclarations",
         "note": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé.",
         "source": "mv_pec_u5_indicators_shared"
+      },
+      {
+        "key": "malaria_tested",
+        "label": "Consultations avec résultat TDR interprétable",
+        "card_title": "Consultations avec TDR",
+        "note": "Dernière consultation avec résultat TDR positif ou négatif ; ne compte pas des kits utilisés.",
+        "unit": "consultations",
+        "expression": "c.malaria_tested",
+        "source": "formview_patient_assessment_under_5 · même cohorte enfant/jour"
+      },
+      {
+        "key": "malaria_positive",
+        "label": "Consultations avec TDR positif",
+        "card_title": "TDR positifs",
+        "note": "Comprend les TDR positifs, quelle que soit la classification paludisme simple.",
+        "unit": "consultations",
+        "expression": "c.malaria_positive",
+        "source": "formview_patient_assessment_under_5 · même cohorte enfant/jour"
+      },
+      {
+        "key": "malaria_negative",
+        "label": "Consultations avec TDR négatif",
+        "card_title": "TDR négatifs",
+        "note": "Dernière consultation avec résultat TDR négatif.",
+        "unit": "consultations",
+        "expression": "c.malaria_negative",
+        "source": "formview_patient_assessment_under_5 · même cohorte enfant/jour"
+      },
+      {
+        "key": "malaria_presumed",
+        "label": "Présumés sans résultat TDR",
+        "card_title": "Présumés sans TDR",
+        "note": "Classification native has_malaria_suspicion = yes, sans résultat TDR. Ce champ correspond dans le formulaire à une fièvre avec rupture de TDR et absence d’éruption ; aucun traitement n’est inféré.",
+        "unit": "consultations",
+        "expression": "c.malaria_presumed",
+        "source": "formview_patient_assessment_under_5 · même cohorte enfant/jour"
+      },
+      {
+        "key": "malaria_conflicts",
+        "label": "Consultations avec incohérence de classification/TDR",
+        "card_title": "Incohérences paludisme",
+        "note": "Classification native paludisme sans TDR positif, suspicion sans TDR avec résultat renseigné, ou résultat TDR non reconnu. Ces observations ne servent pas à fabriquer un cas confirmé.",
+        "unit": "consultations",
+        "expression": "c.malaria_conflicts",
+        "source": "formview_patient_assessment_under_5 · même cohorte enfant/jour"
       }
     ],
     "question": "Où renforcer la prise en charge des enfants malades et la vigilance sur les signes de danger ?",
-    "method": "Les observations de morbidité ne sont pas des personnes distinctes et les diagnostics peuvent se cumuler sur une consultation. La source historique retient les suivis dans les sites/mois avec nouvelles consultations : les seuls suivis peuvent être absents. Aucun taux de morbidité ni total de patients issu de l’addition des diagnostics n’est calculé. Le paludisme simple utilise maintenant la classification native has_malaria = yes, sur la dernière évaluation par enfant et jour de consultation (âge renseigné < 5 ans). Les ex æquo de dernière date sont exclus ; sans identifiant enfant, chaque rapport reste distinct. Aucun traitement CTA n’est déduit. Les autres compteurs restent issus de la source historique.",
+    "method": "Les suspicions évaluées réunissent les consultations avec TDR positif/négatif et les présumés sans TDR, sans double comptage. Les confirmés par TDR en font donc partie. « Paludisme simple · TDR + » exige la classification native et un TDR positif ; tous les TDR positifs ne sont pas nécessairement classés paludisme simple. Les présumés sans TDR sont affichés séparément. Tous les compteurs paludisme utilisent la même dernière consultation par enfant et jour, avec âge renseigné < 5 ans ; les derniers horodatages ex æquo sont exclus. Sans identifiant enfant, chaque rapport reste distinct. Ce sont des consultations, pas des enfants uniques ni une incidence. Les autres compteurs restent historiques ; les suivis isolés peuvent manquer. Aucun traitement CTA ni taux clinique n’est déduit.",
     "historical_charts": [
       34,
       35,
@@ -658,7 +703,11 @@
       "new_consult",
       "old_consult",
       "malaria_suspected",
-      "malaria_simple"
+      "malaria_simple",
+      "malaria_tested",
+      "malaria_positive",
+      "malaria_negative",
+      "malaria_presumed"
     ]
   },
   {

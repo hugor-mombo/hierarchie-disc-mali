@@ -17,8 +17,9 @@ def raw_source_sql(theme):
         return ',\n'.join('('+expression+')::numeric AS '+name for name,expression in items)
     if key=='pec-enfant':
         corrected=(ROOT/'sql/themes/malaria_u5.sql').read_text()
-        legacy_projection=projection([(m['key'],m['expression']) for m in metrics if m['key']!='malaria_simple'])
-        items=','.join(('coalesce(c.malaria_simple,0)' if m['key']=='malaria_simple' else 's.'+m['key'])+'::numeric AS '+m['key'] for m in metrics)
+        corrected_keys={m['key'] for m in metrics if m['key'].startswith('malaria_')}
+        legacy_projection=projection([(m['key'],m['expression']) for m in metrics if m['key'] not in corrected_keys])
+        items=','.join(('coalesce(c.'+m['key']+',0)' if m['key'] in corrected_keys else 's.'+m['key'])+'::numeric AS '+m['key'] for m in metrics)
         return ('WITH corrected AS ('+corrected+"""), legacy AS (
           SELECT """+entity+""" AS entity_uuid,s.reported_month,"""+legacy_projection+"""
           FROM public."""+theme['source']+""" s WHERE """+period+"""), periods AS (
