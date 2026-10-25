@@ -7,19 +7,19 @@
     "metrics": [
       {
         "key": "up_to_date",
-        "label": "Suivis déclarant une vaccination à jour",
+        "label": "Historique — Suivis déclarant une vaccination à jour",
         "expression": "s.nbr_vaccinated_up_to_date",
         "unit": "rapports",
-        "note": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+        "note": "Calcul historique conservé pour comparaison ; privilégier les nouvelles cartes natives pour l’analyse courante. Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
         "source": "mv_vaccination_indicators_shared",
         "card_title": "Suivis à jour"
       },
       {
         "key": "at_23m",
-        "label": "Suivis à 23 mois déclarant une vaccination à jour",
+        "label": "Historique — Suivis à 23 mois déclarant une vaccination à jour",
         "expression": "s.fully_vaccinated_23m",
         "unit": "rapports",
-        "note": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+        "note": "Calcul historique conservé pour comparaison ; privilégier les nouvelles cartes natives pour l’analyse courante. Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
         "source": "mv_vaccination_indicators_shared",
         "card_title": "À jour à 23 mois"
       },
@@ -43,15 +43,51 @@
       },
       {
         "key": "historic_zero",
-        "label": "Signalements historiques Penta 1 non reçu",
+        "label": "Historique — Signalements historiques Penta 1 non reçu",
         "expression": "s.nbr_zero_dose",
         "unit": "signalements mensuels",
-        "note": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+        "note": "Calcul historique conservé pour comparaison ; privilégier les nouvelles cartes natives pour l’analyse courante. Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
         "source": "mv_vaccination_indicators_shared"
+      },
+      {
+        "key": "observed_under2",
+        "label": "Enfants de moins de 2 ans observés",
+        "expression": "c.observed_under2",
+        "unit": "enfants-mois",
+        "note": "Dernier suivi non ambigu par enfant et mois, âge renseigné de 0 à moins de 24 mois. Les ex æquo de dernière date sont exclus. Une vaccination à jour est déclarée par vaccination_up_to_date ou vaccination_already_up_to_date. Les sommes sur plusieurs mois comptent des enfants-mois, pas des enfants distincts sur la période. Cette population observée n’est pas la population totale à vacciner.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Moins de 2 ans observés"
+      },
+      {
+        "key": "observed_up_to_date",
+        "label": "Enfants de moins de 2 ans déclarés à jour",
+        "expression": "c.observed_up_to_date",
+        "unit": "enfants-mois",
+        "note": "Dernier suivi non ambigu par enfant et mois, âge renseigné de 0 à moins de 24 mois. Les ex æquo de dernière date sont exclus. Une vaccination à jour est déclarée par vaccination_up_to_date ou vaccination_already_up_to_date. Les sommes sur plusieurs mois comptent des enfants-mois, pas des enfants distincts sur la période. Cette population observée n’est pas la population totale à vacciner.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Moins de 2 ans à jour"
+      },
+      {
+        "key": "observed_at23",
+        "label": "Enfants de 23 mois déclarés à jour",
+        "expression": "c.observed_at23",
+        "unit": "enfants-mois",
+        "note": "Dernier suivi non ambigu par enfant et mois, âge renseigné de 0 à moins de 24 mois. Les ex æquo de dernière date sont exclus. Une vaccination à jour est déclarée par vaccination_up_to_date ou vaccination_already_up_to_date. Les sommes sur plusieurs mois comptent des enfants-mois, pas des enfants distincts sur la période. Cette population observée n’est pas la population totale à vacciner.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "À jour à 23 mois"
+      },
+      {
+        "key": "observed_zero12_23",
+        "label": "Enfants de 12–23 mois déclarés sans Penta 1",
+        "expression": "c.observed_zero12_23",
+        "unit": "enfants-mois",
+        "note": "Dernier suivi non ambigu par enfant et mois, âge renseigné de 0 à moins de 24 mois. Les ex æquo de dernière date sont exclus. Une vaccination à jour est déclarée par vaccination_up_to_date ou vaccination_already_up_to_date. Les sommes sur plusieurs mois comptent des enfants-mois, pas des enfants distincts sur la période. Cette population observée n’est pas la population totale à vacciner. Penta 1 explicitement non reçu et aucune réponse positive « déjà reçu » dans ce dernier suivi.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Sans Penta 1 · 12–23 mois"
       }
     ],
     "question": "Où renforcer le suivi vaccinal et retrouver les enfants signalés zéro dose ?",
-    "method": "Les suivis à jour comptent des identifiants de rapport, pas des enfants distincts. Les enfants retrouvés/référés sont distincts dans un site et un mois ; ils peuvent réapparaître ailleurs ou un autre mois. Les signalements historiques ne constituent pas la liste actuelle zéro dose. Le dénominateur historique des moins de deux ans provient des inscriptions : aucun taux de couverture vaccinale n’est calculé. La liste actuelle séparée retient les 12–59 mois sans preuve positive Penta 1 retrouvée et reste à confirmer sur le terrain.",
+    "method": "Dernier suivi non ambigu par enfant et mois, âge renseigné de 0 à moins de 24 mois. Les ex æquo de dernière date sont exclus. Le dernier suivi indique que la vaccination est à jour ou était déjà à jour. Les sommes sur plusieurs mois comptent des enfants-mois, pas des enfants distincts sur la période. Cette population observée n’est pas la population totale à vacciner. Les compteurs historiques sont conservés dans le sélecteur et les exports. La liste actuelle de relance 12–59 mois reste séparée de ces observations mensuelles. Aucun taux de couverture de population n’est calculé. Les enfants retrouvés/référés historiques utilisent une autre sélection que le dernier suivi des moins de deux ans : ne pas diviser ces volumes par les enfants observés des nouvelles cartes.",
     "historical_charts": [
       32,
       33,
@@ -60,10 +96,10 @@
       78
     ],
     "primary": [
-      "up_to_date",
-      "at_23m",
-      "found",
-      "referred"
+      "observed_under2",
+      "observed_up_to_date",
+      "observed_at23",
+      "observed_zero12_23"
     ]
   },
   {
@@ -172,7 +208,7 @@
         "label": "Patientes avec grossesse confirmée déclarée",
         "expression": "c.pregnant",
         "unit": "patientes distinctes par CSCOM et mois",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. SP1 indique la prise déclarée ; SP ≥3 indique une administration déclarée de rang 3 à 6, pas trois prises dans le mois. Les références CPN et après accouchement à domicile exigent une réponse de référence explicite. Les décès sont des signalements dédupliqués, sans validation de cause. Les autres compteurs conservent leur source historique. Aucun taux de couverture ou ratio de mortalité n’est déduit.",
         "source": "formview_pregnancy_registration + formview_pregnancy_confirmation",
         "card_title": "Grossesses confirmées"
       },
@@ -181,7 +217,7 @@
         "label": "Suivis de grossesse déclarés",
         "expression": "s.nbr_pregnant_followup",
         "unit": "observations mensuelles",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. SP1 indique la prise déclarée ; SP ≥3 indique une administration déclarée de rang 3 à 6, pas trois prises dans le mois. Les références CPN et après accouchement à domicile exigent une réponse de référence explicite. Les décès sont des signalements dédupliqués, sans validation de cause. Les autres compteurs conservent leur source historique. Aucun taux de couverture ou ratio de mortalité n’est déduit.",
         "source": "mv_palu_sm_smi_tpig_indicators",
         "card_title": "Suivis de grossesse"
       },
@@ -190,7 +226,7 @@
         "label": "Suivis signalant une CPN réalisée",
         "expression": "s.nber_patient_been_to_anc",
         "unit": "observations mensuelles",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. SP1 indique la prise déclarée ; SP ≥3 indique une administration déclarée de rang 3 à 6, pas trois prises dans le mois. Les références CPN et après accouchement à domicile exigent une réponse de référence explicite. Les décès sont des signalements dédupliqués, sans validation de cause. Les autres compteurs conservent leur source historique. Aucun taux de couverture ou ratio de mortalité n’est déduit.",
         "source": "mv_palu_sm_smi_tpig_indicators"
       },
       {
@@ -198,31 +234,33 @@
         "label": "Grossesses avec CPN non réalisée déclarée",
         "expression": "s.cpn_refered",
         "unit": "observations mensuelles",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. SP1 indique la prise déclarée ; SP ≥3 indique une administration déclarée de rang 3 à 6, pas trois prises dans le mois. Les références CPN et après accouchement à domicile exigent une réponse de référence explicite. Les décès sont des signalements dédupliqués, sans validation de cause. Les autres compteurs conservent leur source historique. Aucun taux de couverture ou ratio de mortalité n’est déduit.",
         "source": "mv_palu_sm_smi_tpig_indicators"
       },
       {
         "key": "sp1",
-        "label": "Déclarations de première administration SP",
-        "expression": "s.nber_sp1_given",
-        "unit": "déclarations",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
-        "source": "mv_palu_sm_smi_tpig_indicators"
+        "label": "Patientes déclarant avoir reçu la SP1",
+        "expression": "c.sp1",
+        "unit": "patientes par CSCOM et mois",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. Réponse has_given_ps1=yes au suivi de grossesse : prise de SP1 déclarée, sans attribuer son administration à l’ASC.",
+        "source": "Formulaires DISC natifs · patient_id/UUID",
+        "card_title": "SP1 déclarée"
       },
       {
         "key": "sp3_month",
-        "label": "Dossiers avec ≥3 administrations SP déclarées dans le même mois",
-        "expression": "s.women_received_at_least_3_sp",
-        "unit": "dossiers mensuels",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
-        "source": "mv_palu_sm_smi_tpig_indicators"
+        "label": "Patientes déclarant une administration SP de rang 3 ou plus",
+        "expression": "c.sp3_month",
+        "unit": "patientes par CSCOM et mois",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. Administration explicitement déclarée et rang sp_3 à sp_6 (codes historiques sans underscore également acceptés). Le rang de dose ne signifie pas trois administrations dans le mois ni une couverture TPIg3 de toutes les grossesses.",
+        "source": "Formulaires DISC natifs · patient_id/UUID",
+        "card_title": "SP de rang ≥3 déclarée"
       },
       {
         "key": "facility",
         "label": "Accouchements en formation sanitaire déclarés",
         "expression": "s.hf_delivery",
         "unit": "dossiers par CSCOM et mois",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. SP1 indique la prise déclarée ; SP ≥3 indique une administration déclarée de rang 3 à 6, pas trois prises dans le mois. Les références CPN et après accouchement à domicile exigent une réponse de référence explicite. Les décès sont des signalements dédupliqués, sans validation de cause. Les autres compteurs conservent leur source historique. Aucun taux de couverture ou ratio de mortalité n’est déduit.",
         "source": "mv_palu_sm_smi_tpig_indicators",
         "card_title": "Accouchements en structure"
       },
@@ -231,21 +269,40 @@
         "label": "Accouchements à domicile déclarés",
         "expression": "s.home_delivery",
         "unit": "dossiers par CSCOM et mois",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. SP1 indique la prise déclarée ; SP ≥3 indique une administration déclarée de rang 3 à 6, pas trois prises dans le mois. Les références CPN et après accouchement à domicile exigent une réponse de référence explicite. Les décès sont des signalements dédupliqués, sans validation de cause. Les autres compteurs conservent leur source historique. Aucun taux de couverture ou ratio de mortalité n’est déduit.",
         "source": "mv_palu_sm_smi_tpig_indicators",
         "card_title": "Accouchements à domicile"
       },
       {
         "key": "death",
-        "label": "Décès maternels signalés dans la source de soins",
-        "expression": "s.number_maternal_deaths",
-        "unit": "déclarations",
-        "note": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
-        "source": "mv_palu_sm_smi_tpig_indicators"
+        "label": "Décès maternels signalés · observations mensuelles",
+        "expression": "c.death",
+        "unit": "patientes par CSCOM et mois",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. Déclaration de décès dans les suivis de grossesse, référence ou post-partum, datée du signalement. Dédupliquée entre formulaires ; ni cause obstétricale validée, ni registre exhaustif de mortalité.",
+        "source": "Formulaires DISC natifs · patient_id/UUID",
+        "card_title": "Décès maternels signalés"
+      },
+      {
+        "key": "anc_referred",
+        "label": "Femmes enceintes référées pour CPN",
+        "expression": "c.anc_referred",
+        "unit": "patientes par CSCOM et mois",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. Grossesse confirmée, CPN non réalisée et référence au CSCOM explicitement déclarée dans l’enregistrement/confirmation. Ne prouve pas l’arrivée au CSCOM.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Référées pour CPN"
+      },
+      {
+        "key": "home_referred",
+        "label": "Accouchements à domicile avec référence déclarée",
+        "expression": "c.home_referred",
+        "unit": "patientes par CSCOM et mois",
+        "note": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. Lieu home et refer_patient_to_cscom_chw=yes dans la déclaration d’accouchement. Ne prouve pas une référence accomplie.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Accouchements à domicile référés"
       }
     ],
     "question": "Où renforcer les CPN, le suivi de grossesse et l’orientation des accouchements ?",
-    "method": "Les grossesses confirmées sont recalculées par patiente distincte à partir des deux formulaires de confirmation/enregistrement, avec rattachement au répertoire courant ; le compteur historique dédupliquait le parent du contact (ménage), et non la patiente. Les autres compteurs restent au grain CSCOM de la source historique. Une patiente peut être observée plusieurs mois. CPN non réalisée ne prouve pas une référence accomplie. Le compteur ≥3 SP concerne les administrations dans le même mois, pas TPIg3 pendant toute une grossesse. Aucun taux de couverture CPN ni ratio de mortalité maternelle n’est calculé.",
+    "method": "Une patiente est dédupliquée dans le CSCOM et le mois. La somme sur plusieurs mois compte des observations mensuelles, pas des femmes distinctes sur la période. SP1 indique la prise déclarée ; SP ≥3 indique une administration déclarée de rang 3 à 6, pas trois prises dans le mois. Les références CPN et après accouchement à domicile exigent une réponse de référence explicite. Les décès sont des signalements dédupliqués, sans validation de cause. Les autres compteurs conservent leur source historique. Aucun taux de couverture ou ratio de mortalité n’est déduit.",
     "historical_charts": [
       22,
       37
@@ -253,8 +310,12 @@
     "primary": [
       "pregnant",
       "followup",
+      "sp1",
+      "sp3_month",
+      "anc_referred",
       "facility",
-      "home"
+      "home_referred",
+      "death"
     ]
   },
   {
@@ -264,84 +325,72 @@
     "grain": "site",
     "metrics": [
       {
-        "key": "newborn",
-        "label": "Enregistrements de nouveau-nés",
-        "expression": "s.nber_newborn",
-        "unit": "déclarations",
-        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
-        "source": "mv_neonat_indicators_superset",
-        "card_title": "Enregistrements néonatals"
+        "key": "registered_profiles",
+        "label": "Nouveau-nés enregistrés · profils déclarés",
+        "expression": "c.registered_profiles",
+        "unit": "profils nouveau-nés",
+        "note": "Entrées du formulaire d’enregistrement des nouveau-nés, classées par mois de naissance ; profils déclarés, pas estimation des naissances de la population. Acte : birth_certificate=yes. Déclaration civile : acte déclaré ou déclaration dans le délai légal explicitement déclarée. Les états non renseignés ne sont pas interprétés comme négatifs.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Profils nouveau-nés enregistrés"
       },
       {
-        "key": "three_visits",
-        "label": "Suivis indiquant trois visites",
-        "expression": "s.newborn_with_3_visit",
-        "unit": "déclarations",
-        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
-        "source": "mv_neonat_indicators_superset",
-        "card_title": "Trois visites signalées"
+        "key": "certificate_profiles",
+        "label": "Nouveau-nés enregistrés avec acte de naissance déclaré",
+        "expression": "c.certificate_profiles",
+        "unit": "profils nouveau-nés",
+        "note": "Entrées du formulaire d’enregistrement des nouveau-nés, classées par mois de naissance ; profils déclarés, pas estimation des naissances de la population. Acte : birth_certificate=yes. Déclaration civile : acte déclaré ou déclaration dans le délai légal explicitement déclarée. Les états non renseignés ne sont pas interprétés comme négatifs.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Avec acte de naissance"
       },
       {
-        "key": "on_time",
-        "label": "Suivis déclarés dans les délais par la source",
-        "expression": "s.newborn_with_visits_on_time",
-        "unit": "déclarations",
-        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
-        "source": "mv_neonat_indicators_superset",
-        "card_title": "Suivis déclarés à temps"
+        "key": "civil_profiles",
+        "label": "Nouveau-nés enregistrés avec déclaration civile attestée",
+        "expression": "c.civil_profiles",
+        "unit": "profils nouveau-nés",
+        "note": "Entrées du formulaire d’enregistrement des nouveau-nés, classées par mois de naissance ; profils déclarés, pas estimation des naissances de la population. Acte : birth_certificate=yes. Déclaration civile : acte déclaré ou déclaration dans le délai légal explicitement déclarée. Les états non renseignés ne sont pas interprétés comme négatifs.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Déclaration civile attestée"
       },
       {
-        "key": "civil",
-        "label": "Déclarations à l’état civil signalées",
-        "expression": "s.newborn_declared_civil_status",
-        "unit": "déclarations",
-        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
-        "source": "mv_neonat_indicators_superset",
-        "card_title": "État civil signalé"
+        "key": "followed_cases",
+        "label": "Dossiers mère/naissance avec suivi postnatal",
+        "card_title": "Dossiers mère/naissance suivis",
+        "expression": "c.followed_cases",
+        "source": "Formulaires DISC natifs · postnatal_followup",
+        "unit": "dossiers mère/naissance par site",
+        "note": "Dossier = patiente mère et date de naissance, par site et mois de naissance. Les trois visites exigent trois dates distinctes réelles entre J0 et J7 inclus ; plusieurs formulaires le même jour ne créent pas de visite supplémentaire. Référence explicitement déclarée, sans preuve d’arrivée. Un dossier peut correspondre à plusieurs nouveau-nés (naissance multiple) : ce compteur ne compte pas des enfants individuels. Suivis enregistrés jusqu’à la date de calcul, naissance dans les douze derniers mois complets."
       },
       {
-        "key": "certificate",
-        "label": "Actes de naissance signalés",
-        "expression": "s.newborn_with_birth_certificate",
-        "unit": "déclarations",
-        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
-        "source": "mv_neonat_indicators_superset"
+        "key": "three_visit_cases",
+        "label": "Dossiers mère/naissance avec trois jours de visite J0–J7",
+        "card_title": "Trois jours de visite · J0–J7",
+        "expression": "c.three_visit_cases",
+        "source": "Formulaires DISC natifs · postnatal_followup",
+        "unit": "dossiers mère/naissance par site",
+        "note": "Dossier = patiente mère et date de naissance, par site et mois de naissance. Les trois visites exigent trois dates distinctes réelles entre J0 et J7 inclus ; plusieurs formulaires le même jour ne créent pas de visite supplémentaire. Référence explicitement déclarée, sans preuve d’arrivée. Un dossier peut correspondre à plusieurs nouveau-nés (naissance multiple) : ce compteur ne compte pas des enfants individuels. Suivis enregistrés jusqu’à la date de calcul, naissance dans les douze derniers mois complets."
       },
       {
-        "key": "referred",
-        "label": "Références néonatales signalées",
-        "expression": "s.newborn_referred",
-        "unit": "déclarations",
-        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
-        "source": "mv_neonat_indicators_superset"
-      },
-      {
-        "key": "death24",
-        "label": "Décès néonatals dans les 24 h signalés",
-        "expression": "s.newborn_died_in_24h",
-        "unit": "déclarations",
-        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
-        "source": "mv_neonat_indicators_superset"
-      },
-      {
-        "key": "home",
-        "label": "Accouchements à domicile signalés dans les suivis néonatals",
-        "expression": "s.newborn_mother_given_birth_at_home",
-        "unit": "déclarations",
-        "note": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
-        "source": "mv_neonat_indicators_superset"
+        "key": "referred_cases",
+        "label": "Dossiers mère/naissance avec référence du nouveau-né déclarée",
+        "card_title": "Dossiers avec référence déclarée",
+        "expression": "c.referred_cases",
+        "source": "Formulaires DISC natifs · postnatal_followup",
+        "unit": "dossiers mère/naissance par site",
+        "note": "Dossier = patiente mère et date de naissance, par site et mois de naissance. Les trois visites exigent trois dates distinctes réelles entre J0 et J7 inclus ; plusieurs formulaires le même jour ne créent pas de visite supplémentaire. Référence explicitement déclarée, sans preuve d’arrivée. Un dossier peut correspondre à plusieurs nouveau-nés (naissance multiple) : ce compteur ne compte pas des enfants individuels. Suivis enregistrés jusqu’à la date de calcul, naissance dans les douze derniers mois complets."
       }
     ],
     "question": "Où renforcer le suivi des nouveau-nés et les démarches d’état civil ?",
-    "method": "Les enregistrements de naissance et les suivis sont issus de populations et de dates de saisie différentes. Les compteurs de suivi peuvent représenter plusieurs rapports pour un même enfant. Le critère « dans les délais » est hérité de la source ; il ne certifie pas le calendrier clinique à lui seul. Aucun taux de trois visites, de mortalité ou de déclaration civile n’est calculé à partir des naissances du même mois.",
+    "method": "Les profils nouveau-nés enregistrés et les dossiers mère/naissance suivis sont deux unités différentes, classées par mois de naissance. Trois visites signifie trois jours distincts entre J0 et J7 dans un dossier mère/naissance ; les naissances multiples empêchent de le présenter comme un nombre d’enfants individuels. Les visites et références historiques non certifiables ont été retirées de ce tableau ; elles restent dans le tableau ASC historique. Aucun taux de couverture de population n’est déduit.",
     "historical_charts": [
       38
     ],
     "primary": [
-      "newborn",
-      "three_visits",
-      "on_time",
-      "civil"
+      "registered_profiles",
+      "certificate_profiles",
+      "civil_profiles",
+      "followed_cases",
+      "three_visit_cases",
+      "referred_cases"
     ]
   },
   {
@@ -352,41 +401,68 @@
     "metrics": [
       {
         "key": "counseling",
-        "label": "Counselings PF enregistrés",
+        "label": "Historique — Counselings PF enregistrés",
         "expression": "s.fp_counseling",
         "unit": "déclarations",
-        "note": "La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
+        "note": "Calcul historique conservé pour comparaison ; privilégier les nouvelles cartes natives pour l’analyse courante. La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
         "source": "mv_family_planning_summary_superset",
         "card_title": "Counselings PF"
       },
       {
         "key": "new_user",
-        "label": "Nouvelles utilisations de méthode déclarées",
+        "label": "Historique — Nouvelles utilisations de méthode déclarées",
         "expression": "s.fp_new_user",
         "unit": "déclarations",
-        "note": "La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
+        "note": "Calcul historique conservé pour comparaison ; privilégier les nouvelles cartes natives pour l’analyse courante. La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
         "source": "mv_family_planning_summary_superset",
         "card_title": "Nouvelles utilisations"
       },
       {
         "key": "users",
-        "label": "Utilisations de méthode enregistrées dans la source",
+        "label": "Historique — Utilisations de méthode enregistrées dans la source",
         "expression": "s.fp_total_user",
         "unit": "déclarations",
-        "note": "La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
+        "note": "Calcul historique conservé pour comparaison ; privilégier les nouvelles cartes natives pour l’analyse courante. La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
         "source": "mv_family_planning_summary_superset",
         "card_title": "Utilisations enregistrées"
+      },
+      {
+        "key": "counseling_native",
+        "label": "Patientes avec conseil de planification familiale déclaré",
+        "expression": "c.counseling_native",
+        "unit": "patientes par site et mois",
+        "note": "Patiente distincte par site et mois dans fp_registration. Conseil : has_advice_given=yes. Nouvelle utilisatrice : patient_having_fp=no et has_method_offered=yes. Utilisatrice observée : utilisait déjà une méthode ou nouvelle utilisatrice. Ni stock de toutes les utilisatrices, ni personnes uniques sur plusieurs mois.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Conseil PF déclaré"
+      },
+      {
+        "key": "new_user_native",
+        "label": "Nouvelles utilisatrices PF déclarées",
+        "expression": "c.new_user_native",
+        "unit": "patientes par site et mois",
+        "note": "Patiente distincte par site et mois dans fp_registration. Conseil : has_advice_given=yes. Nouvelle utilisatrice : patient_having_fp=no et has_method_offered=yes. Utilisatrice observée : utilisait déjà une méthode ou nouvelle utilisatrice. Ni stock de toutes les utilisatrices, ni personnes uniques sur plusieurs mois.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Nouvelles utilisatrices PF"
+      },
+      {
+        "key": "users_native",
+        "label": "Utilisatrices PF observées",
+        "expression": "c.users_native",
+        "unit": "patientes par site et mois",
+        "note": "Patiente distincte par site et mois dans fp_registration. Conseil : has_advice_given=yes. Nouvelle utilisatrice : patient_having_fp=no et has_method_offered=yes. Utilisatrice observée : utilisait déjà une méthode ou nouvelle utilisatrice. Ni stock de toutes les utilisatrices, ni personnes uniques sur plusieurs mois.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Utilisatrices PF observées"
       }
     ],
     "question": "Où renforcer le conseil et l’accompagnement en planification familiale ?",
-    "method": "La source compte des épisodes/formulaires de conseil et d’utilisation, pas un stock courant de femmes utilisatrices. Une même personne peut réapparaître. Les suivis/renouvellements sont conditionnés par les règles de jointure de la source historique. Aucun taux de prévalence contraceptive ni taux de conversion individuel n’est calculé.",
+    "method": "Les nouvelles cartes dédupliquent les patientes par site et mois depuis les réponses natives. Les compteurs historiques sont conservés pour comparaison. Les utilisatrices observées ne constituent pas le stock de toutes les utilisatrices ; une même patiente peut réapparaître plusieurs mois.",
     "historical_charts": [
       39
     ],
     "primary": [
-      "counseling",
-      "new_user",
-      "users"
+      "counseling_native",
+      "new_user_native",
+      "users_native"
     ]
   },
   {
@@ -565,6 +641,59 @@
     ]
   },
   {
+    "key": "tuberculose",
+    "title": "Tuberculose",
+    "source": "formview_tb_treatment_followup + assessment_case_contact_tb",
+    "grain": "site",
+    "metrics": [
+      {
+        "key": "followed",
+        "label": "Malades tuberculeux suivis",
+        "expression": "c.followed",
+        "unit": "patients/contacts par site et mois",
+        "note": "Suivi TB avec patient revenu : has_patient_returned=yes. Identifiant patient_id non vide. Les malades suivis sont distincts par identifiant renseigné, site et mois ; les contacts par UUID, site et mois. Une personne peut réapparaître plusieurs mois ou sites. Une référence déclarée ne prouve pas son aboutissement. Les perdus de vue retrouvés exigent le motif explicite patient_lost_found. Aucun taux de guérison ni estimation de prévalence n’est calculé.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Malades TB suivis"
+      },
+      {
+        "key": "contacts",
+        "label": "Cas contacts TB évalués",
+        "expression": "c.contacts",
+        "unit": "patients/contacts par site et mois",
+        "note": "Formulaire assessment_case_contact_tb et case_type=contact_case. Identifiant patient_uuid non vide. Les malades suivis sont distincts par identifiant renseigné, site et mois ; les contacts par UUID, site et mois. Une personne peut réapparaître plusieurs mois ou sites. Une référence déclarée ne prouve pas son aboutissement. Les perdus de vue retrouvés exigent le motif explicite patient_lost_found. Aucun taux de guérison ni estimation de prévalence n’est calculé.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Contacts TB évalués"
+      },
+      {
+        "key": "contacts_referred",
+        "label": "Cas contacts TB référés",
+        "expression": "c.contacts_referred",
+        "unit": "patients/contacts par site et mois",
+        "note": "Contact TB évalué et refer_to_cscom=yes explicitement déclaré. Les malades suivis sont distincts par identifiant renseigné, site et mois ; les contacts par UUID, site et mois. Une personne peut réapparaître plusieurs mois ou sites. Une référence déclarée ne prouve pas son aboutissement. Les perdus de vue retrouvés exigent le motif explicite patient_lost_found. Aucun taux de guérison ni estimation de prévalence n’est calculé.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Contacts TB référés"
+      },
+      {
+        "key": "lost_found",
+        "label": "Malades TB perdus de vue retrouvés",
+        "expression": "c.lost_found",
+        "unit": "patients/contacts par site et mois",
+        "note": "Patient revenu et why_has_patient_returned=patient_lost_found ; aucune déduction depuis une absence ou un retard. Les malades suivis sont distincts par identifiant renseigné, site et mois ; les contacts par UUID, site et mois. Une personne peut réapparaître plusieurs mois ou sites. Une référence déclarée ne prouve pas son aboutissement. Les perdus de vue retrouvés exigent le motif explicite patient_lost_found. Aucun taux de guérison ni estimation de prévalence n’est calculé.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Perdus de vue retrouvés"
+      }
+    ],
+    "question": "Où renforcer le suivi des malades et des contacts tuberculeux ?",
+    "method": "Les malades suivis sont distincts par identifiant renseigné, site et mois ; les contacts par UUID, site et mois. Une personne peut réapparaître plusieurs mois ou sites. Une référence déclarée ne prouve pas son aboutissement. Les perdus de vue retrouvés exigent le motif explicite « perdu de vue retrouvé ». Aucun taux de guérison ni estimation de prévalence n’est calculé.",
+    "historical_charts": [],
+    "primary": [
+      "followed",
+      "contacts",
+      "contacts_referred",
+      "lost_found"
+    ]
+  },
+  {
     "key": "pec-enfant",
     "title": "Consultations et morbidités des moins de 5 ans",
     "source": "mv_pec_u5_indicators_shared",
@@ -690,18 +819,36 @@
         "unit": "consultations",
         "expression": "c.malaria_conflicts",
         "source": "formview_patient_assessment_under_5 · même cohorte enfant/jour"
+      },
+      {
+        "key": "fever_native",
+        "label": "Consultations des moins de 5 ans avec fièvre",
+        "expression": "c.fever_native",
+        "unit": "consultations",
+        "note": "has_fever=yes dans la dernière évaluation non ambiguë par enfant et jour, avec âge renseigné inférieur à cinq ans ; même cohorte que le parcours paludisme. La fièvre ne prouve pas un paludisme.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Fièvre · moins de 5 ans"
+      },
+      {
+        "key": "consult_native",
+        "label": "Consultations évaluées des moins de 5 ans",
+        "expression": "c.consult_native",
+        "unit": "consultations",
+        "note": "Dernière évaluation non ambiguë par enfant et jour, âge renseigné de 0 à moins de 5 ans. Sans identifiant enfant, chaque rapport reste distinct. Même cohorte que le parcours paludisme.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Consultations évaluées"
       }
     ],
     "question": "Où renforcer la prise en charge des enfants malades et la vigilance sur les signes de danger ?",
-    "method": "Les suspicions évaluées réunissent les consultations avec TDR positif/négatif et les présumés sans TDR, sans double comptage. Les confirmés par TDR en font donc partie. « Paludisme simple · TDR + » exige la classification native et un TDR positif ; tous les TDR positifs ne sont pas nécessairement classés paludisme simple. Les présumés sans TDR sont affichés séparément. Tous les compteurs paludisme utilisent la même dernière consultation par enfant et jour, avec âge renseigné < 5 ans ; les derniers horodatages ex æquo sont exclus. Sans identifiant enfant, chaque rapport reste distinct. Ce sont des consultations, pas des enfants uniques ni une incidence. Les autres compteurs restent historiques ; les suivis isolés peuvent manquer. Aucun traitement CTA ni taux clinique n’est déduit.",
+    "method": "Les suspicions évaluées réunissent les consultations avec TDR positif/négatif et les présumés sans TDR, sans double comptage. Les confirmés par TDR en font donc partie. « Paludisme simple · TDR + » exige la classification native et un TDR positif ; tous les TDR positifs ne sont pas nécessairement classés paludisme simple. Les présumés sans TDR sont affichés séparément. Tous les compteurs paludisme utilisent la même dernière consultation par enfant et jour, avec âge renseigné < 5 ans ; les derniers horodatages ex æquo sont exclus. Sans identifiant enfant, chaque rapport reste distinct. Ce sont des consultations, pas des enfants uniques ni une incidence. Les autres compteurs restent historiques ; les suivis isolés peuvent manquer. Aucun traitement CTA ni taux clinique n’est déduit. Les consultations évaluées et la fièvre utilisent la même cohorte native que le parcours paludisme.",
     "historical_charts": [
       34,
       35,
       64
     ],
     "primary": [
-      "new_consult",
-      "old_consult",
+      "consult_native",
+      "fever_native",
       "malaria_suspected",
       "malaria_simple",
       "malaria_tested",
@@ -839,10 +986,197 @@
         "unit": "séances multithématiques",
         "note": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
         "source": "form_metadata + couchdb (rapports uniques de communication)"
+      },
+      {
+        "key": "wash_reports",
+        "label": "Activités WASH enregistrées",
+        "expression": "c.wash_reports",
+        "unit": "rapports",
+        "note": "Formulaires wash uniques, datés du signalement ; pas des ménages distincts.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "Activités WASH"
+      },
+      {
+        "key": "clinical_visits",
+        "label": "Visites à domicile · formulaires cliniques",
+        "expression": "c.clinical_visits",
+        "unit": "rapports",
+        "note": "Rapports cliniques portant explicitement une réponse home_visit, during_home_visit ou vad dans le champ propre au formulaire. Ne pas assimiler un suivi terminé à une visite à domicile. Plusieurs formulaires peuvent décrire une même visite physique.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "VAD cliniques déclarées"
+      },
+      {
+        "key": "all_visits",
+        "label": "Visites à domicile · promotion et clinique",
+        "expression": "c.all_visits",
+        "unit": "rapports",
+        "note": "VAD promotionnelles + rapports cliniques explicitement réalisés à domicile. Comptage de rapports, pas de visites physiques uniques.",
+        "source": "Formulaires DISC natifs · calcul documenté",
+        "card_title": "VAD promotion et clinique"
+      },
+      {
+        "key": "theme_malaria_men",
+        "label": "Communications abordant : Paludisme · participations hommes/garçons",
+        "expression": "c.theme_malaria_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_malaria_women",
+        "label": "Communications abordant : Paludisme · participations femmes/filles",
+        "expression": "c.theme_malaria_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_vaccination_men",
+        "label": "Communications abordant : Vaccination · participations hommes/garçons",
+        "expression": "c.theme_vaccination_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_vaccination_women",
+        "label": "Communications abordant : Vaccination · participations femmes/filles",
+        "expression": "c.theme_vaccination_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_hiv_men",
+        "label": "Communications abordant : VIH · participations hommes/garçons",
+        "expression": "c.theme_hiv_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_hiv_women",
+        "label": "Communications abordant : VIH · participations femmes/filles",
+        "expression": "c.theme_hiv_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_tuberculosis_men",
+        "label": "Communications abordant : Tuberculose · participations hommes/garçons",
+        "expression": "c.theme_tuberculosis_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_tuberculosis_women",
+        "label": "Communications abordant : Tuberculose · participations femmes/filles",
+        "expression": "c.theme_tuberculosis_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_nutrition_men",
+        "label": "Communications abordant : Nutrition · participations hommes/garçons",
+        "expression": "c.theme_nutrition_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_nutrition_women",
+        "label": "Communications abordant : Nutrition · participations femmes/filles",
+        "expression": "c.theme_nutrition_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_wash_men",
+        "label": "Communications abordant : WASH · participations hommes/garçons",
+        "expression": "c.theme_wash_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_wash_women",
+        "label": "Communications abordant : WASH · participations femmes/filles",
+        "expression": "c.theme_wash_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_family_planning_men",
+        "label": "Communications abordant : Planification familiale · participations hommes/garçons",
+        "expression": "c.theme_family_planning_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_family_planning_women",
+        "label": "Communications abordant : Planification familiale · participations femmes/filles",
+        "expression": "c.theme_family_planning_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_anc_men",
+        "label": "Communications abordant : CPN · participations hommes/garçons",
+        "expression": "c.theme_anc_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_anc_women",
+        "label": "Communications abordant : CPN · participations femmes/filles",
+        "expression": "c.theme_anc_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_ira_men",
+        "label": "Communications abordant : Infections respiratoires · participations hommes/garçons",
+        "expression": "c.theme_ira_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_ira_women",
+        "label": "Communications abordant : Infections respiratoires · participations femmes/filles",
+        "expression": "c.theme_ira_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_diarrhea_men",
+        "label": "Communications abordant : Diarrhée · participations hommes/garçons",
+        "expression": "c.theme_diarrhea_men",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
+      },
+      {
+        "key": "theme_diarrhea_women",
+        "label": "Communications abordant : Diarrhée · participations femmes/filles",
+        "expression": "c.theme_diarrhea_women",
+        "unit": "participations déclarées",
+        "note": "Somme des participations déclarées dans les communications abordant le thème, VAD et causeries. Une personne peut participer plusieurs fois ; une communication multithématique contribue à chaque thème. Champs absents/non numériques non comptabilisés.",
+        "source": "Formulaires DISC natifs · calcul documenté"
       }
     ],
     "question": "Quels territoires déclarent des activités promotionnelles, et sur quels sujets ?",
-    "method": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés.",
+    "method": "Les activités sont recalculées à partir des identifiants uniques de rapports de communication, avant toute jointure géographique. Plusieurs activités d’un même contact le même jour restent distinctes. Le mois correspond à la date d’activité déclarée, sinon à la date du rapport ; les rapports déclarés depuis le début de la période préparée sont contrôlés, y compris les saisies tardives du mois courant. Les activités ASC et OCA peuvent être incluses sur les sites du répertoire. Les participations ne sont pas des personnes uniques ; une séance peut aborder plusieurs thèmes. Le total historique qui mélangeait des suivis cliniques sans preuve de VAD et le compteur WASH de lignes agrégées sont remplacés par les communications, visites promotionnelles explicites, causeries et thèmes réellement renseignés. Les participations par thème et sexe incluent VAD et causeries ; elles ne comptent pas des personnes uniques. Les VAD cliniques exigent une réponse explicite à domicile ; leur addition aux VAD promotionnelles compte des rapports et peut compter plusieurs formulaires pour une visite physique. WASH désigne les formulaires d’activité enregistrés.",
     "historical_charts": [
       20,
       21,
@@ -852,7 +1186,10 @@
       "communications",
       "promotion_visits",
       "talks",
-      "theme_wash"
+      "theme_wash",
+      "wash_reports",
+      "clinical_visits",
+      "all_visits"
     ]
   },
   {

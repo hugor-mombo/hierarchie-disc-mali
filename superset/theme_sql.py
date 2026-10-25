@@ -8,7 +8,45 @@ NS='21ae1ecf-7a1d-4b78-a449-61ce8a2eed64'
 def table_name(theme):
     return 'mv_asc_theme_'+theme['key'].replace('-','_')
 
+NATIVE = {
+    'maternelle': ('maternal_canevas.sql', {'sp1','sp3_month','death','anc_referred','home_referred'}),
+    'vaccination': ('vaccination_canevas.sql', {'observed_under2','observed_up_to_date','observed_at23','observed_zero12_23'}),
+    'planification': ('fp_native.sql', {'counseling_native','new_user_native','users_native'}),
+}
+
 def raw_source_sql(theme):
+    key=theme['key']
+    if key=='tuberculose':
+        return (ROOT/'sql/themes/tuberculose_native.sql').read_text()
+    if key=='neonatale':
+        return (ROOT/'sql/themes/neonatal_canevas.sql').read_text()
+    if key=='promotion':
+        extra={'wash_reports','clinical_visits','all_visits'}
+        base=_base_source_sql({**theme,'metrics':[m for m in theme['metrics'] if m['key'] not in extra]})
+        clinical=(ROOT/'sql/themes/clinical_home_visits.sql').read_text()
+        wash=(ROOT/'sql/themes/wash_native.sql').read_text()
+        items=','.join(('coalesce(w.wash_reports,0)' if m['key']=='wash_reports' else
+                       'coalesce(c.clinical_visits,0)' if m['key']=='clinical_visits' else
+                       'coalesce(s.promotion_visits,0)+coalesce(c.clinical_visits,0)' if m['key']=='all_visits' else 's.'+m['key'])+' AS '+m['key'] for m in theme['metrics'])
+        return ('WITH base AS ('+base+'), clinical AS ('+clinical+'), wash AS ('+wash+'), periods AS ('
+                'SELECT entity_uuid,reported_month FROM base UNION SELECT entity_uuid,reported_month FROM clinical UNION SELECT entity_uuid,reported_month FROM wash) '
+                'SELECT p.entity_uuid,p.reported_month,'+items+' FROM periods p '
+                'LEFT JOIN base s ON s.entity_uuid IS NOT DISTINCT FROM p.entity_uuid AND s.reported_month=p.reported_month '
+                'LEFT JOIN clinical c ON c.entity_uuid IS NOT DISTINCT FROM p.entity_uuid AND c.reported_month=p.reported_month '
+                'LEFT JOIN wash w ON w.entity_uuid IS NOT DISTINCT FROM p.entity_uuid AND w.reported_month=p.reported_month')
+    if key not in NATIVE:
+        return _base_source_sql(theme)
+    filename,keys=NATIVE[key]
+    corrected=(ROOT/'sql/themes'/filename).read_text()
+    base=_base_source_sql({**theme,'metrics':[m for m in theme['metrics'] if m['key'] not in keys]})
+    items=','.join(('coalesce(c.'+m['key']+',0)' if m['key'] in keys else 's.'+m['key'])+'::numeric AS '+m['key'] for m in theme['metrics'])
+    return ('WITH corrected AS ('+corrected+'), legacy AS ('+base+'), periods AS ('
+            'SELECT entity_uuid,reported_month FROM corrected UNION SELECT entity_uuid,reported_month FROM legacy) '
+            'SELECT p.entity_uuid,p.reported_month,'+items+' FROM periods p '
+            'LEFT JOIN legacy s ON s.entity_uuid IS NOT DISTINCT FROM p.entity_uuid AND s.reported_month=p.reported_month '
+            'LEFT JOIN corrected c ON c.entity_uuid IS NOT DISTINCT FROM p.entity_uuid AND c.reported_month=p.reported_month')
+
+def _base_source_sql(theme):
     key=theme['key']
     metrics=theme['metrics']
     period="s.reported_month>=date_trunc('month',CURRENT_DATE)-interval '12 months' AND s.reported_month<date_trunc('month',CURRENT_DATE)"
@@ -17,7 +55,7 @@ def raw_source_sql(theme):
         return ',\n'.join('('+expression+')::numeric AS '+name for name,expression in items)
     if key=='pec-enfant':
         corrected=(ROOT/'sql/themes/malaria_u5.sql').read_text()
-        corrected_keys={m['key'] for m in metrics if m['key'].startswith('malaria_')}
+        corrected_keys={m['key'] for m in metrics if m['key'].startswith('malaria_') or m['key'] in {'fever_native','consult_native'}}
         legacy_projection=projection([(m['key'],m['expression']) for m in metrics if m['key'] not in corrected_keys])
         items=','.join(('coalesce(c.'+m['key']+',0)' if m['key'] in corrected_keys else 's.'+m['key'])+'::numeric AS '+m['key'] for m in metrics)
         return ('WITH corrected AS ('+corrected+"""), legacy AS (

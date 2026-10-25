@@ -27,7 +27,7 @@ with app.app_context():
     selected.sort(key=lambda t:t['key']=='promotion')
     for theme in selected:
      with engine.begin() as c:
-      c.execute(text("SET LOCAL statement_timeout='900s'"))
+      c.execute(text("SET LOCAL statement_timeout='"+('1800s' if theme['key']=='promotion' else '900s')+"'"))
       c.execute(text("SET LOCAL lock_timeout='10s'"))
       c.execute(text("SET LOCAL TIME ZONE 'UTC'"))
       c.execute(text("SET LOCAL jit=off"))

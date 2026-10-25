@@ -8,8 +8,11 @@ from theme_sql import CATALOG,NS,table_name
 parser=argparse.ArgumentParser()
 parser.add_argument('--publish',action='store_true')
 parser.add_argument('--only',choices=[t['key'] for t in CATALOG])
+parser.add_argument('--hub-only',action='store_true',help='Mettre à jour uniquement le portail thématique et sa disponibilité')
 args=parser.parse_args()
-selected=[t for t in CATALOG if not args.only or t['key']==args.only]
+assert not (args.only and args.hub_only)
+targeted=bool(args.only or args.hub_only)
+selected=[] if args.hub_only else [t for t in CATALOG if not args.only or t['key']==args.only]
 uid=lambda key:uuid5(UUID(NS),key)
 slug=lambda key:'asc-theme-'+key
 literal=lambda value:"'"+value.replace("'","''")+"'"
@@ -32,7 +35,7 @@ with app.test_request_context('/'):
  owner=security_manager.find_user(username='hmombo');assert owner
  login_user(owner);g.user=owner
  history=db.session.query(Dashboard).filter_by(id=1).one()
- unrelated={d.id:(d.position_json,d.json_metadata,d.css,d.published,sorted(c.id for c in d.slices)) for d in db.session.query(Dashboard).all() if args.only and d.uuid!=uid('dashboard:'+args.only)}
+ unrelated={d.id:(d.position_json,d.json_metadata,d.css,d.published,sorted(c.id for c in d.slices)) for d in db.session.query(Dashboard).all() if targeted and d.uuid!=uid('dashboard:'+('hub' if args.hub_only else args.only))}
  historical_snapshot=(history.position_json,history.json_metadata,[s.id for s in history.slices],history.published)
  geography=db.session.query(SqlaTable).filter_by(uuid=uuid5(UUID('a88972a5-b85f-4772-92cf-8ff98e473283'),'geography')).one()
  new_datasets=[]
@@ -41,6 +44,10 @@ with app.test_request_context('/'):
   if ds is None:
    ds=SqlaTable(uuid=uid('dataset:'+key),table_name=title,database_id=1,schema='public');db.session.add(ds)
   ds.sql=sql;ds.main_dttm_col='reported_month';ds.owners=[owner];ds.created_by=ds.changed_by=owner
+  if key=='neonatale':
+   retired={'newborn','three_visits','on_time','civil','certificate','referred','death24','home'}
+   ds.columns=[c for c in ds.columns if c.column_name not in retired]
+   ds.metrics=[m for m in ds.metrics if m.metric_name not in {'m_'+name for name in retired}]
   ds.description='Relevé thématique sur douze mois complets ; observations selon la méthode documentée, sans nouvelle donnée clinique individuelle.'
   for name,kind,label in columns:
    col=next((x for x in ds.columns if x.column_name==name),None)
@@ -69,9 +76,9 @@ with app.test_request_context('/'):
  if not args.only:
   quality_parts=[]
   for theme in CATALOG:
-   quality_parts.append('SELECT '+literal(theme['title'])+' AS theme,input_rows,reported_month,region_uuid,region,district,cscom,attribution,calculated_at FROM public.'+table_name(theme))
+   quality_parts.append('SELECT '+literal(theme['title'])+' AS theme,input_rows,reported_month,region_uuid,region,district_uuid,district,cscom,attribution,calculated_at FROM public.'+table_name(theme))
   quality=dataset('availability','ASC Thèmes — Disponibilité des relevés',' UNION ALL '.join(quality_parts),
-   [('theme','TEXT','Tableau thématique')]+[c for c in COMMON if c[0] in ['input_rows','reported_month','region_uuid','region','district','cscom','attribution','calculated_at']],freshness)
+   [('theme','TEXT','Tableau thématique')]+[c for c in COMMON if c[0] in ['input_rows','reported_month','region_uuid','region','district_uuid','district','cscom','attribution','calculated_at']],freshness)
  apply_regional_security(new_datasets)
  table=dict(query_mode='aggregate',all_columns=[],server_pagination=True,server_page_length=20,page_length=20,
   include_search=False,allow_render_html=False,show_cell_bars=False,order_desc=True,table_timestamp_format='%d/%m/%Y')
@@ -173,7 +180,7 @@ Cartes selon la période choisie ; tendance sur **12 mois complets**. Unités du
    chunk=primary[offset:offset+4]
    b.row(p,'cards'+(str(offset//4) if len(primary)>4 else ''),[('card_'+x,12//len(chunk)) for x in chunk],23)
   extra_note={'references':'\n\n[Références des moins de cinq ans](/superset/dashboard/asc-theme-pec-enfant/) · [Références néonatales](/superset/dashboard/asc-theme-neonatale/)', 'paludisme':'\n\n[Paludisme chez les moins de cinq ans](/superset/dashboard/asc-theme-pec-enfant/)'}.get(key,'')
-  b.note(p,'interpretation','**À lire avant de comparer :** '+theme['method']+extra_note,28)
+  b.note(p,'interpretation','**À lire avant de comparer :** '+theme['method']+extra_note,max(28,12+len(theme['method']+extra_note)//48))
   b.row(p,'regions',[('regions',12)],66)
   b.row(p,'trend',[('trend',12)],42)
   d=b.tab('detail','Territoires et exports')
@@ -214,9 +221,11 @@ Le calcul prépare les **12 mois civils complets** précédents. Les sources his
 Les lignes absentes du répertoire courant restent dans le contrôle national ; celles ayant perdu leur identifiant de site en amont sont regroupées par mois, avec leurs volumes conservés et le nombre de lignes amont regroupées. Aucun site fictif n’est créé. Ces lignes n’ont pas de rattachement régional utilisable. Les lecteurs régionaux n’obtiennent que leur périmètre autorisé. Un CSCOM trouvé dans plusieurs branches n’est jamais réparti entre ses sites : le chemin complet de la source est vérifié. Le répertoire ne certifie pas l’ouverture DHIS2 du site.''',24)
   b.row(method,'quality',[('quality',12)],28)
   dictionary='### Dictionnaire des indicateurs\n\n| Indicateur | Unité de lecture | Code de colonne export |\n|---|---|---|\n'+'\n'.join('| '+m['label']+' | '+m['unit']+' | `m_'+m['key']+'` |' for m in metrics)
-  if key=='pec-enfant':
-   dictionary+='\n\n### Définitions du parcours paludisme\n\n'+'\n\n'.join('**'+m['label']+'** — '+m['note'] for m in metrics if m['key'].startswith('malaria_'))
-  b.note(method,'dictionary',dictionary,max(40,14+len(metrics)*5)+(100 if key=='pec-enfant' else 0))
+  b.note(method,'dictionary',dictionary,max(40,14+len(metrics)*5))
+  # Separate blocks keep long definitions readable without clipping a single giant note.
+  detailed=[m for m in metrics if m['source'].startswith(('Formulaires DISC','formview_')) or m['key'].startswith('malaria_') or m['expression'].startswith('c.')]
+  for i in range(0,len(detailed),3):
+   b.note(method,'definitions'+str(i),'### Définitions détaillées\n\n'+'\n\n'.join('**'+m['label']+'** — '+m['note'] for m in detailed[i:i+3]),max(35,sum(10+len(m['note'])//65 for m in detailed[i:i+3])))
   b.finish(filters_for(b,long,theme,current_ids))
  if not args.only:
   hub=Board('hub','ASC — Tableaux thématiques','asc-thematiques')
@@ -238,7 +247,7 @@ Les lignes absentes du répertoire courant restent dans le contrôle national ; 
   hub.row(q,'availability',[('availability',12)],70)
   hub.finish(filters_for(hub))
  assert historical_snapshot==(history.position_json,history.json_metadata,[s.id for s in history.slices],history.published),'Historical dashboard modified'
- brand_primary_dashboards(db.session,ids=[r['id'] for r in reports] if args.only else None)
+ brand_primary_dashboards(db.session,ids=[r['id'] for r in reports] if targeted else None)
  for identifier,state in unrelated.items():
   untouched=db.session.query(Dashboard).filter_by(id=identifier).one()
   assert state==(untouched.position_json,untouched.json_metadata,untouched.css,untouched.published,sorted(c.id for c in untouched.slices)),'Unrelated dashboard modified'

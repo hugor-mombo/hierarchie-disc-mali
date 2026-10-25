@@ -4,7 +4,7 @@ WITH raw AS MATERIALIZED (
  SELECT uuid AS report_uuid,nullif(btrim(patient_uuid),'') AS patient_uuid,
  nullif(btrim(reported_by_parent),'') AS site_uuid,reported AS submitted_at,
  coalesce(s_reported_date,reported)::date AS consultation_day,
- lower(nullif(btrim(has_malaria),'')) AS malaria_classification,
+ has_fever,lower(nullif(btrim(has_malaria),'')) AS malaria_classification,
  lower(nullif(btrim(has_malaria_suspicion),'')) AS presumed_classification,
  lower(nullif(btrim(tdr_result),'')) AS rdt_result,
  CASE WHEN length(patient_age_in_years)<12 AND patient_age_in_years ~ '^[0-9]+([.][0-9]+)?$'
@@ -21,6 +21,8 @@ WITH raw AS MATERIALIZED (
  AND consultation_day<date_trunc('month',CURRENT_DATE)
 )
 SELECT site_uuid AS entity_uuid,date_trunc('month',consultation_day)::date AS reported_month,
+ count(*)::numeric AS consult_native,
+ count(*) FILTER(WHERE has_fever='yes')::numeric AS fever_native,
  count(*) FILTER(WHERE malaria_classification='yes' AND rdt_result='positive')::numeric AS malaria_simple,
  count(*) FILTER(WHERE rdt_result IN ('positive','negative') OR (presumed_classification='yes' AND rdt_result IS NULL))::numeric AS malaria_suspected,
  count(*) FILTER(WHERE rdt_result IN ('positive','negative'))::numeric AS malaria_tested,

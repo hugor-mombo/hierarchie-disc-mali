@@ -1,7 +1,7 @@
 # Lot 4 — Tableaux thématiques ASC
 
 Point d’entrée : https://dashboard.disc-mali.ml/superset/dashboard/asc-thematiques/.
-Dix tableaux spécialisés, construits à côté du tableau ASC historique :
+Onze tableaux spécialisés, construits à côté du tableau ASC historique :
 
 | Tableau | Adresse | Lecture principale |
 |---|---|---|
@@ -12,21 +12,21 @@ Dix tableaux spécialisés, construits à côté du tableau ASC historique :
 | Planification familiale | `/superset/dashboard/asc-theme-planification/` | Conseil et épisodes d’utilisation de méthodes |
 | Paludisme et soins des plus de 5 ans | `/superset/dashboard/asc-theme-paludisme/` | Fièvre, TDR, traitements et grossesse |
 | Références et continuité | `/superset/dashboard/asc-theme-references/` | Références et suivis d’arrivée, sans faux taux d’aboutissement |
+| Tuberculose | `/superset/dashboard/asc-theme-tuberculose/` | Malades suivis, contacts évalués/référés et perdus de vue retrouvés |
 | Consultations et morbidités des moins de 5 ans | `/superset/dashboard/asc-theme-pec-enfant/` | Consultations, diagnostics et références |
 | Promotion de la santé et WASH | `/superset/dashboard/asc-theme-promotion/` | Communications, VAD explicites, causeries et sujets abordés |
 | Inscriptions et population enregistrée | `/superset/dashboard/asc-theme-enregistrements/` | Créations et inscriptions par âge/sexe, sans prétendre recenser la population actuelle |
 
-Le catalogue `theme_catalog.json` décrit 101 compteurs avec libellé, unité, expression,
+Le catalogue `theme_catalog.json` décrit 137 compteurs avec libellé, unité, expression,
 limites de lecture et correspondance avec les graphiques historiques. Il ne s’agit
-pas de 96 indicateurs de couverture ou de personnes distinctes. Les diagnostics
+pas de 137 indicateurs de couverture ou de personnes distinctes. Les diagnostics
 peuvent se cumuler ; les observations mensuelles d’un même bénéficiaire peuvent
 réapparaître plusieurs mois. Les séries ne sont donc pas une incidence ni une prévalence.
 
 ## Navigation et filtres
 
 Chaque tableau comprend Synthèse, Territoires et exports, Méthode et qualité.
-Vaccination ajoute Zéro dose · liste actuelle. La synthèse propose quatre repères
-(trois pour les thèmes moins fournis ; huit pour le parcours paludisme des moins de cinq ans), une comparaison régionale et une tendance.
+Vaccination ajoute Zéro dose · liste actuelle. La synthèse propose les repères clés du thème, une comparaison régionale et une tendance.
 
 - Période : dernier mois civil complet par défaut ; choisir des mois entiers.
 - Préparation : douze mois complets au maximum, selon les mois effectivement présents
@@ -50,9 +50,9 @@ ni l’actualisation des vues amont.
 
 ## Corrections par rapport à l’ancien tableau
 
-1. **Vaccination :** la déclaration « à jour » compte des rapports, pas des enfants
-   distincts ; le libellé le précise. Le dénominateur historique des moins de deux
-   ans provient des inscriptions : aucun taux de couverture n’est calculé avec lui.
+1. **Vaccination :** les nouvelles cartes retiennent le dernier suivi non ambigu
+   par enfant et mois à 0–23 mois. Les calculs historiques restent identifiés dans
+   le sélecteur. Leur dénominateur d’inscriptions ne sert pas à calculer de couverture.
 2. **Zéro dose :** les signalements mensuels historiques sont séparés de la liste
    actuelle du lot 2, déjà contrôlée. Cette liste retient les 12–59 mois avec
    Penta 1 explicitement non reçu, sans preuve positive retrouvée ni décès connu,
@@ -70,20 +70,22 @@ ni l’actualisation des vues amont.
    (`patient_uuid`) avec confirmation positive dans les deux formulaires de
    confirmation/enregistrement, par CSCOM et mois, dans le répertoire courant.
    Les confirmations sans identifiant patient utilisable ne sont pas comptées
-   comme patientes distinctes. Les autres compteurs restent ceux de la source
-   historique au grain CSCOM.
-5. **SP :** le compteur historique « au moins trois SP » porte sur le même mois,
-   pas sur toute une grossesse. Il est documenté dans le détail, sans l’appeler TPIg3.
+   comme patientes distinctes. SP, décès et références explicites utilisent aussi
+   les formulaires natifs ; les autres compteurs conservent la source historique.
+5. **SP :** SP1 est une prise déclarée ; SP ≥3 exige une administration déclarée
+   de rang 3 à 6. Le rang de dose n’est pas le nombre de prises dans le mois ni
+   une couverture TPIg3. La patiente est dédupliquée par CSCOM et mois.
 6. **Références :** les références et les rapports d’arrivée ne sont pas appariés
    par épisode : pas de taux d’aboutissement ni de soustraction « non arrivés ».
-7. **Nutrition et néonatal :** les sorties/suivis ne sont pas appariés à une cohorte
-   d’admissions/naissances : pas de taux de guérison, de mortalité ou de trois visites
-   calculé à partir de populations différentes.
+7. **Nutrition et néonatal :** aucun taux de guérison ou mortalité depuis des
+   populations différentes. Le nouveau suivi J0–J7 compte des dossiers mère/naissance
+   et des dates réelles distinctes ; il ne prétend pas compter chaque nouveau-né.
 8. **Promotion :** les activités explicites sont recalculées avant toute jointure
    géographique, évitant le facteur multiplicatif de plusieurs contacts ASC par
    site. Le total historique qui mélangeait des suivis cliniques sans preuve de
    VAD est remplacé par les communications enregistrées. Le compteur WASH qui
-   comptait des lignes déjà agrégées est remplacé par les séances abordant WASH.
+   comptait des lignes déjà agrégées est remplacé par deux mesures distinctes :
+   séances abordant WASH et formulaires d’activité WASH uniques.
    Les séances multithématiques et les participations ne sont pas des personnes uniques.
 9. **Population :** le détail âge/sexe est calculé sur les UUID de contacts uniques,
    par mois d’inscription et âge renseigné au dossier, avec tranches exclusives
@@ -164,7 +166,7 @@ docker exec superset_app python -u /app/superset_config/asc-v2/verify_themes_acc
 `--create` conserve les vues déjà présentes. Pour appliquer un nouveau SQL à des
 relevés existants, lancer le calcul sans `--create` : les vues sont reconstruites
 et remplacées atomiquement par thème. Un verrou de session PostgreSQL évite deux calculs thématiques simultanés, y compris entre les transactions des différents thèmes.
-Le délai SQL limite chaque étape à quinze minutes et le délai de verrouillage à dix secondes. Chaque thème conserve indépendamment son dernier relevé complet ; leurs dates de calcul peuvent différer après un échec. `--only THEME` permet une reprise ciblée sans relire les autres sources.
+Le délai SQL limite chaque étape à quinze minutes (trente pour promotion/VAD) et le délai de verrouillage à dix secondes. Chaque thème conserve indépendamment son dernier relevé complet ; leurs dates de calcul peuvent différer après un échec. `--only THEME` permet une reprise ciblée sans relire les autres sources.
 
 `validate_themes.py` vérifie l’unicité, les bornes mensuelles, l’absence de valeurs
 négatives/non finies, les sommes territoriales, le respect du grain, la partition
@@ -173,11 +175,11 @@ conservation des sommes et des lignes amont pendant le rattachement géographiqu
 `verify_themes_access.py` exerce les exports natifs CSV sur toute la période,
 Excel sur le mois par défaut, puis les exports et tentatives hors périmètre d’un
 lecteur régional, sans imprimer de contenu individuel. Chaque client vérifie son
-identité avant la requête ; le refus par défaut est contrôlé sur les 21 sources.
+identité avant la requête ; le refus par défaut est contrôlé sur les sources du catalogue.
 
 Installer `systemd/asc-themes-refresh.*` et activer seulement le nouveau minuteur.
 Journaux : `journalctl -u asc-themes-refresh.service`. Un retrait du lot consiste
-à désactiver ce minuteur et remettre ses onze dashboards en brouillon, sans
+à désactiver ce minuteur et remettre ses douze dashboards en brouillon, sans
 restaurer globalement les métadonnées ni modifier le tableau ASC historique.
 
 ## Livraison du 23 octobre 2026
@@ -286,3 +288,76 @@ mois par rapport à la référence précédant cette harmonisation.
 Pour cette version, après `refresh_themes.py --only pec-enfant`, utiliser
 `provision_themes.py --only pec-enfant --publish` afin de mettre aussi à jour
 les huit cartes, le sélecteur, le dictionnaire et les colonnes d'export.
+
+
+## Enrichissement depuis le canevas d’analyse — 24 octobre 2026
+
+44 nouvelles séries (dont 20 ventilations de participations par thème et sexe),
+avec correction de SP1, SP de rang ≥3 et décès maternels signalés. Huit compteurs
+néonatals hérités sont retirés du nouveau tableau : le calcul amont tronquait les
+dates au mois et multipliait certaines inscriptions. Le dashboard ASC historique
+reste intact. Le catalogue contient désormais 137 séries, réparties sur 11 thèmes.
+
+- **Santé maternelle** : références CPN explicites et accouchements à domicile
+  avec référence déclarée. La SP1 est une prise déclarée ; SP ≥3 accepte les codes
+  `sp_3`…`sp_6`, avec administration explicitement déclarée. Il ne s’agit pas de
+  trois administrations dans le mois. Les décès sont dédupliqués entre formulaires
+  par patiente/CSCOM/mois, datés du signalement et sans validation de cause.
+- **Tuberculose** : nouveau tableau et entrée dans le portail, contacts évalués et
+  référés, malades suivis et motif explicite `patient_lost_found`. Un vrai zéro
+  reste possible, sans déduire un retour d’une absence.
+- **Vaccination** : dernier suivi non ambigu par enfant/mois, âge 0–23 mois,
+  enfants observés, à jour, à jour à 23 mois et sans Penta 1 déclaré à 12–23 mois.
+  Même cohorte pour les compteurs comparables. Ce n’est pas une couverture de
+  population ; la liste individuelle actuelle de relance reste séparée.
+- **Moins de cinq ans** : consultations évaluées et fièvre dans la cohorte native
+  déjà utilisée par le parcours paludisme ; la fièvre ne constitue pas un diagnostic.
+- **Néonatal** : profils enregistrés, acte/déclaration civile, dossiers mère/naissance
+  suivis, trois jours distincts entre J0 et J7 et référence explicite. Un dossier
+  mère/naissance peut contenir plusieurs nouveau-nés : ne pas le présenter comme
+  un enfant unique. Les visites sont classées par mois de naissance, avec les suivis
+  disponibles jusqu’au calcul ; les autres thèmes utilisent leur date documentée.
+- **Planification familiale** : conseil, nouvelles utilisatrices et utilisatrices
+  observées, dédupliquées par patiente/site/mois. Aucune assimilation à un stock.
+- **Promotion/WASH** : formulaires WASH uniques, VAD cliniques explicitement
+  déclarées, total de rapports VAD promotionnels/cliniques et participations par
+  thème et sexe. Plusieurs formulaires peuvent décrire une visite physique ;
+  plusieurs thèmes peuvent compter les mêmes participations.
+
+### Lecture trimestrielle
+
+Les séries mensuelles agrégées s’additionnent en **observations mensuelles**.
+Un total trimestriel de patients-mois peut donc dépasser les personnes distinctes
+sur le trimestre calculées séparément dans le fichier Excel. Aucun identifiant
+patient n’est exporté par ces nouveaux jeux agrégés. Les personnes distinctes par
+période arbitraire ne sont pas reconstituées depuis des totaux mensuels.
+
+### Déploiement ciblé et vérification
+
+`refresh_themes.py --only <thème>` reconstruit atomiquement son relevé ;
+`provision_themes.py --only <thème> --publish` met à jour son tableau et ses jeux.
+`--hub-only --publish` actualise uniquement la navigation et la disponibilité du
+portail, avec vérification que les autres dashboards restent inchangés. Les règles
+régionales et district sont appliquées aux nouveaux jeux. La disponibilité inclut
+`district_uuid` pour permettre les contrôles district.
+
+`verify_canevas.py` exécute le SQL natif sur des cas anonymes (âges, derniers suivis,
+ex æquo, administration SP, décès répétés, dates J0/J7/J8, contacts et retours TB),
+puis les bornes entre compteurs des relevés. `verify_canevas_scopes.py` contrôle les
+nouveaux jeux TB et le portail avec un vrai compte district ; les exports natifs
+CSV/Excel et les refus interrégionaux sont testés par `verify_themes_access.py`.
+La promotion dispose d’un délai SQL de 1800 s pour ses lectures bornées ; les
+sources cliniques amont ne sont ni modifiées ni rafraîchies par ce lot.
+
+### Validation de cette livraison
+
+Les sept relevés concernés sont reconstruits et leurs tableaux publiés, ainsi
+que le portail à onze thèmes. Les fixtures natives, les bornes entre compteurs,
+la conservation des huit compteurs de référence du parcours paludisme et les
+contrôles de structure/grain/volumes sont réussis. Les **40 exports et tentatives
+hors région** CSV/Excel ont réussi, avec comparaison des sommes CSV au SQL et
+refus par défaut sur les jeux thématiques. Les nouveaux jeux TB et le portail ont
+également passé les requêtes d’un compte district réel, sans fuite hors périmètre.
+Les assertions de publication ciblée conservent les autres dashboards, dont le
+tableau ASC historique, SD, ASA et SEBAC. Sauvegarde de métadonnées prise avant
+publication et intégrité gzip vérifiée ; Superset répond OK et le minuteur reste actif.
