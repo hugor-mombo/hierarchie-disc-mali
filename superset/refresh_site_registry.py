@@ -24,5 +24,13 @@ with app.app_context():
    assert c.execute(text('SELECT count(*) FROM '+name)).scalar()==c.execute(text('SELECT count(*) FROM mv_superset_sd_portfolio')).scalar()
    assert not c.execute(text('SELECT chw_site_uuid FROM mv_chw_site_hierarchy_reporting EXCEPT SELECT site_uuid FROM '+name+' LIMIT 1')).first(),'Sources amont désynchronisées : site ASC absent du portefeuille SD'
    c.execute(text('ANALYZE '+name))
-   c.execute(text('CREATE OR REPLACE VIEW public.v_disc_site_registry_labels_v1 AS '+(ROOT/'sql/site-registry/geography.sql').read_text()))
+   labels='public.mv_disc_site_registry_labels_v1'
+   if c.execute(text('SELECT to_regclass(:n)'),{'n':labels}).scalar():
+    c.execute(text('REFRESH MATERIALIZED VIEW CONCURRENTLY '+labels))
+   else:
+    c.execute(text('CREATE MATERIALIZED VIEW '+labels+' AS '+(ROOT/'sql/site-registry/geography.sql').read_text()))
+    c.execute(text('CREATE UNIQUE INDEX disc_site_registry_labels_v1_pk ON '+labels+'(site_uuid)'))
+   c.execute(text('ANALYZE '+labels))
+   assert c.execute(text('SELECT count(*) FROM '+labels)).scalar()==c.execute(text('SELECT count(*) FROM '+name)).scalar(),'Écart de grain géographique'
+   c.execute(text('CREATE OR REPLACE VIEW public.v_disc_site_registry_labels_v1 AS SELECT * FROM '+labels))
  print('Référentiel commun ASC / SD actualisé',flush=True)

@@ -23,7 +23,9 @@ export CSV / XLSX par site-mois. ASA et les autres dashboards sont conservés.
   L'export reste au grain UUID × mois. Les filtres de motifs ne réduisent pas les
   cartes ; période et géographie s'appliquent aux deux.
 
-La géographie UUID et les libellés de branches proviennent d'un relevé commun.
+La géographie UUID et les libellés de branches sont préparés une fois par
+rafraîchissement dans un relevé matérialisé commun indexé par UUID. Ils ne sont
+pas recalculés sur chaque site-mois lors de chaque requête.
 Les noms homonymes sont distingués. Les deux sources de pilotage existantes
 reprennent ces libellés ; la source SD prend aussi en compte la création des
 sites. La cohorte analytique et l'attribution des rapports ASC restent celles de

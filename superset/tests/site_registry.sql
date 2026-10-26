@@ -45,9 +45,11 @@ CREATE MATERIALIZED VIEW mv_disc_site_registry_v1 AS
 \ir ../sql/site-registry/registry.sql
 ;
 CREATE UNIQUE INDEX ON mv_disc_site_registry_v1(site_uuid);
-CREATE VIEW v_disc_site_registry_labels_v1 AS
+CREATE MATERIALIZED VIEW mv_disc_site_registry_labels_v1 AS
 \ir ../sql/site-registry/geography.sql
 ;
+CREATE UNIQUE INDEX ON mv_disc_site_registry_labels_v1(site_uuid);
+CREATE VIEW v_disc_site_registry_labels_v1 AS SELECT * FROM mv_disc_site_registry_labels_v1;
 CREATE VIEW common_monthly AS
 \ir ../sql/site-registry/monthly.sql
 ;
