@@ -1,0 +1,10 @@
+[Unit]
+Description=Actualiser le référentiel commun des sites ASC et SD
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=mombo
+ExecStart=/usr/bin/docker exec superset_app python /app/superset_config/asc-v2/refresh_site_registry.py
+TimeoutStartSec=180

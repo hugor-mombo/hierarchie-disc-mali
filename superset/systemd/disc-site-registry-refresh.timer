@@ -1,0 +1,10 @@
+[Unit]
+Description=Actualisation horaire du référentiel commun des sites
+
+[Timer]
+OnCalendar=*-*-* *:20:00
+Persistent=true
+Unit=disc-site-registry-refresh.service
+
+[Install]
+WantedBy=timers.target
