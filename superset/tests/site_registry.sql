@@ -64,6 +64,7 @@ BEGIN
  ASSERT (SELECT contact_status FROM mv_disc_site_registry_v1 WHERE site_uuid='B')='Sans contact ASC dans le relevé courant';
  ASSERT (SELECT contact_status FROM mv_disc_site_registry_v1 WHERE site_uuid='C')='Contacts de formation uniquement';
  ASSERT (SELECT contact_status FROM mv_disc_site_registry_v1 WHERE site_uuid='D')='Nom exclu par la règle ASC (zz / NE)';
+ ASSERT (SELECT contact_count FROM mv_disc_site_registry_v1 WHERE site_uuid='A') IS NULL,'Eligible contact audit skipped explicitly';
  ASSERT (SELECT training_contacts FROM mv_disc_site_registry_v1 WHERE site_uuid='A') IS NULL,'Eligible contact audit not fabricated';
  ASSERT NOT EXISTS(SELECT site_uuid,reported_month FROM common_monthly GROUP BY 1,2 HAVING count(*)<>1),'Site-month grain';
  ASSERT (SELECT count(*) FROM common_monthly WHERE reported_month=date_trunc('month',CURRENT_DATE)-interval '1 month' AND in_period=1)=7,'Creation boundary and unknown-date inclusion';
@@ -78,5 +79,6 @@ BEGIN
  ASSERT NOT EXISTS(SELECT cscom FROM v_disc_site_registry_labels_v1 GROUP BY 1 HAVING count(DISTINCT health_area_uuid)>1),'CSCOM homonyms';
  ASSERT (SELECT count(*) FROM common_monthly WHERE site_uuid='H')=14,'Missing branch remains visible';
  ASSERT NOT EXISTS(SELECT 1 FROM common_monthly WHERE reported_month=date_trunc('month',CURRENT_DATE) AND sd_available<>0),'No fabricated current SD availability';
+ ASSERT NOT EXISTS(SELECT 1 FROM common_monthly WHERE sd_available=0 AND sd_visited IS NOT NULL),'Unknown SD activity remains null';
 END $$;
 SELECT 'Référentiel commun : frontières, exclusions, grain, homonymes et conservation OK' AS result;

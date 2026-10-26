@@ -8,7 +8,7 @@ SELECT p.chw_site_uuid AS site_uuid,p.chw_site AS site_name,
  m.reported::date AS site_created_date,
  h.reported_date AS asc_site_created_date,
  CASE WHEN h.chw_site_uuid IS NOT NULL THEN 1 ELSE 0 END AS has_eligible_asc,
- a.contact_count,
+ CASE WHEN h.chw_site_uuid IS NULL THEN a.contact_count END AS contact_count,
  CASE WHEN h.chw_site_uuid IS NULL THEN a.training_contacts END AS training_contacts,
  CASE WHEN h.chw_site_uuid IS NULL THEN a.missing_username_contacts END AS missing_username_contacts,
  CASE WHEN p.chw_site LIKE '%zz%' OR p.chw_site ~* '\sNE$' THEN 1 ELSE 0 END AS name_flag,
@@ -31,5 +31,6 @@ LEFT JOIN LATERAL (
   SELECT doc FROM public.couchdb WHERE doc->>'_id'=c.uuid
    AND h.chw_site_uuid IS NULL LIMIT 1
  ) b ON TRUE
- WHERE c.parent_uuid=p.chw_site_uuid AND c.contact_type='c62_chw'
+ WHERE h.chw_site_uuid IS NULL
+ AND c.parent_uuid=p.chw_site_uuid AND c.contact_type='c62_chw'
 ) a ON TRUE

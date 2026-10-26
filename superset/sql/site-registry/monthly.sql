@@ -10,7 +10,7 @@ WITH periods AS (
  CASE WHEN r.has_eligible_asc=1 AND r.asc_site_created_date<p.reported_month+interval '1 month'
  AND r.asc_site_created_date<=CURRENT_DATE THEN 1 ELSE 0 END AS asc_in_period,
  coalesce(a.report_count,0) AS asc_report_count,
- coalesce(s.has_visit_chw_site,0) AS sd_visited,
+ s.has_visit_chw_site AS sd_visited,
  CASE WHEN s.chw_site_uuid IS NOT NULL THEN 1 ELSE 0 END AS sd_available,
  (SELECT max(refreshed_at) FROM public.mv_asc_v2_report_monthly) AS reports_calculated_at
  FROM public.v_disc_site_registry_labels_v1 r CROSS JOIN periods p
