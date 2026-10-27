@@ -27,7 +27,7 @@ BLOCKED_ENDPOINTS={
  'ExploreView.root','Superset.explore','Superset.slice','Superset.add_slices',
  'Superset.sqllab_history','Superset.sqllab','Superset.sql_json',
 }
-BLOCKED_PREFIXES=('SqlLabRestApi.','SqllabView.','SavedQuery','ExploreRestApi.',
+BLOCKED_PREFIXES=('DatasetEditor.','SqlLabRestApi.','SqllabView.','SavedQuery','ExploreRestApi.',
  'ExploreFormDataRestApi.','ExplorePermalink','TableSchemaView.','TabStateView.')
 def blocked_endpoint(endpoint):
  return bool(endpoint and (endpoint in BLOCKED_ENDPOINTS or endpoint.startswith(BLOCKED_PREFIXES)))

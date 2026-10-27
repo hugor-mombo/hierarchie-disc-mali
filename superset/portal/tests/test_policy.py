@@ -22,7 +22,7 @@ class ConsultationPolicyTest(unittest.TestCase):
   self.assertTrue(viewer_permission('can_csv','Superset'))
   self.assertTrue(viewer_permission('can_this_form_post','ResetMyPasswordView'))
  def test_direct_authoring_routes_are_blocked_but_rendering_is_kept(self):
-  for endpoint in ['SliceModelView.list','ExploreView.root','Superset.explore','SqlLabRestApi.execute_sql_query','SqllabView.root','ExploreFormDataRestApi.post']:
+  for endpoint in ['DatasetEditor.root','DatasetEditor.show','TableModelView.list','SliceModelView.list','ExploreView.root','Superset.explore','SqlLabRestApi.execute_sql_query','SqllabView.root','ExploreFormDataRestApi.post']:
    self.assertTrue(blocked_endpoint(endpoint),endpoint)
   for endpoint in [None,'ChartRestApi.data','DashboardRestApi.get_charts','DashboardFilterStateRestApi.post']:
    self.assertFalse(blocked_endpoint(endpoint),endpoint)

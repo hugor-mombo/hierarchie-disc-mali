@@ -53,7 +53,7 @@ for name,user_id in profiles+[('editor',owner)]:
     assert ('can_write','Dashboard') not in pairs and ('can_write','Chart') not in pairs,'Édition annoncée au navigateur'
    for permission,view in [('can_write','Dashboard'),('can_write','Chart'),('can_execute_sql_query','SQLLab')]:assert sm.can_access(permission,view)==(name=='editor'),(name,permission,view)
   if name!='editor':
-   for url in ['/chart/list/','/explore/','/superset/explore/','/sqllab/','/api/v1/sqllab/','/api/v1/chart/']:
+   for url in ['/dataset/add/','/tablemodelview/list/','/chart/list/','/explore/','/superset/explore/','/sqllab/','/api/v1/sqllab/','/api/v1/chart/']:
     r=c.get(url,base_url=BASE);assert r.status_code==403,(name,url,r.status_code)
    for url in ['/api/v1/dashboard/','/api/v1/chart/','/api/v1/dataset/','/api/v1/sqllab/execute/']:
     # Empty objects: even if a permission regressed, no valid object can be created.
