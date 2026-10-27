@@ -25,7 +25,7 @@ with app.app_context():
  map_chart=db.session.query(Slice).filter_by(uuid=uid('chart:geo:map')).one()
  dash=db.session.query(Dashboard).filter_by(uuid=uid('dashboard:geo')).one();assert dash.published
  database=db.session.query(Database).filter_by(id=1).one()
- common={'Gamma','DISC_DASH_ASC_ACTIVITY','DISC_DASH_ASC_SUPERVISION','DISC_DASH_SEBAC'}
+ common={'DISC_VIEWER','DISC_DASH_ASC_ACTIVITY','DISC_DASH_ASC_SUPERVISION','DISC_DASH_SEBAC'}
  with database.get_sqla_engine() as engine:
   with engine.connect() as c:
    c.execute(text('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ'));c.execute(text('SET TRANSACTION READ ONLY'));c.execute(text("SET LOCAL statement_timeout='120s'"))

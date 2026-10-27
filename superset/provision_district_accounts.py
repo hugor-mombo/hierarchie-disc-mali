@@ -30,7 +30,7 @@ with app.app_context():
  from superset.connectors.sqla.models import SqlaTable,RowLevelSecurityFilter
  reference=sm.find_user(username='reg_bougouni');assert reference and reference.active
  common=[r for r in reference.roles if not r.name.startswith('DISC_REGION_')]
- assert {r.name for r in common}=={'Gamma','DISC_DASH_ASC_ACTIVITY','DISC_DASH_ASC_SUPERVISION','DISC_DASH_SEBAC'}
+ assert {r.name for r in common}=={'DISC_VIEWER','DISC_DASH_ASC_ACTIVITY','DISC_DASH_ASC_SUPERVISION','DISC_DASH_SEBAC'}
  dangerous={'all_database_access','all_datasource_access','can_sql_json','can_sqllab','can_execute_sql_query'}
  assert not [(p.permission.name,p.view_menu.name) for r in common for p in r.permissions if p.permission.name in dangerous],'Reference reader has SQL or global-data privileges'
  database=db.session.query(Database).filter_by(id=1).one()

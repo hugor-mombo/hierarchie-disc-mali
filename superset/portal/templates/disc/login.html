@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="robots" content="noindex,nofollow">
+ <title>Connexion · DISC-Mali | Santé communautaire</title>
+ <link rel="stylesheet" href="{{ url_for('disc_portal_css') }}">
+</head>
+<body>
+ <main class="login-layout">
+  <section class="institution" aria-labelledby="portal-title">
+   <div class="republic"><img src="/assets/disc-mali/armoiries-mali-87405e53.png" width="92" height="92" alt="Armoiries de la République du Mali"><div><p class="eyebrow">République du Mali</p><p class="motto">Un Peuple · Un But · Une Foi</p></div></div>
+   <div class="intro"><span class="product">DISC-Mali</span><h1 id="portal-title">Les données au service de la santé communautaire.</h1><p class="lead">Un espace de suivi et d’analyse pour accompagner les décisions, du niveau national aux régions, districts et CSCOM.</p></div>
+   <div class="themes"><span>Activités des ASC</span><span>Supervision dédiée</span><span>Surveillance communautaire</span></div>
+   <p class="institution-footer">Tableaux de bord · Pilotage et aide à la décision</p>
+  </section>
+  <section class="access" aria-labelledby="login-title">
+   <div class="login-card"><p class="eyebrow">Espace de consultation</p><h2 id="login-title">Bienvenue</h2><p class="description">Connectez-vous pour retrouver vos tableaux de bord.</p>
+    {% for category,message in get_flashed_messages(with_categories=true) %}<div class="notice" role="alert">{{ message }}</div>{% endfor %}
+    {% if form.errors %}<div class="notice" role="alert">Vérifiez les champs du formulaire puis réessayez.</div>{% endif %}
+    <form method="post" action="" name="login">
+     {{ form.hidden_tag() }}
+     <label for="username">Identifiant</label>{{ form.username(id='username',autocomplete='username',required=true,autofocus=true) }}
+     <label for="password">Mot de passe</label>{{ form.password(id='password',autocomplete='current-password',required=true) }}
+     <button type="submit">Se connecter <span aria-hidden="true">→</span></button>
+    </form>
+    <p class="access-note">Vos tableaux et vos données sont accessibles selon les droits associés à votre compte.</p>
+   </div>
+   <p class="help">Un problème de connexion ? Contactez votre administrateur DISC-Mali.</p>
+  </section>
+ </main>
+</body>
+</html>
