@@ -86,7 +86,7 @@ with app.test_request_context('/'):
   show_cell_bars=False,allow_render_html=False,include_search=False,table_timestamp_format='%d/%m/%Y',row_limit=100000)
  def chart(key,title,source='devices',viz='table',where=None,**settings):
   ds=datasets[source]
-  p={**(standard if viz=='table' else {}),'time_range':'No filter','adhoc_filters':[],'row_limit':100000}
+  p={**(standard if viz=='table' else {}),'time_range':'No filter','granularity_sqla':'telemetry_day','adhoc_filters':[],'row_limit':100000}
   if where:p['adhoc_filters']=[dict(expressionType='SQL',clause='WHERE',sqlExpression=where)]
   p.update(settings);return b.chart(key,title,ds,viz,**p)
  intro=b.tab('summary','Vue d’ensemble')

@@ -6,7 +6,7 @@ from sqlalchemy import text
 from flask_login import UserMixin,login_user
 from maintenance_catalog import ROOT,TABLES,METRICS,ROLE,SLUG,uid,events_sql,DEVICES
 from superset.app import create_app
-parser=argparse.ArgumentParser();parser.add_argument('--analytical-only',action='store_true');parser.add_argument('--metadata-only',action='store_true');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--analytical-only',action='store_true');parser.add_argument('--metadata-only',action='store_true');parser.add_argument('--daily-only',action='store_true');args=parser.parse_args()
 app=create_app();base='https://dashboard.disc-mali.ml'
 logging.getLogger('superset.views.error_handling').setLevel(logging.ERROR)
 def fixtures(c):
@@ -83,6 +83,10 @@ with app.app_context():
  dset=datasets['devices'];slice_id=next(s.id for s in dash.slices if json.loads(s.params).get('metric')=='devices')
  raw_expected=totals['devices']
  dsids={k:d.id for k,d in datasets.items()};dashid=dash.id
+ for s in dash.slices:
+  p=json.loads(s.params);ds=next(d for d in datasets.values() if d.id==s.datasource_id)
+  assert p.get('granularity_sqla')==ds.main_dttm_col=='telemetry_day',('temporal column',s.id)
+  assert p['granularity_sqla'] in {c.column_name for c in ds.columns}
  chart_by_title={s.slice_name:s.id for s in dash.slices};all_ids={s.id for s in dash.slices}
  list_titles=['EXPORT — Profils et comptes à examiner','EXPORT — Tous les profils compte–appareil sélectionnés']
  expected={'storage_status':{chart_by_title[t] for t in list_titles},'telemetry_status':{chart_by_title[t] for t in list_titles+['EXPORT — Derniers jours de succès observés']}}
@@ -108,7 +112,7 @@ def identity_hook():
  login_user(user,force=True);g.user=user
 app.before_request_funcs.setdefault(None,[]).insert(0,identity_hook)
 
-for label in ['hmombo','IT','national','region','district','viewer_only','anonymous']:
+for label in (['hmombo','IT'] if args.daily_only else ['hmombo','IT','national','region','district','viewer_only','anonymous']):
  with app.test_client() as client:
   h={} if label=='anonymous' else {'X-DISC-Monitoring-Test':label}
   response=client.get('/api/v1/dashboard/'+str(dashid),base_url=base,headers=h)
@@ -120,7 +124,7 @@ for label in ['hmombo','IT','national','region','district','viewer_only','anonym
   if label=='IT':
    for path in ['/api/v1/dashboard/','/api/v1/chart/','/api/v1/sqllab/execute/']:
     assert client.post(path,base_url=base,json={},headers=headers).status_code==403,('IT authoring',path)
-  for key,dsid in dsids.items():
+  for key,dsid in ([] if args.daily_only else dsids.items()):
    query=dict(columns=[],metrics=['devices'],filters=[dict(col='account_status',op='IN',val=['Compte courant'])],time_range='No filter',extras={'where':'','having':''},orderby=[],row_limit=100000)
    body=dict(datasource={'id':dsid,'type':'table'},force=True,queries=[query],form_data={'datasource':f'{dsid}__table','viz_type':'table','dashboardId':dashid,'slice_id':slice_id if key=='devices' else next(s.id for s in dash.slices if s.datasource_id==dsid)},result_format='json',result_type='full')
    data=client.post('/api/v1/chart/data',base_url=base,json=body,headers=headers)
@@ -140,15 +144,16 @@ for label in ['hmombo','IT','national','region','district','viewer_only','anonym
   if authorized:
    for chart in dash.slices:
     p=json.loads(chart.params);dsid=chart.datasource_id
+    if args.daily_only and p.get('time_range')=='No filter':continue
     where=' AND '.join(f['sqlExpression'] for f in p.get('adhoc_filters',[]) if f.get('clause')=='WHERE' and f.get('expressionType')=='SQL')
     filters=[] if chart.id==next(s.id for s in dash.slices if s.slice_name=='Contrôles globaux des documents techniques') else [dict(col='account_status',op='IN',val=['Compte courant'])]
     metrics=p.get('metrics',[p['metric']] if 'metric' in p else [])
     columns=p.get('groupby',[])
     if p.get('x_axis'):columns=[p['x_axis']]+columns
-    query=dict(columns=columns,metrics=metrics,filters=filters,time_range=p.get('time_range','No filter'),granularity='telemetry_day',extras={'where':where,'having':''},orderby=[],row_limit=100000)
+    query=dict(columns=columns,metrics=metrics,filters=filters,time_range=p.get('time_range','No filter'),granularity=p['granularity_sqla'],extras={'where':where,'having':''},orderby=[],row_limit=100000)
     body=dict(datasource={'id':dsid,'type':'table'},force=True,queries=[query],form_data={'datasource':f'{dsid}__table','viz_type':chart.viz_type,'dashboardId':dashid,'slice_id':chart.id},result_format='json',result_type='full')
     response=client.post('/api/v1/chart/data',base_url=base,json=body,headers=headers)
     assert response.status_code==200 and not response.json['result'][0].get('error'),(label,chart.id,chart.slice_name,response.status_code,str(response.json)[:300])
-  print(json.dumps(dict(profile=label,dashboard_access=authorized,data_access='OK',exports='OK' if authorized else 'refusés')),flush=True)
+  print(json.dumps(dict(profile=label,dashboard_access=authorized,data_access='OK',exports=('déjà vérifiés' if args.daily_only else 'OK') if authorized else 'refusés')),flush=True)
 with app.app_context():
  assert assignments_before=={u.id:sorted(r.id for r in u.roles) for u in db.session.query(sm.user_model)},'Attributions de rôles modifiées pendant la vérification'
