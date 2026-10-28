@@ -1,0 +1,11 @@
+[Unit]
+Description=Actualisation horaire du monitoring IT DISC
+
+[Timer]
+OnCalendar=*-*-* *:10:00
+RandomizedDelaySec=90
+Persistent=true
+Unit=disc-it-monitoring.service
+
+[Install]
+WantedBy=timers.target

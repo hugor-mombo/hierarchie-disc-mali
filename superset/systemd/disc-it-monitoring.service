@@ -1,0 +1,10 @@
+[Unit]
+Description=Actualiser les relevés techniques du monitoring IT DISC
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=mombo
+ExecStart=/usr/bin/docker exec superset_app python -u /app/superset_config/asc-v2/refresh_maintenance.py
+TimeoutStartSec=420
